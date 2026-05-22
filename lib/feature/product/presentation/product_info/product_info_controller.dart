@@ -1,0 +1,291 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
+
+import '../../../../gen/colors.gen.dart';
+import '../../data/model/product_model.dart';
+import '../../domain/product_use_case/product_use_case.dart';
+
+enum ProductPageMode { view, edit, create }
+
+class ProductInfoController extends GetxController {
+  final ProductUseCase _useCase;
+
+  ProductInfoController(this._useCase);
+
+  // Nhận thực thể sản phẩm truyền sang (nếu có) từ arguments của GetX
+  final ProductEntity? initialProduct = Get.arguments as ProductEntity?;
+
+  // Quản lý trạng thái hiện tại của trang
+  final Rx<ProductPageMode> pageMode = ProductPageMode.create.obs;
+
+  // Các TextEditingController phục vụ hiển thị/nhập liệu
+  final nameController = TextEditingController();
+  final skuController = TextEditingController();
+  final priceController = TextEditingController();
+  final stockController = TextEditingController();
+  final descController = TextEditingController();
+  final categoryController = TextEditingController();
+
+  final RxBool isLoading = false.obs;
+  final RxString errorMessage = ''.obs;
+  final RxnInt selectedCategoryId = RxnInt();
+  final RxBool hasSubmitted = false.obs;
+  final RxnString nameError = RxnString();
+  final RxnString skuError = RxnString();
+  final RxnString priceError = RxnString();
+  final RxnString stockError = RxnString();
+  final RxnString categoryError = RxnString();
+
+  void onFormChanged() {
+    if (hasSubmitted.value) {
+      validateForm();
+    }
+  }
+
+  void onCategoryChanged(int? categoryId) {
+    selectedCategoryId.value = categoryId;
+    onFormChanged();
+  }
+
+  bool validateForm() {
+    final name = nameController.text.trim();
+    final sku = skuController.text.trim();
+    final priceText = priceController.text.trim();
+    final stockText = stockController.text.trim();
+    final price = double.tryParse(priceText);
+    final stock = int.tryParse(stockText);
+
+    nameError.value = name.isEmpty ? 'Ten bat buoc' : null;
+    skuError.value = _validateSku(sku);
+    priceError.value = _validatePrice(priceText, price);
+    stockError.value = _validateStock(stockText, stock);
+    categoryError.value = _validateCategory();
+
+    return nameError.value == null &&
+        skuError.value == null &&
+        priceError.value == null &&
+        stockError.value == null &&
+        categoryError.value == null;
+  }
+
+  String? _validateSku(String sku) {
+    if (sku.isEmpty) {
+      return 'Ma bat buoc';
+    }
+
+    if (!Get.isRegistered<ProductController>()) {
+      return null;
+    }
+
+    final normalizedSku = sku.toLowerCase();
+    final isDuplicated = Get.find<ProductController>().listProduct.any(
+      (product) =>
+          product.code?.toLowerCase() == normalizedSku &&
+          product.id != initialProduct?.id,
+    );
+
+    return isDuplicated ? 'Ma san pham da ton tai' : null;
+  }
+
+  String? _validatePrice(String priceText, double? price) {
+    if (priceText.isEmpty) {
+      return 'Gia bat buoc';
+    }
+    if (price == null) {
+      return 'Gia khong hop le';
+    }
+    if (price <= 0) {
+      return 'Gia phai lon hon 0';
+    }
+    return null;
+  }
+
+  String? _validateStock(String stockText, int? stock) {
+    if (stockText.isEmpty) {
+      return null;
+    }
+    if (stock == null) {
+      return 'Ton kho khong hop le';
+    }
+    if (stock < 0) {
+      return 'Ton kho phai lon hon hoac bang 0';
+    }
+    return null;
+  }
+
+  String? _validateCategory() {
+    final categoryId = selectedCategoryId.value;
+    if (categoryId == null) {
+      return 'Danh muc bat buoc';
+    }
+
+    if (!Get.isRegistered<CategoryController>()) {
+      return null;
+    }
+
+    final isCategoryExists = Get.find<CategoryController>().listCategory.any(
+      (category) => category.id == categoryId,
+    );
+
+    return isCategoryExists ? null : 'Danh muc khong hop le';
+  }
+
+  void clearValidationErrors() {
+    hasSubmitted.value = false;
+    nameError.value = null;
+    skuError.value = null;
+    priceError.value = null;
+    stockError.value = null;
+    categoryError.value = null;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    _checkPageModeAndFillData();
+  }
+
+  void _checkPageModeAndFillData() {
+    if (initialProduct != null) {
+      // 🟢 Nếu có sản phẩm truyền sang: Mặc định vào chế độ XEM CHI TIẾT
+      pageMode.value = ProductPageMode.view;
+
+      // Đổ dữ liệu cũ vào các ô Input
+      nameController.text = initialProduct!.name;
+      skuController.text = initialProduct!.code!;
+      priceController.text = initialProduct!.price.toString();
+      stockController.text = initialProduct!.stock.toString();
+      descController.text = initialProduct!.description ?? '';
+      selectedCategoryId.value = initialProduct!.category?.id;
+    } else {
+      pageMode.value = ProductPageMode.create;
+      selectedCategoryId.value = null;
+    }
+  }
+
+  void changeToEditMode() {
+    pageMode.value = ProductPageMode.edit;
+  }
+
+  void cancelEdit() {
+    _checkPageModeAndFillData();
+    clearValidationErrors();
+  }
+
+  void saveProduct() {
+    if (isLoading.value) {
+      return;
+    }
+
+    hasSubmitted.value = true;
+    if (!validateForm()) {
+      return;
+    }
+
+    final name = nameController.text.trim();
+    final code = skuController.text.trim();
+    final description = descController.text.trim();
+    final price = double.tryParse(priceController.text.trim()) ?? 0.0;
+    final stock = int.tryParse(stockController.text.trim()) ?? 0;
+    final categoryID = selectedCategoryId.value;
+
+    final params = ProductInfoParam(
+      name: name,
+      code: code,
+      price: price,
+      description: description,
+      stock: stock,
+      category: categoryID,
+    );
+    if (pageMode.value == ProductPageMode.create) {
+      addProduct(params);
+    } else if (pageMode.value == ProductPageMode.edit) {
+      updateProduct(params);
+    }
+    // Thêm logic gọi UseCase... Sau khi xong chuyển về Mode View hoặc Get.back()
+  }
+
+  @override
+  void onClose() {
+    // Giải phóng bộ nhớ
+    nameController.dispose();
+    skuController.dispose();
+    priceController.dispose();
+    stockController.dispose();
+    descController.dispose();
+    categoryController.dispose();
+    super.onClose();
+  }
+
+  Future<void> addProduct(ProductInfoParam param) async {
+    try {
+      // UseCase trả về Future<int> (id) khi thành công, throw khi thất bại
+      isLoading.value = true;
+      final productId = await _useCase.addProduct(param);
+      // Pop trước rồi mới hiện snackbar để snackbar không bị nuốt theo route
+      Get.back(result: productId);
+      Get.snackbar(
+        'Thêm thành công',
+        '',
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: ColorName.greenLight.withValues(alpha: 0.9),
+      );
+    } catch (e) {
+      errorMessage.value = e.toString();
+      Get.snackbar(
+        'Thêm thất bại',
+        errorMessage.value,
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: ColorName.error.withValues(alpha: 0.9),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> updateProduct(ProductInfoParam params) async {
+    try {
+      if (initialProduct == null) {
+        return;
+      }
+
+      isLoading.value = true;
+      final result = await _useCase.updateProduct(params, initialProduct!.id);
+      if (!result) {
+        Get.snackbar(
+          'Cap nhat that bai',
+          '',
+          snackPosition: SnackPosition.TOP,
+          colorText: Colors.white,
+          backgroundColor: ColorName.error.withValues(alpha: 0.9),
+        );
+        return;
+      }
+
+      Get.back(result: true);
+      Get.snackbar(
+        'Cập nhật thành công',
+        '',
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: ColorName.greenLight.withValues(alpha: 0.9),
+      );
+    } catch (e) {
+      errorMessage.value = e.toString();
+      Get.snackbar(
+        'Cập nhật thất bại',
+        errorMessage.value,
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: ColorName.error.withValues(alpha: 0.9),
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+}

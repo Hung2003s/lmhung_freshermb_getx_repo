@@ -1,0 +1,54 @@
+name: lmhung_freshermb_getx_repo
+description: "A new Flutter project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_svg: ^2.0.10
+  cupertino_icons: ^1.0.8
+  dio: ^5.9.2
+  uuid: ^4.5.3
+  flutter_secure_storage: ^8.0.0
+  freezed_annotation: ^3.1.0
+  flutter_dotenv: ^6.0.1
+  get_it: ^9.2.1
+  get: ^4.7.3
+  dartz: ^0.10.1
+  flutter_slidable: ^4.0.3
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.13
+  flutter_gen_runner: ^5.4.0
+  json_serializable: ^6.9.0
+  freezed: ^3.2.5
+
+flutter_gen:
+  output: lib/gen/
+  integrations:
+    flutter_svg: true
+    image: true
+    rive: true
+    lottie: true
+  colors:
+    inputs:
+      - assets/colors/colors.xml
+
+flutter:
+    uses-material-design: true
+    assets:
+      - assets/images/
+      - assets/images/2x/
+      - assets/images/3x/
+      - assets/icons/
+      - assets/colors/
+      - .env
+

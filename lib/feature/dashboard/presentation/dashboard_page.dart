@@ -1,0 +1,44 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_controller.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/widget/navigation_bar.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_page.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_page.dart';
+
+import '../../../core/common_widget/navigation_bar/custom_app_bar.dart';
+import '../../category/presentation/category_page.dart';
+
+class DashboardPage extends GetView<DashboardController> {
+  const DashboardPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      const  HomePage(),
+      const CategoryPage(),
+       Container(),
+      const ProductPage(),
+       Container(),
+    ];
+
+    return Scaffold(
+      backgroundColor: Colors.black, // Nền đen sâu cho hợp bộ giao diện
+
+
+      body: Stack(
+        children: [
+          Obx(() =>
+              IndexedStack(
+                index: controller.currentTabIndex.value,
+                children: _pages,
+              )),
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: CustomFloatingNavBar(),
+          ),
+        ],
+      ),
+    );
+  }
+}
