@@ -55,9 +55,9 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   String _pageTitle(ProductPageMode mode) {
-    if (mode == ProductPageMode.create) return 'Them san pham';
-    if (mode == ProductPageMode.edit) return 'Sua san pham';
-    return 'Chi tiet san pham';
+    if (mode == ProductPageMode.create) return 'add_new_product'.tr;
+    if (mode == ProductPageMode.edit) return 'edit_product'.tr;
+    return 'product_details'.tr;
   }
 
   Widget _buildFormBody({
@@ -108,7 +108,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
             ),
             const SizedBox(height: 8),
             Text(
-              isReadOnly ? 'Anh san pham' : 'Them anh',
+              isReadOnly ? 'product_image'.tr : 'add_image'.tr,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -125,8 +125,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.nameController,
       enable: isReadOnly,
-      hint: 'Nhap ten san pham',
-      title: 'Ten san pham',
+      hint: 'enter_product_name'.tr,
+      title: 'product_name'.tr,
       errorText: controller.hasSubmitted.value
           ? controller.nameError.value
           : null,
@@ -140,7 +140,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Danh muc san pham',
+          'product_category'.tr,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -167,8 +167,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.skuController,
       enable: isReadOnly,
-      hint: 'VD: SP-001',
-      title: 'SKU/Ma SP',
+      hint: 'sku_example'.tr,
+      title: 'sku_code'.tr,
       errorText: controller.hasSubmitted.value
           ? controller.skuError.value
           : null,
@@ -180,8 +180,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.priceController,
       enable: isReadOnly,
-      hint: 'Gia tien',
-      title: 'Gia ban',
+      hint: 'price_hint'.tr,
+      title: 'selling_price'.tr,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       errorText: controller.hasSubmitted.value
           ? controller.priceError.value
@@ -194,8 +194,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.stockController,
       enable: isReadOnly,
-      hint: 'VD: 100',
-      title: 'So luong',
+      hint: 'stock_example'.tr,
+      title: 'quantity'.tr,
       keyboardType: TextInputType.number,
       errorText: controller.hasSubmitted.value
           ? controller.stockError.value
@@ -208,8 +208,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.descController,
       enable: isReadOnly,
-      hint: 'Mo ta san pham',
-      title: 'Mo ta',
+      hint: 'product_description_hint'.tr,
+      title: 'description'.tr,
       maxLine: 5,
       onChanged: (String value) => controller.onFormChanged(),
     );
@@ -228,7 +228,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         ),
         onPressed: () => controller.saveProduct(),
         child: Text(
-          mode == ProductPageMode.create ? 'Tao san pham moi' : 'Luu thay doi',
+          mode == ProductPageMode.create ? 'create_new_product'.tr : 'save_changes'.tr,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -256,7 +256,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         dropdownColor: theme.colorScheme.surface,
         icon: Icon(Icons.arrow_drop_down, color: theme.colorScheme.primary),
         hint: Text(
-          'Chon danh muc',
+          'select_category'.tr,
           style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 14),
         ),
         style: TextStyle(

@@ -55,9 +55,9 @@ class HomePage extends GetView<HomeController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Tong quan kho', style: context.textTheme.titleLarge),
+        Text('warehouse_overview'.tr, style: context.textTheme.titleLarge),
         Text(
-          'Cap nhat luc: 08:30 AM, 24/10/2023',
+          'updated_at'.tr,
           style: context.textTheme.bodyMedium,
         ),
       ],
@@ -102,7 +102,7 @@ class HomePage extends GetView<HomeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('Loi tat nhanh',context),
+            _buildSectionTitle('quick_actions'.tr, context),
             const SizedBox(height: 16),
             _buildFastFeatureActions(context),
           ],
@@ -135,7 +135,7 @@ class HomePage extends GetView<HomeController> {
       filledColor: ColorName.orange,
       borderColor: ColorName.orange,
       icon: Assets.icons.whiteAdd.svg(),
-      title: 'Them san pham',
+      title: 'add_product'.tr,
       textColor: Colors.white,
       onTap: () {
         Get.toNamed(Routes.productsInfo);
@@ -148,7 +148,7 @@ class HomePage extends GetView<HomeController> {
       filledColor: context.theme.colorScheme.secondary.withValues(alpha: 0.2),
       borderColor: context.theme.colorScheme.surface.withValues(alpha: 0.2),
       icon: Assets.icons.whiteFolder.svg(),
-      title: 'Them danh muc',
+      title: 'add_category'.tr,
       textColor: Colors.white,
       onTap: fastAddCategoryMethod,
     );
@@ -158,7 +158,7 @@ class HomePage extends GetView<HomeController> {
     final categoryController = Get.find<CategoryController>();
     Get.showCustomDialog(
       content: _buildFastAddCategoryContent(categoryController),
-      title: 'Them danh muc',
+      title: 'add_category'.tr,
       footer: _buildFastAddCategoryFooter(categoryController),
     );
   }
@@ -169,7 +169,7 @@ class HomePage extends GetView<HomeController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Ten danh muc',
+          'category_name'.tr,
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
@@ -202,7 +202,7 @@ class HomePage extends GetView<HomeController> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Text(
-          'Luu',
+          'save'.tr,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
@@ -219,15 +219,23 @@ class HomePage extends GetView<HomeController> {
     bool hasGrow = false,
     required BuildContext context,
   }) {
+    final isDark = context.theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-        color: context.theme.colorScheme.surface.withValues(alpha: 0.4),
-        border: Border.all(
-          color: context.theme.colorScheme.secondary.withValues(alpha: 0.4),
-          width: 2,
-        ),
+        color: isDark
+            ? const Color(0xFF1E1E1E)
+            : const Color(0xFFFAFCFD), // gần như trắng, chỉ hơi hơi xám cyan
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.3)
+                : const Color(0xFFB0C4D8).withValues(alpha: 0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,7 +311,7 @@ class HomePage extends GetView<HomeController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Tong san pham', style: context.textTheme.titleSmall),
+        Text('total_products'.tr, style: context.textTheme.titleSmall),
         const SizedBox(height: 2),
         Text('1200', style: context.textTheme.headlineSmall),
       ],

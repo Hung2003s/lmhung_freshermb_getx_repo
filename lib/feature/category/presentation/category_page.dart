@@ -20,7 +20,7 @@ class CategoryPage extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     return BaseView(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      buildAppBar: ProfileAppBar(greetingText: 'Quan ly', username: 'Danh muc'),
+      buildAppBar: ProfileAppBar(greetingText: 'manage'.tr, username: 'category'.tr),
       buildBody: Stack(
         children: [_buildCategoryContent(), _buildFloatingAddButton()],
       ),
@@ -50,7 +50,7 @@ class CategoryPage extends GetView<CategoryController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(child: CustomSearchField(hintText: 'Tim kiem danh muc')),
+        Expanded(child: CustomSearchField(hintText: 'search_category'.tr)),
       ],
     );
   }
@@ -80,7 +80,7 @@ class CategoryPage extends GetView<CategoryController> {
       iconColor: ColorName.orange.withValues(alpha: 0.2),
       category: item,
       numberCount: 20,
-      categoryStatus: 'tang truong',
+      categoryStatus: 'growing'.tr,
       onEdit: () => editAction(item),
       onDelete: () => deleteAction(item),
     );
@@ -100,7 +100,7 @@ class CategoryPage extends GetView<CategoryController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Ban co chac chan muon xoa danh muc nay?',
+          'delete_category_confirm'.tr,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -115,10 +115,10 @@ class CategoryPage extends GetView<CategoryController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        _buildDialogButton(title: 'Huy', onTap: () => Get.back()),
+        _buildDialogButton(title: 'cancel'.tr, onTap: () => Get.back()),
         const SizedBox(width: 12),
         _buildDialogButton(
-          title: 'Xac nhan',
+          title: 'confirm'.tr,
           onTap: () {
             Get.back();
             controller.deleteCategory(item.id);
@@ -134,9 +134,9 @@ class CategoryPage extends GetView<CategoryController> {
         controller: controller.updateController,
         onChanged: (value) => controller.updateCategoryText.value = value,
       ),
-      title: 'Cap nhat danh muc',
+      title: 'update_category'.tr,
       footer: _buildDialogButton(
-        title: 'Luu',
+        title: 'save'.tr,
         verticalPadding: 4,
         onTap: () {
           Get.back();
@@ -171,9 +171,9 @@ class CategoryPage extends GetView<CategoryController> {
         controller: controller.addController,
         onChanged: (value) => controller.addCategoryText.value = value,
       ),
-      title: 'Them danh muc',
+      title: 'add_category'.tr,
       footer: _buildDialogButton(
-        title: 'Luu',
+        title: 'save'.tr,
         verticalPadding: 4,
         onTap: () {
           Get.back();
@@ -192,7 +192,7 @@ class CategoryPage extends GetView<CategoryController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Ten danh muc',
+          'category_name'.tr,
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,

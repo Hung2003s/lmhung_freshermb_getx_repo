@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
@@ -48,7 +49,7 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    "Xoá",
+                    "delete".tr,
                     style: TextStyle(
                       color: theme.colorScheme.error,
                       fontSize: 16,
@@ -102,7 +103,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Mã SP: SP-IP15-256',
+                      '${"sku_code".tr}: SP-IP15-256',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -115,12 +116,12 @@ class ProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         statusCard(
-                          title: "Còn hàng",
+                          title: "in_stock".tr,
                           color: ColorName.greenLight,
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          '${productEntity.stock} sản phẩm',
+                          'products_count'.trParams({'s': productEntity.stock.toString()}),
                           style: TextStyle(
                             color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
@@ -159,8 +160,8 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
-        child: Text(
-          'Còn hàng',
+          child: Text(
+            'in_stock'.tr,
           style: TextStyle(
             color: color,
             fontSize: 12,

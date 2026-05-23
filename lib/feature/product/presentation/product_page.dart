@@ -56,7 +56,7 @@ class ProductPage extends GetView<ProductController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'San pham',
+          'products'.tr,
           style: TextStyle(
             color: theme.colorScheme.onSurface,
             fontSize: 32,
@@ -128,7 +128,7 @@ class ProductPage extends GetView<ProductController> {
       icon: Assets.icons.whiteFolder.svg(width: 16),
       iconColor: ColorName.blueLight,
       productEntity: item,
-      categoryStatus: 'Còn hàng',
+      categoryStatus: 'in_stock'.tr,
       onTap: () => controller.navigateToInfo(item),
       onDelete: () => deleteProductAction(item),
     );
@@ -148,7 +148,7 @@ class ProductPage extends GetView<ProductController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Ban co chac chan muon xoa san pham nay?',
+          'delete_product_confirm'.tr,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
@@ -163,10 +163,10 @@ class ProductPage extends GetView<ProductController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        _buildDialogButton(title: 'Huy', onTap: () => Get.back()),
+        _buildDialogButton(title: 'cancel'.tr, onTap: () => Get.back()),
         const SizedBox(width: 12),
         _buildDialogButton(
-          title: 'Xac nhan',
+          title: 'confirm'.tr,
           onTap: () {
             Get.back();
             controller.deleteProduct(item.id);
@@ -227,7 +227,7 @@ class ProductPage extends GetView<ProductController> {
                   )
                 ),
                 child: PopupMenuButton<SortOption>(
-                  tooltip: 'Sắp xếp & Lọc',
+                  tooltip: 'sort_filter'.tr,
                   color: theme.colorScheme.surface,
                   onSelected: (SortOption result) {
                     controller.currentSort.value = result;
@@ -341,7 +341,7 @@ class ProductPage extends GetView<ProductController> {
       children: [
         Obx(
           () => Text(
-            'Hien thi ${controller.listProduct.length} san pham',
+            'showing_products'.trParams({'s': controller.listProduct.length.toString()}),
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -354,7 +354,7 @@ class ProductPage extends GetView<ProductController> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Text(
-              'Moi nhat',
+              'newest'.tr,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -372,13 +372,13 @@ class ProductPage extends GetView<ProductController> {
   String _selectedCategoryTitle(CategoryController categoryController) {
     final selectedIndex = controller.currentFilterIndex.value;
     if (selectedIndex == 0) {
-      return 'Tat ca danh muc';
+      return 'all_categories'.tr;
     }
 
     final categoryIndex = selectedIndex - 1;
     if (categoryIndex < 0 ||
         categoryIndex >= categoryController.listCategory.length) {
-      return 'Tat ca danh muc';
+      return 'all_categories'.tr;
     }
 
     return categoryController.listCategory[categoryIndex].name;
@@ -432,7 +432,7 @@ class ProductPage extends GetView<ProductController> {
         children: [
           Expanded(
             child: Text(
-              'Chon danh muc',
+              'select_category'.tr,
               style: TextStyle(
                 color: theme.colorScheme.onSurface,
                 fontSize: 18,
@@ -466,7 +466,7 @@ class ProductPage extends GetView<ProductController> {
           itemBuilder: (context, index) {
             if (index == 0) {
               return _categoryBottomSheetItem(
-                title: 'Tat ca',
+                title: 'all'.tr,
                 isSelected: controller.currentFilterIndex.value == 0,
                 onTap: () => _selectAllCategories(),
               );
