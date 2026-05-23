@@ -18,8 +18,9 @@ class ProductPage extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BaseView(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
       buildBody: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         child: RefreshIndicator(
@@ -50,13 +51,14 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildTitleRow() {
+    final theme = Theme.of(Get.context!);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'San pham',
           style: TextStyle(
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
             fontSize: 32,
             fontWeight: FontWeight.w500,
           ),
@@ -108,11 +110,12 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildEmptyState() {
+    final theme = Theme.of(Get.context!);
     return Center(
       child: Text(
         controller.errorMessage.value,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: theme.colorScheme.onSurface,
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),
@@ -140,7 +143,8 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildDeleteDialogContent() {
-    return const Column(
+    final theme = Theme.of(Get.context!);
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -148,7 +152,7 @@ class ProductPage extends GetView<ProductController> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ],
@@ -176,24 +180,25 @@ class ProductPage extends GetView<ProductController> {
     required String title,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(Get.context!);
     return SelectedWidget(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.2),
+          color: theme.colorScheme.primary.withValues(alpha: 0.2),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.4),
+            color: theme.colorScheme.primary.withValues(alpha: 0.4),
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ),
@@ -201,6 +206,7 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildCategoryFilter() {
+    final theme = Theme.of(Get.context!);
     final categoryController = Get.find<CategoryController>();
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -217,12 +223,12 @@ class ProductPage extends GetView<ProductController> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
                   )
                 ),
                 child: PopupMenuButton<SortOption>(
                   tooltip: 'Sắp xếp & Lọc',
-                  color: Colors.black,
+                  color: theme.colorScheme.surface,
                   onSelected: (SortOption result) {
                     controller.currentSort.value = result;
                     controller.sortProduct(result);
@@ -232,35 +238,34 @@ class ProductPage extends GetView<ProductController> {
                     return PopupMenuItem<SortOption>(
                       value: option,
                       child: Text(option.title, style: TextStyle(
-                        color: isSelected ? ColorName.orange : Colors.white,
+                        color: isSelected ? ColorName.orange : theme.colorScheme.onSurface,
                         fontSize: 16,
                         fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                      ),), // Tự động lấy string từ hàm get title của bạn
+                      ),),
                     );
                   }).toList(),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.transparent, // Hoặc Colors.grey.shade800 nếu dùng Dark Mode như ảnh
-                      border: Border.all(color: Colors.grey), // Viền nút
-                      borderRadius: BorderRadius.circular(8), // Bo góc giống ảnh của bạn
+                      color: Colors.transparent,
+                      border: Border.all(color: theme.colorScheme.onSurface.withValues(alpha: 0.3)),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min, // Để Row tự co lại vừa với nội dung
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.sort, size: 20, color: Colors.white,), // Icon bộ lọc
+                        Icon(Icons.sort, size: 20, color: theme.colorScheme.onSurface),
                         const SizedBox(width: 8),
-                        // HIỂN THỊ TITLE CỦA ENUM ĐANG CHỌN TẠI ĐÂY
                         Text(
                           controller.currentSort.value.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white
+                            color: theme.colorScheme.onSurface
                           ),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.keyboard_arrow_down, size: 20), // Icon mũi tên chỉ xuống
+                        Icon(Icons.keyboard_arrow_down, size: 20, color: theme.colorScheme.onSurface),
                       ],
                     ),
                   ),
@@ -296,13 +301,14 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildCategoryPickerContent(CategoryController categoryController) {
+    final theme = Theme.of(Get.context!);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.2),
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
           width: 1.5,
         ),
         borderRadius: BorderRadius.circular(12),
@@ -314,21 +320,22 @@ class ProductPage extends GetView<ProductController> {
               _selectedCategoryTitle(categoryController),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: theme.colorScheme.onSurface,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white),
+          Icon(Icons.keyboard_arrow_down_rounded, color: theme.colorScheme.onSurface),
         ],
       ),
     );
   }
 
   Widget _buildListMetaRow() {
+    final theme = Theme.of(Get.context!);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -338,11 +345,11 @@ class ProductPage extends GetView<ProductController> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: Colors.white.withValues(alpha: 0.4),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
             ),
           ),
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -351,11 +358,11 @@ class ProductPage extends GetView<ProductController> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Colors.white,
+                color: theme.colorScheme.onSurface,
               ),
             ),
-            SizedBox(width: 4),
-            Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white),
+            const SizedBox(width: 4),
+            Icon(Icons.keyboard_arrow_down_rounded, color: theme.colorScheme.onSurface),
           ],
         ),
       ],
@@ -378,12 +385,13 @@ class ProductPage extends GetView<ProductController> {
   }
 
   void _showCategoryBottomSheet(CategoryController categoryController) {
+    final theme = Theme.of(Get.context!);
     Get.bottomSheet(
       Container(
         constraints: BoxConstraints(maxHeight: Get.height * 0.65),
-        decoration: const BoxDecoration(
-          color: Color(0xFF1E1E1E),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: SafeArea(
           top: false,
@@ -392,7 +400,7 @@ class ProductPage extends GetView<ProductController> {
             children: [
               _buildBottomSheetHandle(),
               _buildBottomSheetHeader(),
-              Divider(height: 1, color: Colors.white.withValues(alpha: 0.12)),
+              Divider(height: 1, color: theme.colorScheme.onSurface.withValues(alpha: 0.12)),
               _buildCategoryBottomSheetList(categoryController),
             ],
           ),
@@ -404,27 +412,29 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildBottomSheetHandle() {
+    final theme = Theme.of(Get.context!);
     return Container(
       width: 40,
       height: 4,
       margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.25),
+        color: theme.colorScheme.onSurface.withValues(alpha: 0.25),
         borderRadius: BorderRadius.circular(2),
       ),
     );
   }
 
   Widget _buildBottomSheetHeader() {
+    final theme = Theme.of(Get.context!);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Text(
               'Chon danh muc',
               style: TextStyle(
-                color: Colors.white,
+                color: theme.colorScheme.onSurface,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
@@ -432,7 +442,7 @@ class ProductPage extends GetView<ProductController> {
           ),
           IconButton(
             onPressed: () => Get.back(),
-            icon: const Icon(Icons.close_rounded, color: Colors.white),
+            icon: Icon(Icons.close_rounded, color: theme.colorScheme.onSurface),
           ),
         ],
       ),
@@ -440,6 +450,7 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildCategoryBottomSheetList(CategoryController categoryController) {
+    final theme = Theme.of(Get.context!);
     return Flexible(
       child: Obx(
         () => ListView.separated(
@@ -450,7 +461,7 @@ class ProductPage extends GetView<ProductController> {
             height: 1,
             indent: 16,
             endIndent: 16,
-            color: Colors.white.withValues(alpha: 0.08),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
           ),
           itemBuilder: (context, index) {
             if (index == 0) {
@@ -490,6 +501,7 @@ class ProductPage extends GetView<ProductController> {
     required bool isSelected,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(Get.context!);
     return SelectedWidget(
       onTap: onTap,
       child: Padding(
@@ -502,7 +514,7 @@ class ProductPage extends GetView<ProductController> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: isSelected ? ColorName.orange : Colors.white,
+                  color: isSelected ? ColorName.orange : theme.colorScheme.onSurface,
                   fontSize: 16,
                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 ),

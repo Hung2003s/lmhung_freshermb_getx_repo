@@ -7,7 +7,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? greetingText;
   final VoidCallback? onNotificationPressed;
   final bool hasNotification;
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   const ProfileAppBar({
     super.key,
@@ -15,7 +15,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.greetingText,
     this.onNotificationPressed,
     this.hasNotification = true,
-    this.backgroundColor = const Color(0xFF111417),
+    this.backgroundColor,
   });
 
   String _getGreeting() {
@@ -28,8 +28,10 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bgColor = backgroundColor ?? theme.scaffoldBackgroundColor;
     return AppBar(
-      backgroundColor: ColorName.orange.withValues(alpha: 0.3),
+      backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.3),
       elevation: 0,
       automaticallyImplyLeading: false,
       title: Row(
@@ -38,19 +40,19 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: ColorName.orange,
+              color: theme.colorScheme.primary,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: ColorName.orange.withOpacity(0.3),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
                   blurRadius: 10,
                   spreadRadius: 1,
                 )
               ],
             ),
-            child: const Icon(
+            child: Icon(
               Icons.person_rounded,
-              color: Colors.white,
+              color: theme.colorScheme.onPrimary,
               size: 24,
             ),
           ),
@@ -63,7 +65,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   _getGreeting(),
                   style: TextStyle(
-                    color: context.theme.colorScheme.secondary,
+                    color: theme.colorScheme.onSurface,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
@@ -72,7 +74,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   username,
                   style: TextStyle(
-                    color: context.theme.colorScheme.secondary,
+                    color: theme.colorScheme.onSurface,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -92,16 +94,16 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color:  context.theme.colorScheme.secondary,
+                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.05),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
                       width: 1,
                     ),
                   ),
                   child: Icon(
                     Icons.notifications_none_rounded,
-                    color: context.theme.colorScheme.surface,
+                    color: theme.colorScheme.primary,
                     size: 22,
                   ),
                 ),
@@ -113,10 +115,10 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                       width: 11,
                       height: 11,
                       decoration: BoxDecoration(
-                        color: ColorName.orange,
+                        color: ColorName.error,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: const Color(0xFF111417),
+                          color: bgColor,
                           width: 1.5,
                         ),
                       ),

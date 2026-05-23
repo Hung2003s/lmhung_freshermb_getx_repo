@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
@@ -30,6 +28,7 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Slidable(
       key: ValueKey(category.id),
       endActionPane: ActionPane(
@@ -48,17 +47,17 @@ class CategoryCard extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
                     border: BoxBorder.all(
                       width: 2,
-                      color: Colors.white.withValues(alpha: 0.4),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.4),
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     "Sửa",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.colorScheme.primary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -80,17 +79,17 @@ class CategoryCard extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: theme.colorScheme.error.withValues(alpha: 0.2),
                     border: BoxBorder.all(
                       width: 2,
-                      color: Colors.white.withValues(alpha: 0.4),
+                      color: theme.colorScheme.error.withValues(alpha: 0.4),
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     "Xoá",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.colorScheme.error,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -106,9 +105,9 @@ class CategoryCard extends StatelessWidget {
         padding: const EdgeInsetsGeometry.all(16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white.withValues(alpha: 0.2),
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.4),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
             width: 2,
           ),
         ),
@@ -134,7 +133,7 @@ class CategoryCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.white,
+                      color: theme.colorScheme.onSurface,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -144,7 +143,7 @@ class CategoryCard extends StatelessWidget {
                       Text(
                         '$numberCount sản phẩm',
                         style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.6),
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                         ),
                       ),
                       Row(

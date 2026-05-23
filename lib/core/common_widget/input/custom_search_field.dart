@@ -25,36 +25,39 @@ class CustomSearchField extends StatelessWidget {
           child: TextField(
             controller: controller,
             onChanged: onChanged,
-            style: const TextStyle(color: Colors.white, fontSize: 15),
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15),
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(
-                color: Colors.grey[600], // Màu chữ gợi ý xám tối trùng ảnh mẫu
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),
               // Kính lúp tìm kiếm ở đầu
               prefixIcon: Icon(
                 Icons.search_rounded,
-                color: Colors.grey[600],
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 22,
               ),
               filled: true,
-              fillColor: const Color(0xFF14171A),
-              // Nền xám đen thô
+              fillColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.1),
+              // Nền theo theme
               contentPadding: const EdgeInsets.symmetric(vertical: 14),
               // Trạng thái viền bình thường
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16), // Bo góc 16 mềm mại
-                borderSide: const BorderSide(
-                  color: Color(0xFF24292E), // Viền siêu mờ
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
               // Trạng thái viền khi nhấn chọn gõ chữ
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Colors.grey, width: 1),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.5,
+                ),
               ),
             ),
           ),
@@ -71,14 +74,17 @@ class CustomSearchField extends StatelessWidget {
               height: 50,
               // Chiều cao 50 khớp hoàn toàn với độ dày của TextField trên
               decoration: BoxDecoration(
-                color: const Color(0xFF14171A), // Cùng màu nền với thanh Search
+                color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFF24292E), width: 1),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                  width: 1,
+                ),
               ),
               child: Icon(
                 Icons.swap_vert_rounded,
                 // Icon mũi tên lên xuống đảo chiều giống ảnh
-                color: Colors.grey[400],
+                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 24,
               ),
             ),

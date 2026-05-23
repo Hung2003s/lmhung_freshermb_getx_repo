@@ -12,13 +12,14 @@ class ProductInfoPage extends GetView<ProductInfoController> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Obx(() {
       final mode = controller.pageMode.value;
       final isReadOnly = mode == ProductPageMode.view;
 
       return BaseView(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.black,
+        backgroundColor: theme.scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
         buildAppBar: _buildAppBar(mode),
         buildBody: _buildFormBody(mode: mode, isReadOnly: isReadOnly),
@@ -27,14 +28,15 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   AppBar _buildAppBar(ProductPageMode mode) {
+    final theme = Theme.of(Get.context!);
     return AppBar(
-      backgroundColor: Colors.black,
+      backgroundColor: theme.scaffoldBackgroundColor,
       title: Text(
         _pageTitle(mode),
-        style: const TextStyle(color: Colors.white),
+        style: TextStyle(color: theme.colorScheme.onSurface),
       ),
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        icon: Icon(Icons.arrow_back, color: theme.colorScheme.onSurface),
         onPressed: () => Get.back(),
       ),
       actions: [
@@ -45,7 +47,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           ),
         if (mode == ProductPageMode.edit)
           IconButton(
-            icon: const Icon(Icons.close_rounded, color: Colors.red),
+            icon: const Icon(Icons.close_rounded, color: ColorName.error),
             onPressed: () => controller.cancelEdit(),
           ),
       ],
@@ -85,15 +87,16 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   Widget _buildImagePicker(bool isReadOnly) {
+    final theme = Theme.of(Get.context!);
     return GestureDetector(
       onTap: isReadOnly ? null : () {},
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white.withValues(alpha: 0.1),
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
             width: 2,
           ),
         ),
@@ -101,7 +104,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           children: [
             Icon(
               Icons.camera_alt,
-              color: isReadOnly ? Colors.grey : ColorName.orange,
+              color: isReadOnly ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : ColorName.orange,
             ),
             const SizedBox(height: 8),
             Text(
@@ -109,7 +112,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isReadOnly ? Colors.grey : Colors.orange,
+                color: isReadOnly ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : ColorName.orange,
               ),
             ),
           ],
@@ -132,15 +135,16 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   Widget _buildCategoryField() {
+    final theme = Theme.of(Get.context!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Danh muc san pham',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -236,6 +240,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   Widget _buildCategorySelectMenu() {
+    final theme = Theme.of(Get.context!);
     final categoryController = Get.find<CategoryController>();
     return Obx(() {
       final currentId = controller.selectedCategoryId.value;
@@ -248,32 +253,35 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         onChanged: controller.pageMode.value == ProductPageMode.view
             ? null
             : (int? newValue) => controller.onCategoryChanged(newValue),
-        dropdownColor: const Color(0xFF1E1E1E),
-        icon: const Icon(Icons.arrow_drop_down, color: Colors.orange),
-        hint: const Text(
+        dropdownColor: theme.colorScheme.surface,
+        icon: Icon(Icons.arrow_drop_down, color: theme.colorScheme.primary),
+        hint: Text(
           'Chon danh muc',
-          style: TextStyle(color: Colors.white, fontSize: 14),
+          style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 14),
         ),
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: theme.colorScheme.onSurface,
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
-          labelStyle: const TextStyle(color: Colors.white),
+          labelStyle: TextStyle(color: theme.colorScheme.onSurface),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 14,
           ),
           filled: true,
-          fillColor: Colors.black,
+          fillColor: theme.colorScheme.surface,
           errorText: controller.hasSubmitted.value
               ? controller.categoryError.value
               : null,
           errorStyle: const TextStyle(color: ColorName.error),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.grey, width: 1.5),
+            borderSide: BorderSide(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+              width: 1.5,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -282,7 +290,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: Colors.white.withValues(alpha: 0.2),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
               width: 1.5,
             ),
           ),
@@ -291,8 +299,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           return categoryController.listCategory.map((category) {
             return Text(
               category.name,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: theme.colorScheme.onSurface,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),

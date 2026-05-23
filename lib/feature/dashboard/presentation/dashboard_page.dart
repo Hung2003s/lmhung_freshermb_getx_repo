@@ -23,8 +23,7 @@ class DashboardPage extends GetView<DashboardController> {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.black, // Nền đen sâu cho hợp bộ giao diện
-
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       body: Stack(
         children: [

@@ -164,25 +164,25 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildFastAddCategoryContent(CategoryController categoryController) {
+    final theme = Theme.of(Get.context!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Ten danh muc',
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
         TextInputFields(
-          textStyle: const TextStyle(
-            color: Colors.white,
+          textStyle: TextStyle(
+            color: theme.colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
-          filledColor: Colors.white,
           onChanged: (value) {
             categoryController.addCategoryText.value = value;
           },
@@ -193,19 +193,20 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildFastAddCategoryFooter(CategoryController categoryController) {
+    final theme = Theme.of(Get.context!);
     return SelectedWidget(
       onTap: () {
         Get.back();
         categoryController.addCategory();
       },
-      child: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Text(
           'Luu',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ),

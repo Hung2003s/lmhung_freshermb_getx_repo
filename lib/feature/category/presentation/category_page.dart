@@ -19,7 +19,7 @@ class CategoryPage extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return BaseView(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       buildAppBar: ProfileAppBar(greetingText: 'Quan ly', username: 'Danh muc'),
       buildBody: Stack(
         children: [_buildCategoryContent(), _buildFloatingAddButton()],
@@ -30,7 +30,7 @@ class CategoryPage extends GetView<CategoryController> {
   Widget _buildCategoryContent() {
     return RefreshIndicator(
       color: ColorName.orange,
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(Get.context!).colorScheme.surface,
       onRefresh: () => controller.getListCategory(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -95,7 +95,8 @@ class CategoryPage extends GetView<CategoryController> {
   }
 
   Widget _buildDeleteDialogContent() {
-    return const Column(
+    final theme = Theme.of(Get.context!);
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -103,7 +104,7 @@ class CategoryPage extends GetView<CategoryController> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ],
@@ -186,26 +187,26 @@ class CategoryPage extends GetView<CategoryController> {
     required TextEditingController controller,
     required ValueChanged<String> onChanged,
   }) {
+    final theme = Theme.of(Get.context!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Ten danh muc',
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
         TextInputFields(
           isShowClearButton: true,
-          textStyle: const TextStyle(
-            color: Colors.white,
+          textStyle: TextStyle(
+            color: theme.colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
-          filledColor: Colors.white,
           onChanged: onChanged,
           controller: controller,
         ),
@@ -218,6 +219,7 @@ class CategoryPage extends GetView<CategoryController> {
     required VoidCallback onTap,
     double verticalPadding = 8,
   }) {
+    final theme = Theme.of(Get.context!);
     return SelectedWidget(
       onTap: onTap,
       child: Container(
@@ -226,19 +228,19 @@ class CategoryPage extends GetView<CategoryController> {
           vertical: verticalPadding,
         ),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.2),
+          color: theme.colorScheme.primary.withValues(alpha: 0.2),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.4),
+            color: theme.colorScheme.primary.withValues(alpha: 0.4),
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ),

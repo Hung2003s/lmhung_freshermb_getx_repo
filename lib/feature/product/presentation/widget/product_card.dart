@@ -4,8 +4,6 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_wi
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
-import '../../../../gen/assets.gen.dart';
-
 class ProductCard extends StatelessWidget {
   final Widget icon;
   final Color iconColor;
@@ -26,6 +24,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Slidable(
       key: ValueKey(productEntity.id),
       endActionPane: ActionPane(
@@ -41,17 +40,17 @@ class ProductCard extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: theme.colorScheme.error.withValues(alpha: 0.2),
                     border: BoxBorder.all(
                       width: 2,
-                      color: Colors.white.withValues(alpha: 0.4),
+                      color: theme.colorScheme.error.withValues(alpha: 0.4),
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     "Xoá",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.colorScheme.error,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
@@ -69,9 +68,9 @@ class ProductCard extends StatelessWidget {
           padding: const EdgeInsetsGeometry.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.white.withValues(alpha: 0.2),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.4),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
               width: 2,
             ),
           ),
@@ -97,7 +96,7 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: theme.colorScheme.onSurface,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -107,7 +106,7 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white.withValues(alpha: 0.4),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -123,7 +122,7 @@ class ProductCard extends StatelessWidget {
                         Text(
                           '${productEntity.stock} sản phẩm',
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           ),
                         ),
                       ],
@@ -136,13 +135,13 @@ class ProductCard extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.4),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
-                child: Icon(Icons.keyboard_arrow_right_outlined, color: Colors.white),
+                child: Icon(Icons.keyboard_arrow_right_outlined, color: theme.colorScheme.onSurface),
               ),
             ],
           ),

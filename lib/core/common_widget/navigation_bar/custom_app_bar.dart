@@ -22,19 +22,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.leading,
     this.showBackButton = true,       // Mặc định luôn hiện nút Back nếu có thể quay lại
-    this.backgroundColor = Colors.black, // Bạn có thể đổi màu mặc định dự án ở đây
-    this.iconColor = Colors.white,
+    this.backgroundColor, // Mặc định sẽ dùng theme color scheme
+    this.iconColor, // Mặc định sẽ dùng theme color scheme
     this.elevation = 0,
     this.bottom,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final effectiveBgColor = backgroundColor ?? theme.colorScheme.primary;
+    final effectiveIconColor = iconColor ?? theme.colorScheme.onPrimary;
+    final effectiveTitleColor = theme.colorScheme.onPrimary;
+
     return AppBar(
-      backgroundColor: backgroundColor,
+      backgroundColor: effectiveBgColor,
       elevation: elevation,
       centerTitle: centerTitle,
-      iconTheme: IconThemeData(color: iconColor),
+      iconTheme: IconThemeData(color: effectiveIconColor),
 
       // 1. Xử lý nút Leading (Bên trái)
       leading: leading ?? (showBackButton && Navigator.canPop(context)
@@ -43,13 +48,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: EdgeInsetsGeometry.all(8),
           margin: EdgeInsets.only(left: 16),
             decoration: BoxDecoration(
-              color: context.theme.colorScheme.secondary.withValues(alpha: 0.1),
+              color: effectiveIconColor.withValues(alpha: 0.1),
               border: Border.all(
-                color: context.theme.colorScheme.secondary.withValues(alpha: 0.2),
+                color: effectiveIconColor.withValues(alpha: 0.2),
               ),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.arrow_back_ios_new, size: 20, color: context.theme.colorScheme.secondary,)), // Icon back đẹp hơn mặc định
+            child: Icon(Icons.arrow_back_ios_new, size: 20, color: effectiveIconColor,)), // Icon back đẹp hơn mặc định
         onTap: () => Get.back(), // Dùng Get.back() đồng bộ với hệ thống GetX của bạn
       )
           : null),
@@ -58,8 +63,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: titleWidget ?? (title != null
           ? Text(
         title!,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: effectiveTitleColor,
           fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
