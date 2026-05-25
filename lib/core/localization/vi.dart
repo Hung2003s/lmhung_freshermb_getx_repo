@@ -33,14 +33,14 @@ class Vi extends Translations {
           'update_category': 'Cập nhật danh mục',
           'edit': 'Sửa',
           'delete': 'Xoá',
-          'products_count': '%s sản phẩm',
+          'products_count': '@s sản phẩm',
 
           // Product Page
           'products': 'Sản phẩm',
           'in_stock': 'Còn hàng',
           'delete_product_confirm': 'Bạn có chắc chắn muốn xóa sản phẩm này?',
           'sort_filter': 'Sắp xếp & Lọc',
-          'showing_products': 'Hiển thị %s sản phẩm',
+          'showing_products': 'Hiển thị @s sản phẩm',
           'newest': 'Mới nhất',
           'all_categories': 'Tất cả danh mục',
           'select_category': 'Chọn danh mục',
@@ -83,6 +83,19 @@ class Vi extends Translations {
           'add_failed': 'Thêm thất bại',
           'update_success': 'Cập nhật thành công',
           'update_failed': 'Cập nhật thất bại',
+          'delete_success': 'Xoá thành công',
+          'delete_failed': 'Xoá thất bại',
+          'login_success': 'Đăng nhập thành công',
+          'login_failed': 'Đăng nhập thất bại',
+          'register_success': 'Đăng ký thành công',
+          'register_failed': 'Đăng ký thất bại',
+          'invalid_credentials': 'Vui lòng nhập thông tin đăng nhập.',
+          'login_locked': 'Tài khoản đã bị khóa tạm thời. Vui lòng thử lại sau @s phút.',
+          'login_attempts_left': 'Còn @s lần đăng nhập trước khi bị khóa.',
+          'login_locked_button': 'Đã khóa',
+          'no_products_in_category': 'Không tìm thấy sản phẩm nào của danh mục này',
+          'error_title': 'Lỗi',
+          'logout_failed': 'Đăng xuất thất bại',
 
           // Sort Options
           'sort_name_asc': 'Tên: A -> Z',
@@ -102,9 +115,28 @@ class Vi extends Translations {
           'light_mode_desc': 'Luôn sử dụng giao diện sáng',
           'dark_mode': 'Tối',
           'dark_mode_desc': 'Luôn sử dụng giao diện tối',
-
+          'logout': 'Đăng xuất',
+          'logout_confirm': 'Bạn có chắc chắn muốn đăng xuất?',
           // Search
           'search_hint': 'Tìm kiếm...',
+
+          // Auth - Login
+          'welcome_back': 'Chào mừng trở lại',
+          'login_description': 'Đăng nhập để quản lý kho của bạn',
+          'username': 'Tài khoản',
+          'password': 'Mật khẩu',
+          'forgot_password': 'Quên mật khẩu?',
+          'login': 'Đăng nhập',
+          'no_account': 'Chưa có tài khoản?',
+          'register': 'Đăng ký',
+          'or_login_with': 'Hoặc đăng nhập với',
+          'help': 'Trợ giúp',
+          'need_help': 'Cần trợ giúp?',
+          'contact_support': 'Liên hệ hỗ trợ',
+
+          // Auth - Register
+          'register_title': 'Đăng ký tài khoản',
+          'or_register_with': 'Hoặc đăng ký với',
         },
       };
 }

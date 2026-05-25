@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/auth/presentaition/login/login_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/auth/presentaition/register/register_binding.dart';

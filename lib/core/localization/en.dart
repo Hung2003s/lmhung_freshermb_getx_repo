@@ -33,14 +33,14 @@ class En extends Translations {
           'update_category': 'Update Category',
           'edit': 'Edit',
           'delete': 'Delete',
-          'products_count': '%s products',
+          'products_count': '@s products',
 
           // Product Page
           'products': 'Products',
           'in_stock': 'In stock',
           'delete_product_confirm': 'Are you sure you want to delete this product?',
           'sort_filter': 'Sort & Filter',
-          'showing_products': 'Showing %s products',
+          'showing_products': 'Showing @s products',
           'newest': 'Newest',
           'all_categories': 'All categories',
           'select_category': 'Select category',
@@ -83,6 +83,19 @@ class En extends Translations {
           'add_failed': 'Add failed',
           'update_success': 'Update successful',
           'update_failed': 'Update failed',
+          'delete_success': 'Delete successful',
+          'delete_failed': 'Delete failed',
+          'login_success': 'Login successful',
+          'login_failed': 'Login failed',
+          'register_success': 'Register successful',
+          'register_failed': 'Register failed',
+          'invalid_credentials': 'Please enter your credentials.',
+          'login_locked': 'Account is temporarily locked. Please try again in @s minutes.',
+          'login_attempts_left': '@s attempts remaining before lockout.',
+          'login_locked_button': 'Locked',
+          'no_products_in_category': 'No products found for this category',
+          'error_title': 'Error',
+          'logout_failed': 'Logout failed',
 
           // Sort Options
           'sort_name_asc': 'Name: A -> Z',
@@ -102,9 +115,28 @@ class En extends Translations {
           'light_mode_desc': 'Always use light theme',
           'dark_mode': 'Dark',
           'dark_mode_desc': 'Always use dark theme',
-
+          'logout': 'Logout',
+          'logout_confirm': 'Are you sure you want to logout?',
           // Search
           'search_hint': 'Search...',
+
+          // Auth - Login
+          'welcome_back': 'Welcome back',
+          'login_description': 'Log in to manage your warehouse',
+          'username': 'Username',
+          'password': 'Password',
+          'forgot_password': 'Forgot password?',
+          'login': 'Login',
+          'no_account': "Don't have an account?",
+          'register': 'Register',
+          'or_login_with': 'Or login with',
+          'help': 'Help',
+          'need_help': 'Need help?',
+          'contact_support': 'Contact support',
+
+          // Auth - Register
+          'register_title': 'Register account',
+          'or_register_with': 'Or register with',
         },
       };
 }

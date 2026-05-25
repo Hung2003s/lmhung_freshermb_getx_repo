@@ -13,7 +13,11 @@ class CategoryController extends GetxController {
   CategoryController(this._useCase);
 
   final RxBool isLoading = false.obs;
+  final RxBool isLoadingMore = false.obs;
   final RxString errorMessage = ''.obs;
+  final RxInt page = 1.obs;
+  final RxInt limit = 20.obs;
+  bool hasMore = true;
 
   final RxString addCategoryText = ''.obs;
   final RxString updateCategoryText = ''.obs;
@@ -31,12 +35,48 @@ class CategoryController extends GetxController {
   Future<void> getListCategory() async {
     try {
       isLoading.value = true;
-      final result = await _useCase();
+      page.value = 1;
+      hasMore = true;
+      final result = await _useCase(page: page.value, limit: limit.value);
       listCategory.assignAll(result);
     } catch (e) {
       errorMessage.value = e.toString();
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> loadMore() async {
+    if (isLoadingMore.value || !hasMore) return;
+    try {
+      isLoadingMore.value = true;
+      page.value += 1;
+      final result = await _useCase(page: page.value, limit: limit.value);
+      if (result.isEmpty) {
+        page.value -= 1;
+        hasMore = false;
+      } else {
+        // Lọc bỏ các item đã tồn tại để tránh duplicate
+        final existingIds = listCategory.map((e) => e.id).toSet();
+        final newItems = result.where((item) => !existingIds.contains(item.id)).toList();
+        if (newItems.isEmpty) {
+          page.value -= 1;
+          hasMore = false;
+        } else {
+          listCategory.addAll(newItems);
+          // Nếu API trả về ít hơn limit nghĩa là đã hết dữ liệu
+          if (result.length < limit.value) {
+            hasMore = false;
+          }
+        }
+      }
+    } catch (e) {
+      if (page.value > 1) {
+        page.value -= 1;
+      }
+      errorMessage.value = e.toString();
+    } finally {
+      isLoadingMore.value = false;
     }
   }
 
@@ -46,7 +86,7 @@ class CategoryController extends GetxController {
       final param = CategoryAddParams(name: name);
       await _useCase.add(param);
       Get.snackbar(
-        'Thêm thành công',
+        'add_success'.tr,
         '',
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,
@@ -58,7 +98,7 @@ class CategoryController extends GetxController {
     } catch (e) {
       errorMessage.value = e.toString();
       Get.snackbar(
-        'Thêm thất bại',
+        'add_failed'.tr,
         errorMessage.value,
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,
@@ -88,7 +128,7 @@ class CategoryController extends GetxController {
       final result = await _useCase.update(param, id);
       if (result.data) {
         Get.snackbar(
-          'Cập nhật thành công',
+          'update_success'.tr,
           '',
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -98,7 +138,7 @@ class CategoryController extends GetxController {
         listCategory[index] = originalCategory;
         listCategory.refresh();
         Get.snackbar(
-          'Cập nhật thất bại',
+          'update_failed'.tr,
           '',
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -114,7 +154,7 @@ class CategoryController extends GetxController {
       }
       errorMessage.value = e.toString();
       Get.snackbar(
-        'Cập nhật thất bại',
+        'update_failed'.tr,
         errorMessage.value,
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,
@@ -138,7 +178,7 @@ class CategoryController extends GetxController {
       final result = await _useCase.delete(id);
       if (result.data) {
         Get.snackbar(
-          'Xoá thành công',
+          'delete_success'.tr,
           '',
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -148,7 +188,7 @@ class CategoryController extends GetxController {
         listCategory.insert(index, originalCategory);
         listCategory.refresh();
         Get.snackbar(
-          'Xoá thất bại',
+          'delete_failed'.tr,
           '',
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -161,7 +201,7 @@ class CategoryController extends GetxController {
         listCategory.refresh();
       }
       errorMessage.value = e.toString();
-      Get.snackbar('Xoá thất bại', errorMessage.value);
+      Get.snackbar('delete_failed'.tr, errorMessage.value);
     }
   }
 }

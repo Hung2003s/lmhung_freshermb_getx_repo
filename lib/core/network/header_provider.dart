@@ -1,6 +1,7 @@
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:lmhung_freshermb_getx_repo/core/storage/token/token_manager.dart';
+
+import '../storage/secure_storage/token/token_manager.dart';
 class HeaderProvider {
 
 

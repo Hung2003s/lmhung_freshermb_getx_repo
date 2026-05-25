@@ -32,29 +32,28 @@ class ProductCard extends StatelessWidget {
         extentRatio: 0.25,
         motion: const ScrollMotion(),
         children: [
+          const SizedBox(width: 12,),
           Expanded(
             child: SelectedWidget(
+              borderRadius: BorderRadius.circular(12),
               onTap: onDelete,
-              child: Padding(
-                padding: EdgeInsetsGeometry.only(bottom: 12, left: 12),
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.error.withValues(alpha: 0.2),
-                    border: BoxBorder.all(
-                      width: 2,
-                      color: theme.colorScheme.error.withValues(alpha: 0.4),
-                    ),
-                    borderRadius: BorderRadius.circular(12),
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.error.withValues(alpha: 0.2),
+                  border: BoxBorder.all(
+                    width: 2,
+                    color: theme.colorScheme.error.withValues(alpha: 0.4),
                   ),
-                  child: Text(
-                    "delete".tr,
-                    style: TextStyle(
-                      color: theme.colorScheme.error,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  "delete".tr,
+                  style: TextStyle(
+                    color: theme.colorScheme.error,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -63,9 +62,9 @@ class ProductCard extends StatelessWidget {
         ],
       ),
       child: SelectedWidget(
+        borderRadius: BorderRadius.circular(12),
         onTap: onTap,
         child: Container(
-          margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsetsGeometry.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
@@ -123,7 +122,9 @@ class ProductCard extends StatelessWidget {
                         Text(
                           'products_count'.trParams({'s': productEntity.stock.toString()}),
                           style: TextStyle(
+                            fontSize: 12,
                             color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],

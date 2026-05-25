@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:dio/dio.dart';
 import 'package:lmhung_freshermb_getx_repo/core/network/data/data_state.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/category_add_models/category_add_model.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/category_delete_model/category_delete_model.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/update_category_model/update_category_model.dart';
+
 import '../../../../../core/network/api_endpoint.dart';
 import '../../../../../core/network/dio_client.dart';
 import '../../models/category_response/category_model.dart';
@@ -16,11 +15,15 @@ class CategoryRemoteDataImpl implements CategoryRemoteData {
   CategoryRemoteDataImpl(this._dioClient);
 
   @override
-  Future<DataState<CategoryResponse>> getCategories() async {
+  Future<DataState<CategoryResponse>> getCategories({int page = 1, int limit = 20}) async {
     try {
       final response = await _dioClient.get(
         ApiEndpoint.categories,
         requiresToken: true,
+        queryParameters: {
+          'page': page,
+          'limit': limit,
+        },
       );
 
         return DataSuccess(CategoryResponse.fromJson(response.data));

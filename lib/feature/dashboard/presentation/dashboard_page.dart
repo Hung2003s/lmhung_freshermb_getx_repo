@@ -6,7 +6,6 @@ import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_page.d
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_page.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/setting/presentation/setting_page.dart';
 
-import '../../../core/common_widget/navigation_bar/custom_app_bar.dart';
 import '../../category/presentation/category_page.dart';
 
 class DashboardPage extends GetView<DashboardController> {
@@ -14,7 +13,7 @@ class DashboardPage extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       const  HomePage(),
       const CategoryPage(),
        Container(),
@@ -29,7 +28,7 @@ class DashboardPage extends GetView<DashboardController> {
           Obx(() =>
               IndexedStack(
                 index: controller.currentTabIndex.value,
-                children: _pages,
+                children: pages,
               )),
           const Align(
             alignment: Alignment.bottomCenter,

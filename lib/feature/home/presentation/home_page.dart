@@ -132,6 +132,7 @@ class HomePage extends GetView<HomeController> {
 
   Widget _buildAddProductAction() {
     return FastFeatureCard(
+      rippleColor: Colors.grey,
       filledColor: ColorName.orange,
       borderColor: ColorName.orange,
       icon: Assets.icons.whiteAdd.svg(),
@@ -145,7 +146,7 @@ class HomePage extends GetView<HomeController> {
 
   Widget _buildAddCategoryAction(BuildContext context) {
     return FastFeatureCard(
-      filledColor: context.theme.colorScheme.secondary.withValues(alpha: 0.2),
+      filledColor: context.theme.colorScheme.secondary.withValues(alpha: 0.4),
       borderColor: context.theme.colorScheme.surface.withValues(alpha: 0.2),
       icon: Assets.icons.whiteFolder.svg(),
       title: 'add_category'.tr,
@@ -225,7 +226,7 @@ class HomePage extends GetView<HomeController> {
       decoration: BoxDecoration(
         color: isDark
             ? const Color(0xFF1E1E1E)
-            : const Color(0xFFFAFCFD), // gần như trắng, chỉ hơi hơi xám cyan
+            : const Color(0xFFFFFFFF), // gần như trắng, chỉ hơi hơi xám cyan
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class TokenUtils {
+  /// Cắt chuỗi và giải mã JWT
   static Map<String, dynamic>? decodeJwt(String token) {
     try {
       final parts = token.split('.');
@@ -19,6 +20,7 @@ class TokenUtils {
     }
   }
 
+  ///Hàm lấy thời gian hết hạn của token
   static DateTime? getExpirationTime(String token) {
     final payload = decodeJwt(token);
     if (payload == null || !payload.containsKey('exp')) {
@@ -30,14 +32,14 @@ class TokenUtils {
       return null;
     }
 
-    // JWT exp is in Unix timestamp (seconds since epoch)
     return DateTime.fromMillisecondsSinceEpoch(exp * 1000);
   }
 
+  ///Kiểm tra token còn hạn hay không
   static bool isTokenExpired(String token) {
     final expirationTime = getExpirationTime(token);
     if (expirationTime == null) {
-      return true; // Consider expired if no expiration time
+      return true;
     }
 
     return DateTime.now().isAfter(expirationTime);
@@ -52,11 +54,10 @@ class TokenUtils {
     return expirationTime.difference(DateTime.now());
   }
 
+  /// Định dạng lại token nếu format sai
   static String _normalizeBase64(String str) {
-    // Replace URL-safe characters
     String normalized = str.replaceAll('-', '+').replaceAll('_', '/');
 
-    // Add padding if needed
     switch (normalized.length % 4) {
       case 2:
         normalized += '==';
@@ -65,7 +66,6 @@ class TokenUtils {
         normalized += '=';
         break;
     }
-
     return normalized;
   }
 }

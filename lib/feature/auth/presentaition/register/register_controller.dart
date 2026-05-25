@@ -1,10 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
 
 import '../../../../gen/colors.gen.dart';
@@ -64,8 +59,8 @@ class RegisterController extends GetxController {
     String password = passwordText.value.trim();
     if (username.isEmpty || password.isEmpty) {
       Get.snackbar(
-        'Đăng nhập thất bại',
-        'Vui lòng nhập thông tin đăng nhập.',
+        'register_failed'.tr,
+        'invalid_credentials'.tr,
         snackPosition: SnackPosition.TOP,
       );
       return;
@@ -82,7 +77,7 @@ class RegisterController extends GetxController {
       if (response.accessToken.isNotEmpty && response.accessToken != null) {
         Get.offAllNamed(Routes.dashboard);
         Get.snackbar(
-          'Đăng ký thành công',
+          'register_success'.tr,
           errorMessage.value,
           snackPosition: SnackPosition.TOP,
           backgroundColor: ColorName.greenLight,
@@ -93,7 +88,7 @@ class RegisterController extends GetxController {
       errorMessage.value = e.toString();
 
       Get.snackbar(
-        'Đăng ký thất bại',
+        'register_failed'.tr,
         errorMessage.value,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,

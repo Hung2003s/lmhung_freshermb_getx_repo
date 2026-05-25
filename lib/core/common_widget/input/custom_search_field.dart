@@ -6,14 +6,14 @@ class CustomSearchField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final VoidCallback? onSortPressed; // Sự kiện khi bấm nút Sort bên phải
   final bool showSortButton; // Có muốn hiển thị nút Sort hay không
-
+  final InputBorder? focusColor;
   const CustomSearchField({
     super.key,
     this.controller,
     this.hintText = 'Tìm kiếm...',
     this.onChanged,
     this.onSortPressed,
-    this.showSortButton = true, // Mặc định luôn hiện nút Sort như trong ảnh
+    this.showSortButton = true, this.focusColor, // Mặc định luôn hiện nút Sort như trong ảnh
   });
 
   @override
@@ -52,7 +52,7 @@ class CustomSearchField extends StatelessWidget {
                 ),
               ),
               // Trạng thái viền khi nhấn chọn gõ chữ
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: focusColor ?? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.primary,

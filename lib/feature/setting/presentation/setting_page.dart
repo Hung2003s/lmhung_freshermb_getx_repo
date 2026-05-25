@@ -24,19 +24,114 @@ class SettingPage extends GetView<SettingController> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionTitle('theme'.tr, context),
+              const SizedBox(height: 8),
+              _buildThemeSelector(context),
+              const SizedBox(height: 24),
+              _buildSectionTitle('language'.tr, context),
+              const SizedBox(height: 8),
+              _buildLanguageSelector(context),
+              const SizedBox(height: 24),
+              _buildLogoutButton(context),
+              const SizedBox(height: 32),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget  _buildLogoutButton(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () => _showLogoutConfirm(),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: ColorName.orange.withValues(alpha: 0.1),
+          foregroundColor: ColorName.orange,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+              color: ColorName.orange.withValues(alpha: 0.3),
+              width: 1.5,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildSectionTitle('theme'.tr, context),
-            const SizedBox(height: 8),
-            _buildThemeSelector(context),
-            const SizedBox(height: 24),
-            _buildSectionTitle('language'.tr, context),
-            const SizedBox(height: 8),
-            _buildLanguageSelector(context),
+            const Icon(Icons.logout_rounded, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              'logout'.tr,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: ColorName.orange,
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void _showLogoutConfirm() {
+    final theme = Theme.of(Get.context!);
+    Get.defaultDialog(
+      title: '',
+      backgroundColor: theme.colorScheme.surface,
+      content: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(
+          children: [
+            Icon(
+              Icons.logout_rounded,
+              size: 48,
+              color: ColorName.error,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'logout_confirm'.tr,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurface,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+      cancel: TextButton(
+        onPressed: () => Get.back(),
+        child: Text(
+          'cancel'.tr,
+          style: TextStyle(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+            fontSize: 16,
+          ),
+        ),
+      ),
+      confirm: TextButton(
+        onPressed: () {
+          Get.back();
+          controller.logout();
+        },
+        child: Text(
+          'logout'.tr,
+          style: TextStyle(
+            color: ColorName.error,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );

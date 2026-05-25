@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common_widget/input/text_input_field.dart';
-import '../../../../gen/colors.gen.dart';
 
 class InputInfor extends StatelessWidget {
   final TextEditingController controller;

@@ -41,27 +41,24 @@ class CategoryCard extends StatelessWidget {
               onTap: () {
                 Slidable.of(context)?.close();
                 onEdit?.call();
-                },
-              child: Padding(
-                padding: EdgeInsetsGeometry.only(bottom: 12),
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
-                    border: BoxBorder.all(
-                      width: 2,
-                      color: theme.colorScheme.primary.withValues(alpha: 0.4),
-                    ),
-                    borderRadius: BorderRadius.circular(12),
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                  border: BoxBorder.all(
+                    width: 2,
+                    color: theme.colorScheme.primary.withValues(alpha: 0.4),
                   ),
-                  child: Text(
-                    "edit".tr,
-                    style: TextStyle(
-                      color: theme.colorScheme.primary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  "edit".tr,
+                  style: TextStyle(
+                    color: theme.colorScheme.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -74,26 +71,23 @@ class CategoryCard extends StatelessWidget {
                 Slidable.of(context)?.close();
                 onDelete?.call();
               },
-              child: Padding(
-                padding:  EdgeInsets.only(bottom: 12),
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.error.withValues(alpha: 0.2),
-                    border: BoxBorder.all(
-                      width: 2,
-                      color: theme.colorScheme.error.withValues(alpha: 0.4),
-                    ),
-                    borderRadius: BorderRadius.circular(12),
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.error.withValues(alpha: 0.2),
+                  border: BoxBorder.all(
+                    width: 2,
+                    color: theme.colorScheme.error.withValues(alpha: 0.4),
                   ),
-                  child: Text(
-                    "delete".tr,
-                    style: TextStyle(
-                      color: theme.colorScheme.error,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  "delete".tr,
+                  style: TextStyle(
+                    color: theme.colorScheme.error,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -101,74 +95,78 @@ class CategoryCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsetsGeometry.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
-          border: Border.all(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
-            width: 2,
+      child: SelectedWidget(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {},
+        child: Container(
+          padding: const EdgeInsetsGeometry.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+            border: Border.all(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+              width: 2,
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: const EdgeInsetsGeometry.all(12),
-              decoration: BoxDecoration(
-                color: iconColor,
-                border: Border.all(color: iconColor.withValues(alpha: 0.2)),
-                borderRadius: BorderRadius.circular(12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsetsGeometry.all(12),
+                decoration: BoxDecoration(
+                  color: iconColor,
+                  border: Border.all(color: iconColor.withValues(alpha: 0.2)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: icon,
               ),
-              child: icon,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    category.name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.onSurface,
-                      overflow: TextOverflow.ellipsis,
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      category.name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${numberCount.toString()} products_count'.tr,
-                        style: TextStyle(
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Assets.icons.growUp.svg(),
-                          const SizedBox(width: 2),
-                          Text(
-                            categoryStatus,
-                            style: TextStyle(
-                              color: ColorName.greenLight,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 12,
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '${numberCount.toString()} ${'products'.tr}',
+                          style: TextStyle(
+                            color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.6),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Assets.icons.growUp.svg(),
+                            const SizedBox(width: 2),
+                            Text(
+                              categoryStatus,
+                              style: TextStyle(
+                                color: ColorName.greenLight,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(width: 16),
-          ],
+              const SizedBox(width: 16),
+            ],
+          ),
         ),
       ),
     );

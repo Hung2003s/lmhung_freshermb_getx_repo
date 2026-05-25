@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/draggabble_button.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
@@ -13,8 +14,38 @@ import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 import '../../../core/common_widget/base_view/base_view.dart';
 import '../../../gen/assets.gen.dart';
 
-class CategoryPage extends GetView<CategoryController> {
+class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
+
+  @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  final ScrollController _scrollController = ScrollController();
+  final CategoryController controller = Get.find<CategoryController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    // Chỉ loadmore khi: có thể scroll, không đang loading, và còn dữ liệu
+    if (!controller.hasMore || controller.isLoadingMore.value) return;
+    if (_scrollController.position.maxScrollExtent <= 0) return;
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      controller.loadMore();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +88,35 @@ class CategoryPage extends GetView<CategoryController> {
 
   Widget _buildCategoryList() {
     return Obx(
-      () => ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: controller.listCategory.length,
-        itemBuilder: (context, index) {
-          final item = controller.listCategory[index];
-          final card = _buildCategoryCard(item);
+      () => Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              controller: _scrollController,
+              scrollDirection: Axis.vertical,
+              itemCount: controller.listCategory.length,
+              itemBuilder: (context, index) {
+                final item = controller.listCategory[index];
+                final card = _buildCategoryCard(item);
 
-          if (index == controller.listCategory.length - 1) {
-            return Column(children: [card, const SizedBox(height: 60)]);
-          }
+                if (index == controller.listCategory.length - 1) {
+                  return Column(children: [card, const SizedBox(height: 60)]);
+                }
+                return card;
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
+            ),
 
-          return card;
-        },
+          ),
+          Obx(
+            () => controller.isLoadingMore.value
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
       ),
     );
   }
@@ -146,23 +193,22 @@ class CategoryPage extends GetView<CategoryController> {
     );
   }
 
-  Positioned _buildFloatingAddButton() {
-    return Positioned(
-      bottom: 100,
-      right: 20,
-      child: SelectedWidget(
-        onTap: addAction,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: ColorName.orange,
-            shape: BoxShape.circle,
-            border: Border.all(color: ColorName.orange),
+  Widget _buildFloatingAddButton() {
+    return DraggableFloatingButton(
+        initialOffset: Offset(20, 100),
+        child: SelectedWidget(
+          onTap: addAction,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: ColorName.orange,
+              shape: BoxShape.circle,
+              border: Border.all(color: ColorName.orange),
+            ),
+            child: Assets.icons.whiteAdd.svg(width: 20),
           ),
-          child: Assets.icons.whiteAdd.svg(),
         ),
-      ),
-    );
+        );
   }
 
   void addAction() {
