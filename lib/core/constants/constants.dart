@@ -9,4 +9,5 @@ class Constants {
 
   static final taxNumberRule = RegExp(r'^([0-9]{10}-[0-9]{3}|[0-9]{12})$');
   static const accessTokenKey = 'ACCESS_TOKEN_KEY';
+  static const tokenExpiryKey = 'TOKEN_EXPIRY_KEY';
 }

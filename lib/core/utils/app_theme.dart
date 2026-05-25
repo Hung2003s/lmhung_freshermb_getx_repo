@@ -36,13 +36,13 @@ class AppTheme {
     colorScheme: const ColorScheme.light(
       primary: ColorName.orange,
       secondary: Colors.black,
-      surface: Color(0xFFE8F4F8), // nền card màu cyan nhạt
+      surface: Colors.white, // nền card màu trắng
       onSurface: ColorName.gray, // Chữ trên nền surface
       error: ColorName.error,
     ),
     brightness: Brightness.light,
     primaryColor: ColorName.orange,
-    scaffoldBackgroundColor: Color(0xFFD6EEF4), // nền app màu cyan
+    scaffoldBackgroundColor: Colors.white, // nền app màu trắng
     appBarTheme: const AppBarTheme(
       backgroundColor: ColorName.orange,
       elevation: 0,

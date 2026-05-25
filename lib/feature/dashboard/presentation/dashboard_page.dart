@@ -23,8 +23,7 @@ class DashboardPage extends GetView<DashboardController> {
     ];
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
+      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
           Obx(() =>
