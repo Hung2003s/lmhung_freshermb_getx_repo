@@ -19,7 +19,7 @@ class LoginPage extends GetView<LoginController> {
       tapOutsideToDismissKeyboard: true,
       resizeToAvoidBottomInset: false,
       buildAppBar: CustomAppBar(
-        leading:SizedBox(),
+        leading: const SizedBox(),
         backgroundColor: Colors.transparent,
         titleWidget: RichText(
           text: TextSpan(
@@ -40,28 +40,45 @@ class LoginPage extends GetView<LoginController> {
           ),
         ),
       ),
-      buildBody: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [loginContent(context), loginFooter(context)],
-        ),
+      buildBody: LayoutBuilder(
+        builder: (context, constraints) {
+          final screenHeight = constraints.maxHeight;
+          final screenWidth = constraints.maxWidth;
+          // Responsive scale factor based on screen height (baseline: 800px)
+          final scale = (screenHeight / 800).clamp(0.7, 1.2);
+          final isTablet = screenWidth > 600;
+          final horizontalPadding = isTablet ? screenWidth * 0.15 : 12.0;
+
+          return SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 12 * scale),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: screenHeight - 80),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  loginContent(context, scale),
+                  loginFooter(context, scale),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Column loginContent(BuildContext context) {
+  Column loginContent(BuildContext context, double scale) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text('welcome_back'.tr, style: context.textTheme.headlineSmall),
-        const SizedBox(height: 8),
+        SizedBox(height: 8 * scale),
         Text(
           'login_description'.tr,
           style: context.textTheme.titleSmall,
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24 * scale),
         AutofillGroup(
           child: Column(
             children: [
@@ -74,9 +91,8 @@ class LoginPage extends GetView<LoginController> {
                 hint: 'username'.tr,
                 title: 'username'.tr,
                 autoFillHint: const [AutofillHints.username],
-                // errorText: controller.showError ? state.userNameError : null,
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4 * scale),
               InputField(
                 isPassword: true,
                 controller: controller.passwordController,
@@ -87,7 +103,6 @@ class LoginPage extends GetView<LoginController> {
                 title: 'password'.tr,
                 textInputAction: TextInputAction.done,
                 autoFillHint: const [AutofillHints.password],
-                // errorText: state.showError ? state.passwordError : null,
                 onSubmitted: (value) {
                   controller.login();
                 },
@@ -95,7 +110,7 @@ class LoginPage extends GetView<LoginController> {
             ],
           ),
         ),
-
+        SizedBox(height: 8 * scale),
         Container(
           alignment: Alignment.centerRight,
           child: SelectedWidget(
@@ -114,42 +129,49 @@ class LoginPage extends GetView<LoginController> {
     );
   }
 
-  Widget loginFooter(BuildContext context) {
+  Widget loginFooter(BuildContext context, double scale) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
         Obx(
           () => SelectedWidget(
-          rippleColor: Colors.grey,
-          highlightColor: Colors.grey,
-          borderRadius: BorderRadius.circular(16),
-          onTap: controller.isLocked.value ? null : controller.isLoading.value ?  null : () {
-            controller.login();
-          },
-          backgroundColor: controller.isLocked.value ? Colors.grey : ColorName.orange,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
-            child: Center(
-              child: (!controller.isLoading.value) ? Text(
-                controller.isLocked.value ? 'login_locked_button'.tr : 'login'.tr,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ) : const CircularProgressIndicator(
-                color: Colors.white,
+            rippleColor: Colors.grey,
+            highlightColor: Colors.grey,
+            borderRadius: BorderRadius.circular(16),
+            onTap: controller.isLocked.value || controller.isLoading.value
+                ? null
+                : () => controller.login(),
+            backgroundColor: controller.isLocked.value ? Colors.grey : ColorName.orange,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 16 * scale, horizontal: 16),
+              child: Center(
+                child: !controller.isLoading.value
+                    ? Text(
+                        controller.isLocked.value ? 'login_locked_button'.tr : 'login'.tr,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )
+                    : const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      ),
               ),
             ),
           ),
         ),
-        ),
-        // Show lockout message if locked
         if (controller.isLocked.value)
           Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 8 * scale),
             child: Obx(
               () => Text(
                 controller.lockoutMessage.value,
@@ -163,73 +185,67 @@ class LoginPage extends GetView<LoginController> {
               ),
             ),
           ),
-        const SizedBox(height: 8),
+        SizedBox(height: 12 * scale),
         SelectedWidget(
-          onTap: () {
-            controller.navigateToRegister();
-          },
-          child: RichText(
-            text: TextSpan(
-              style: context.textTheme.labelLarge,
-              children: [
-                TextSpan(text: "no_account".tr),
-                TextSpan(
-                  text: "register".tr,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: ColorName.orange,
-                    decoration: TextDecoration.underline,
+          onTap: () => controller.navigateToRegister(),
+          child: FittedBox(
+            child: RichText(
+              text: TextSpan(
+                style: context.textTheme.labelLarge,
+                children: [
+                  TextSpan(text: "no_account".tr),
+                  TextSpan(
+                    text: "register".tr,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: ColorName.orange,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16 * scale),
+        // Divider: "or_login_with"
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(
-              child: Container(
-                height: 1,
-                decoration: BoxDecoration(color: ColorName.primary),
+            Expanded(child: Container(height: 1, decoration: BoxDecoration(color: ColorName.primary))),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                'or_login_with'.tr,
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: ColorName.primary,
+                ),
               ),
             ),
-            const SizedBox(width: 16),
-            Text(
-              'or_login_with'.tr,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
-                color: ColorName.primary,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Container(
-                height: 1,
-                decoration: BoxDecoration(color: ColorName.primary),
-              ),
-            ),
+            Expanded(child: Container(height: 1, decoration: BoxDecoration(color: ColorName.primary))),
           ],
         ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FeatureButton(
-              title: 'help'.tr,
-              icons: Assets.icons.headphone.svg(width: 20),
-            ),
-            const SizedBox(width: 16),
-            FeatureButton(
-              title: 'Group',
-              icons: Assets.icons.icon.svg(width: 20),
-            ),
-          ],
+        SizedBox(height: 16 * scale),
+        FittedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FeatureButton(
+                title: 'help'.tr,
+                icons: Assets.icons.headphone.svg(width: 20),
+              ),
+              SizedBox(width: screenWidth * 0.04),
+              FeatureButton(
+                title: 'Group',
+                icons: Assets.icons.icon.svg(width: 20),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16 * scale),
         SelectedWidget(
           onTap: () {},
           child: RichText(
@@ -255,7 +271,7 @@ class LoginPage extends GetView<LoginController> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 24 * scale),
       ],
     );
   }
