@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common_widget/input/text_input_field.dart';
-import '../../../../gen/colors.gen.dart';
 
 class InputInfor extends StatelessWidget {
   final TextEditingController controller;
@@ -32,6 +30,7 @@ class InputInfor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,7 +39,7 @@ class InputInfor extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
@@ -50,7 +49,7 @@ class InputInfor extends StatelessWidget {
           contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 20),
           textStyle: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w600,
-              color: Colors.white
+              color: theme.colorScheme.onSurface
           ),
           onSubmitted: onSubmitted,
           textInputAction: textInputAction ?? TextInputAction.next,
@@ -60,7 +59,7 @@ class InputInfor extends StatelessWidget {
           isShowClearButton: isShowClearButton ?? false,
           hintText: hint,
           hintTextStyle: TextStyle(
-            color: Colors.white.withValues(alpha: 0.5),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),

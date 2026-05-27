@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/draggabble_button.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
@@ -13,14 +14,44 @@ import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 import '../../../core/common_widget/base_view/base_view.dart';
 import '../../../gen/assets.gen.dart';
 
-class CategoryPage extends GetView<CategoryController> {
+class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key});
+
+  @override
+  State<CategoryPage> createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  final ScrollController _scrollController = ScrollController();
+  final CategoryController controller = Get.find<CategoryController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    // Chỉ loadmore khi: có thể scroll, không đang loading, và còn dữ liệu
+    if (!controller.hasMore || controller.isLoadingMore.value) return;
+    if (_scrollController.position.maxScrollExtent <= 0) return;
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      controller.loadMore();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BaseView(
-      backgroundColor: Colors.black,
-      buildAppBar: ProfileAppBar(greetingText: 'Quan ly', username: 'Danh muc'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      buildAppBar: ProfileAppBar(greetingText: 'manage'.tr, username: 'category'.tr),
       buildBody: Stack(
         children: [_buildCategoryContent(), _buildFloatingAddButton()],
       ),
@@ -30,7 +61,7 @@ class CategoryPage extends GetView<CategoryController> {
   Widget _buildCategoryContent() {
     return RefreshIndicator(
       color: ColorName.orange,
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(Get.context!).colorScheme.surface,
       onRefresh: () => controller.getListCategory(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -50,26 +81,42 @@ class CategoryPage extends GetView<CategoryController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(child: CustomSearchField(hintText: 'Tim kiem danh muc')),
+        Expanded(child: CustomSearchField(hintText: 'search_category'.tr)),
       ],
     );
   }
 
   Widget _buildCategoryList() {
     return Obx(
-      () => ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: controller.listCategory.length,
-        itemBuilder: (context, index) {
-          final item = controller.listCategory[index];
-          final card = _buildCategoryCard(item);
+      () => Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              controller: _scrollController,
+              scrollDirection: Axis.vertical,
+              itemCount: controller.listCategory.length,
+              itemBuilder: (context, index) {
+                final item = controller.listCategory[index];
+                final card = _buildCategoryCard(item);
 
-          if (index == controller.listCategory.length - 1) {
-            return Column(children: [card, const SizedBox(height: 60)]);
-          }
+                if (index == controller.listCategory.length - 1) {
+                  return Column(children: [card, const SizedBox(height: 60)]);
+                }
+                return card;
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
+            ),
 
-          return card;
-        },
+          ),
+          Obx(
+            () => controller.isLoadingMore.value
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
       ),
     );
   }
@@ -80,7 +127,7 @@ class CategoryPage extends GetView<CategoryController> {
       iconColor: ColorName.orange.withValues(alpha: 0.2),
       category: item,
       numberCount: 20,
-      categoryStatus: 'tang truong',
+      categoryStatus: 'growing'.tr,
       onEdit: () => editAction(item),
       onDelete: () => deleteAction(item),
     );
@@ -95,15 +142,16 @@ class CategoryPage extends GetView<CategoryController> {
   }
 
   Widget _buildDeleteDialogContent() {
-    return const Column(
+    final theme = Theme.of(Get.context!);
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Ban co chac chan muon xoa danh muc nay?',
+          'delete_category_confirm'.tr,
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ],
@@ -114,10 +162,10 @@ class CategoryPage extends GetView<CategoryController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        _buildDialogButton(title: 'Huy', onTap: () => Get.back()),
+        _buildDialogButton(title: 'cancel'.tr, onTap: () => Get.back()),
         const SizedBox(width: 12),
         _buildDialogButton(
-          title: 'Xac nhan',
+          title: 'confirm'.tr,
           onTap: () {
             Get.back();
             controller.deleteCategory(item.id);
@@ -133,9 +181,9 @@ class CategoryPage extends GetView<CategoryController> {
         controller: controller.updateController,
         onChanged: (value) => controller.updateCategoryText.value = value,
       ),
-      title: 'Cap nhat danh muc',
+      title: 'update_category'.tr,
       footer: _buildDialogButton(
-        title: 'Luu',
+        title: 'save'.tr,
         verticalPadding: 4,
         onTap: () {
           Get.back();
@@ -145,23 +193,22 @@ class CategoryPage extends GetView<CategoryController> {
     );
   }
 
-  Positioned _buildFloatingAddButton() {
-    return Positioned(
-      bottom: 100,
-      right: 20,
-      child: SelectedWidget(
-        onTap: addAction,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: ColorName.orange,
-            shape: BoxShape.circle,
-            border: Border.all(color: ColorName.orange),
+  Widget _buildFloatingAddButton() {
+    return DraggableFloatingButton(
+        initialOffset: Offset(20, 100),
+        child: SelectedWidget(
+          onTap: addAction,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: ColorName.orange,
+              shape: BoxShape.circle,
+              border: Border.all(color: ColorName.orange),
+            ),
+            child: Assets.icons.whiteAdd.svg(width: 20),
           ),
-          child: Assets.icons.whiteAdd.svg(),
         ),
-      ),
-    );
+        );
   }
 
   void addAction() {
@@ -170,9 +217,9 @@ class CategoryPage extends GetView<CategoryController> {
         controller: controller.addController,
         onChanged: (value) => controller.addCategoryText.value = value,
       ),
-      title: 'Them danh muc',
+      title: 'add_category'.tr,
       footer: _buildDialogButton(
-        title: 'Luu',
+        title: 'save'.tr,
         verticalPadding: 4,
         onTap: () {
           Get.back();
@@ -186,26 +233,26 @@ class CategoryPage extends GetView<CategoryController> {
     required TextEditingController controller,
     required ValueChanged<String> onChanged,
   }) {
+    final theme = Theme.of(Get.context!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Ten danh muc',
+        Text(
+          'category_name'.tr,
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
         TextInputFields(
           isShowClearButton: true,
-          textStyle: const TextStyle(
-            color: Colors.white,
+          textStyle: TextStyle(
+            color: theme.colorScheme.onSurface,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
-          filledColor: Colors.white,
           onChanged: onChanged,
           controller: controller,
         ),
@@ -218,6 +265,7 @@ class CategoryPage extends GetView<CategoryController> {
     required VoidCallback onTap,
     double verticalPadding = 8,
   }) {
+    final theme = Theme.of(Get.context!);
     return SelectedWidget(
       onTap: onTap,
       child: Container(
@@ -226,19 +274,19 @@ class CategoryPage extends GetView<CategoryController> {
           vertical: verticalPadding,
         ),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.2),
+          color: theme.colorScheme.primary.withValues(alpha: 0.2),
           border: Border.all(
-            color: Colors.white.withValues(alpha: 0.4),
+            color: theme.colorScheme.primary.withValues(alpha: 0.4),
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
-            color: Colors.white,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ),

@@ -8,23 +8,41 @@ class AppTheme {
   // Cấu hình cho Light Mode
   static final ThemeData lightTheme = ThemeData(
     inputDecorationTheme: InputDecorationTheme(
-      // Cấu hình màu cho hint text ở chế độ Sáng
+      filled: true,
+      fillColor: const Color(0xFFF5F5F5), // Nền sáng nhẹ cho text field
       hintStyle: TextStyle(
         color: Colors.grey.withValues(alpha: 0.5), // Màu xám vừa phải cho hint
         fontSize: 16,
         fontWeight: FontWeight.w600,
       ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.3), width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: ColorName.primary, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: ColorName.error, width: 1),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: ColorName.error, width: 1.5),
+      ),
     ),
     colorScheme: const ColorScheme.light(
       primary: ColorName.orange,
       secondary: Colors.black,
-      surface: ColorName.buttonBackground,
+      surface: Colors.white, // nền card màu trắng
       onSurface: ColorName.gray, // Chữ trên nền surface
       error: ColorName.error,
     ),
     brightness: Brightness.light,
     primaryColor: ColorName.orange,
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: Colors.white, // nền app màu trắng
     appBarTheme: const AppBarTheme(
       backgroundColor: ColorName.orange,
       elevation: 0,
@@ -33,6 +51,7 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorName.orange,
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),
@@ -127,20 +146,38 @@ class AppTheme {
 
   // Cấu hình cho Dark Mode (nếu có)
   static final ThemeData darkTheme = ThemeData(
-    colorScheme: const ColorScheme.dark(
-      primary: ColorName.orange,
-      secondary: Colors.white,
-      surface: ColorName.darkBackground,
-      onSurface: ColorName.gray, // Chữ trên nền surface
-      error: ColorName.error,
-    ),
     inputDecorationTheme: InputDecorationTheme(
-      // Cấu hình màu cho hint text ở chế độ Sáng
+      filled: true,
+      fillColor: const Color(0xFF1E1E1E), // Nền tối cho text field trong dark mode
       hintStyle: TextStyle(
         color: Colors.white.withValues(alpha: 0.6), // Màu xám vừa phải cho hint
         fontSize: 16,
         fontWeight: FontWeight.w400,
       ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2), width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: ColorName.primary, width: 1.5),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: ColorName.error, width: 1),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: const BorderSide(color: ColorName.error, width: 1.5),
+      ),
+    ),
+    colorScheme: const ColorScheme.dark(
+      primary: ColorName.orange,
+      secondary: Colors.white,
+      surface: ColorName.darkBackground,
+      onSurface: Colors.white, // Chữ trên nền surface
+      error: ColorName.error,
     ),
     brightness: Brightness.dark,
     primaryColor: ColorName.orange,
@@ -153,6 +190,7 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: ColorName.orange,
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     ),

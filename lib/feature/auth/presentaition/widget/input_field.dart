@@ -16,6 +16,7 @@ class InputField extends StatelessWidget {
   final String? errorText;
   final Function(String)? onSubmitted;
   final TextInputAction? textInputAction;
+  final Iterable<String>? autoFillHint;
 
   const InputField({
     super.key,
@@ -26,7 +27,10 @@ class InputField extends StatelessWidget {
     required this.title,
     this.isPassword,
     this.keyboardType = TextInputType.text,
-    this.errorText, this.onSubmitted, this.textInputAction,
+    this.errorText,
+    this.onSubmitted,
+    this.textInputAction,
+    this.autoFillHint,
   });
 
   @override
@@ -37,7 +41,7 @@ class InputField extends StatelessWidget {
         Text(
           title,
           style: context.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700
+            fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 8),
@@ -45,8 +49,9 @@ class InputField extends StatelessWidget {
           iconColor: ColorName.orange,
           contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 20),
           textStyle: context.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600
+            fontWeight: FontWeight.w600,
           ),
+          autoFillHint: autoFillHint,
           onSubmitted: onSubmitted,
           textInputAction: textInputAction ?? TextInputAction.next,
           keyboardType: keyboardType,

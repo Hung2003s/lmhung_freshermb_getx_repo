@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
-
-import '../../../../gen/assets.gen.dart';
 
 class ProductCard extends StatelessWidget {
   final Widget icon;
@@ -26,35 +25,35 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Slidable(
       key: ValueKey(productEntity.id),
       endActionPane: ActionPane(
         extentRatio: 0.25,
         motion: const ScrollMotion(),
         children: [
+          const SizedBox(width: 12,),
           Expanded(
             child: SelectedWidget(
+              borderRadius: BorderRadius.circular(12),
               onTap: onDelete,
-              child: Padding(
-                padding: EdgeInsetsGeometry.only(bottom: 12, left: 12),
-                child: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    border: BoxBorder.all(
-                      width: 2,
-                      color: Colors.white.withValues(alpha: 0.4),
-                    ),
-                    borderRadius: BorderRadius.circular(12),
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.error.withValues(alpha: 0.2),
+                  border: BoxBorder.all(
+                    width: 2,
+                    color: theme.colorScheme.error.withValues(alpha: 0.4),
                   ),
-                  child: Text(
-                    "Xoá",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  "delete".tr,
+                  style: TextStyle(
+                    color: theme.colorScheme.error,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -63,15 +62,15 @@ class ProductCard extends StatelessWidget {
         ],
       ),
       child: SelectedWidget(
+        borderRadius: BorderRadius.circular(12),
         onTap: onTap,
         child: Container(
-          margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsetsGeometry.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Colors.white.withValues(alpha: 0.2),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.4),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
               width: 2,
             ),
           ),
@@ -97,17 +96,17 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: theme.colorScheme.onSurface,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Mã SP: SP-IP15-256',
+                      '${"sku_code".tr}: SP-IP15-256',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white.withValues(alpha: 0.4),
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -116,14 +115,16 @@ class ProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         statusCard(
-                          title: "Còn hàng",
+                          title: "in_stock".tr,
                           color: ColorName.greenLight,
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          '${productEntity.stock} sản phẩm',
+                          'products_count'.trParams({'s': productEntity.stock.toString()}),
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.6),
+                            fontSize: 12,
+                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -136,13 +137,13 @@ class ProductCard extends StatelessWidget {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.4),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
                     width: 1,
                   ),
                 ),
-                child: Icon(Icons.keyboard_arrow_right_outlined, color: Colors.white),
+                child: Icon(Icons.keyboard_arrow_right_outlined, color: theme.colorScheme.onSurface),
               ),
             ],
           ),
@@ -160,8 +161,8 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
-        child: Text(
-          'Còn hàng',
+          child: Text(
+            'in_stock'.tr,
           style: TextStyle(
             color: color,
             fontSize: 12,

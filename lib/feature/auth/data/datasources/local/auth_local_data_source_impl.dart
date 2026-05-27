@@ -1,6 +1,6 @@
 
 import '../../../../../core/constants/constants.dart';
-import '../../../../../core/storage/secure_storage_service.dart';
+import '../../../../../core/storage/secure_storage/secure_storage_service.dart';
 import 'auth_local_data_source.dart';
 
 class AuthLocalDataSourceImpl  implements AuthLocalDataSource {

@@ -3,7 +3,6 @@ import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_mod
 import '../../../../../core/network/api_endpoint.dart';
 import '../../../../../core/network/data/data_state.dart';
 import '../../../../../core/network/dio_client.dart';
-import '../../../../../core/network/error/exceptions.dart';
 import '../../models/login_model/login_model.dart';
 import 'auth_remote_data_source.dart';
 
@@ -28,7 +27,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
     } catch (e) {
-      print('e');
       throw Exception('$e');
     }
   }
@@ -49,7 +47,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
     } catch (e) {
-      print('e');
       throw Exception('$e');
     }
   }

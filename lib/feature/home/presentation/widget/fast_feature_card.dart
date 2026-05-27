@@ -9,6 +9,7 @@ class FastFeatureCard extends StatelessWidget {
   final String title;
   final Color textColor;
   final VoidCallback? onTap;
+  final Color? rippleColor;
 
   const FastFeatureCard({
     super.key,
@@ -17,19 +18,22 @@ class FastFeatureCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.textColor,
-    this.onTap,
+    this.onTap, this.rippleColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return SelectedWidget(
+      borderRadius: BorderRadius.circular(16),
+      rippleColor: rippleColor,
+      highlightColor: rippleColor,
       onTap: onTap,
       child: AspectRatio(
         aspectRatio: 3,
         child: Container(
           padding: EdgeInsets.symmetric(),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             color: filledColor,
             border: Border.all(
               color: borderColor.withValues(alpha: 0.2),

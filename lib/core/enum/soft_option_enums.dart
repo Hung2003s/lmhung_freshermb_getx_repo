@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 enum SortOption {
   nameAsc, // Tên A -> Z
   nameDesc, // Tên Z -> A
@@ -9,17 +11,17 @@ enum SortOption {
   String get title {
     switch (this) {
       case nameAsc:
-        return 'Tên: A -> Z';
+        return 'sort_name_asc'.tr;
       case nameDesc:
-        return 'Tên: Z -> A';
+        return 'sort_name_desc'.tr;
       case priceDesc:
-        return 'Giá: Cao -> Thấp';
+        return 'sort_price_desc'.tr;
       case priceAsc:
-        return 'Giá: Thấp -> Cao';
+        return 'sort_price_asc'.tr;
       case stockAsc:
-        return 'Số lượng: Thấp -> Cao';
+        return 'sort_stock_asc'.tr;
       case stockDesc:
-        return 'Số lượng: Cao -> Thấp';
+        return 'sort_stock_desc'.tr;
     }
   }
 }
