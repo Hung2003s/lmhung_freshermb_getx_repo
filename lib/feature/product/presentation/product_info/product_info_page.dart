@@ -12,14 +12,13 @@ class ProductInfoPage extends GetView<ProductInfoController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Obx(() {
       final mode = controller.pageMode.value;
       final isReadOnly = mode == ProductPageMode.view;
 
       return BaseView(
         resizeToAvoidBottomInset: true,
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor: Colors.black,
         extendBodyBehindAppBar: false,
         buildAppBar: _buildAppBar(mode),
         buildBody: _buildFormBody(mode: mode, isReadOnly: isReadOnly),
@@ -28,15 +27,14 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   AppBar _buildAppBar(ProductPageMode mode) {
-    final theme = Theme.of(Get.context!);
     return AppBar(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Colors.black,
       title: Text(
         _pageTitle(mode),
-        style: TextStyle(color: theme.colorScheme.onSurface),
+        style: const TextStyle(color: Colors.white),
       ),
       leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: theme.colorScheme.onSurface),
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Get.back(),
       ),
       actions: [
@@ -47,7 +45,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           ),
         if (mode == ProductPageMode.edit)
           IconButton(
-            icon: const Icon(Icons.close_rounded, color: ColorName.error),
+            icon: const Icon(Icons.close_rounded, color: Colors.red),
             onPressed: () => controller.cancelEdit(),
           ),
       ],
@@ -55,9 +53,9 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   String _pageTitle(ProductPageMode mode) {
-    if (mode == ProductPageMode.create) return 'add_new_product'.tr;
-    if (mode == ProductPageMode.edit) return 'edit_product'.tr;
-    return 'product_details'.tr;
+    if (mode == ProductPageMode.create) return 'Them san pham';
+    if (mode == ProductPageMode.edit) return 'Sua san pham';
+    return 'Chi tiet san pham';
   }
 
   Widget _buildFormBody({
@@ -87,16 +85,15 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   Widget _buildImagePicker(bool isReadOnly) {
-    final theme = Theme.of(Get.context!);
     return GestureDetector(
       onTap: isReadOnly ? null : () {},
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+          color: Colors.white.withValues(alpha: 0.1),
           border: Border.all(
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             width: 2,
           ),
         ),
@@ -104,15 +101,15 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           children: [
             Icon(
               Icons.camera_alt,
-              color: isReadOnly ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : ColorName.orange,
+              color: isReadOnly ? Colors.grey : ColorName.orange,
             ),
             const SizedBox(height: 8),
             Text(
-              isReadOnly ? 'product_image'.tr : 'add_image'.tr,
+              isReadOnly ? 'Anh san pham' : 'Them anh',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isReadOnly ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : ColorName.orange,
+                color: isReadOnly ? Colors.grey : Colors.orange,
               ),
             ),
           ],
@@ -125,8 +122,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.nameController,
       enable: isReadOnly,
-      hint: 'enter_product_name'.tr,
-      title: 'product_name'.tr,
+      hint: 'Nhap ten san pham',
+      title: 'Ten san pham',
       errorText: controller.hasSubmitted.value
           ? controller.nameError.value
           : null,
@@ -135,16 +132,15 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   Widget _buildCategoryField() {
-    final theme = Theme.of(Get.context!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'product_category'.tr,
+        const Text(
+          'Danh muc san pham',
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
+            color: Colors.white,
           ),
         ),
         const SizedBox(height: 8),
@@ -167,8 +163,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.skuController,
       enable: isReadOnly,
-      hint: 'sku_example'.tr,
-      title: 'sku_code'.tr,
+      hint: 'VD: SP-001',
+      title: 'SKU/Ma SP',
       errorText: controller.hasSubmitted.value
           ? controller.skuError.value
           : null,
@@ -180,8 +176,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.priceController,
       enable: isReadOnly,
-      hint: 'price_hint'.tr,
-      title: 'selling_price'.tr,
+      hint: 'Gia tien',
+      title: 'Gia ban',
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       errorText: controller.hasSubmitted.value
           ? controller.priceError.value
@@ -194,8 +190,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.stockController,
       enable: isReadOnly,
-      hint: 'stock_example'.tr,
-      title: 'quantity'.tr,
+      hint: 'VD: 100',
+      title: 'So luong',
       keyboardType: TextInputType.number,
       errorText: controller.hasSubmitted.value
           ? controller.stockError.value
@@ -208,8 +204,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.descController,
       enable: isReadOnly,
-      hint: 'product_description_hint'.tr,
-      title: 'description'.tr,
+      hint: 'Mo ta san pham',
+      title: 'Mo ta',
       maxLine: 5,
       onChanged: (String value) => controller.onFormChanged(),
     );
@@ -228,7 +224,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         ),
         onPressed: () => controller.saveProduct(),
         child: Text(
-          mode == ProductPageMode.create ? 'create_new_product'.tr : 'save_changes'.tr,
+          mode == ProductPageMode.create ? 'Tao san pham moi' : 'Luu thay doi',
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -240,7 +236,6 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   Widget _buildCategorySelectMenu() {
-    final theme = Theme.of(Get.context!);
     final categoryController = Get.find<CategoryController>();
     return Obx(() {
       final currentId = controller.selectedCategoryId.value;
@@ -253,35 +248,32 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         onChanged: controller.pageMode.value == ProductPageMode.view
             ? null
             : (int? newValue) => controller.onCategoryChanged(newValue),
-        dropdownColor: theme.colorScheme.surface,
-        icon: Icon(Icons.arrow_drop_down, color: theme.colorScheme.primary),
-        hint: Text(
-          'select_category'.tr,
-          style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 14),
+        dropdownColor: const Color(0xFF1E1E1E),
+        icon: const Icon(Icons.arrow_drop_down, color: Colors.orange),
+        hint: const Text(
+          'Chon danh muc',
+          style: TextStyle(color: Colors.white, fontSize: 14),
         ),
-        style: TextStyle(
-          color: theme.colorScheme.onSurface,
+        style: const TextStyle(
+          color: Colors.white,
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
-          labelStyle: TextStyle(color: theme.colorScheme.onSurface),
+          labelStyle: const TextStyle(color: Colors.white),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,
             vertical: 14,
           ),
           filled: true,
-          fillColor: theme.colorScheme.surface,
+          fillColor: Colors.black,
           errorText: controller.hasSubmitted.value
               ? controller.categoryError.value
               : null,
           errorStyle: const TextStyle(color: ColorName.error),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-              width: 1.5,
-            ),
+            borderSide: const BorderSide(color: Colors.grey, width: 1.5),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -290,7 +282,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               width: 1.5,
             ),
           ),
@@ -299,8 +291,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           return categoryController.listCategory.map((category) {
             return Text(
               category.name,
-              style: TextStyle(
-                color: theme.colorScheme.onSurface,
+              style: const TextStyle(
+                color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),

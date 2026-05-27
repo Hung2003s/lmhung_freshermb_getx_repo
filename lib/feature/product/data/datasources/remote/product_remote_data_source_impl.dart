@@ -22,8 +22,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       final response = await _dioClient.get(
         ApiEndpoint.product,
         queryParameters: {
-          'keyword': ?keyword,
-          'category_id': ?categoryId,
+          if (keyword != null) 'keyword': keyword,
+          if (categoryId != null) 'category_id': categoryId,
           'page': page,
           'limit': limit,
         },

@@ -9,14 +9,4 @@ class Constants {
 
   static final taxNumberRule = RegExp(r'^([0-9]{10}-[0-9]{3}|[0-9]{12})$');
   static const accessTokenKey = 'ACCESS_TOKEN_KEY';
-  static const tokenExpiryKey = 'TOKEN_EXPIRY_KEY';
-
-  static const themeModeKey = 'THEME_MODE_KEY';
-  static const languageCodeKey = 'LANGUAGE_CODE_KEY';
-
-  // Login attempt limiter (client-side)
-  static const loginAttemptCountKey = 'LOGIN_ATTEMPT_COUNT_KEY';
-  static const loginLockoutTimeKey = 'LOGIN_LOCKOUT_TIME_KEY';
-  static const int maxLoginAttempts = 5;
-  static const int lockoutDurationMinutes = 1;
 }

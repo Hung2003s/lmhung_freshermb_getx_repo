@@ -19,11 +19,9 @@ class BaseDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     return Dialog(
-      backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+      backgroundColor: const Color(0xFF1E1E1E),
       elevation: 5,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       shape: RoundedRectangleBorder(
@@ -43,8 +41,8 @@ class BaseDialog extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: TextStyle(
-                      color: theme.colorScheme.onSurface,
+                    style: const TextStyle(
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -54,9 +52,9 @@ class BaseDialog extends StatelessWidget {
                 ),
                 if (showCloseIcon)
                   IconButton( // Dùng IconButton để có hit test area tốt hơn
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close_rounded,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                      color: Color(0xFF9E9E9E),
                       size: 22,
                     ),
                     onPressed: () {

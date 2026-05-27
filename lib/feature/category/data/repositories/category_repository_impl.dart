@@ -15,9 +15,9 @@ class CategoryRepositoryImpl implements CategoriesRepository {
   CategoryRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure,List<CategoryEntity>>> getCategories({int page = 1, int limit = 20}) async {
+  Future<Either<Failure,List<CategoryEntity>>> getCategories() async {
 
-      final result = await remoteDataSource.getCategories(page: page, limit: limit);
+      final result = await remoteDataSource.getCategories();
       if (result is DataSuccess) {
         return Right(result.data!.responseToListEntities());
       } else {
