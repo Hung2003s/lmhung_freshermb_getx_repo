@@ -57,17 +57,16 @@ class ProductController extends GetxController {
     String? keyword,
   }) async {
     try {
-      final params = ProductParams(
-        keyword: productSearchText.value,
-        categoryId: categoryId,
-        page: page.value,
-        limit: limit.value,
-      );
       if (!isLoadMore) {
         isLoading.value = true;
         page.value = 1;
         hasMore = true;
-        final result = await _useCase(params: params);
+        final result = await _useCase(
+          keyword: productSearchText.value,
+          categoryId: categoryId,
+          page: page.value,
+          limit: limit.value,
+        );
         if (result.isEmpty) {
           listProduct.assignAll([]);
           errorMessage.value = "no_products_in_category".tr;
@@ -79,7 +78,12 @@ class ProductController extends GetxController {
         if (isLoadingMore.value || !hasMore) return;
         isLoadingMore.value = true;
         page.value += 1;
-        final result = await _useCase(params: params);
+        final result = await _useCase(
+          keyword: productSearchText.value,
+          categoryId: categoryId,
+          page: page.value,
+          limit: limit.value,
+        );
         if (result.isEmpty) {
           page.value -= 1;
           hasMore = false;

@@ -4,7 +4,10 @@ import '../../model/product_model.dart';
 
 abstract class ProductRemoteDataSource {
   Future<DataState<ProductResponse>> getListProductById({
-     required ProductParams params
+    String? keyword,
+    int? categoryId,
+    required int page,
+    required int limit,
   });
 
   Future<DataState<AddProductRes>> addProduct({

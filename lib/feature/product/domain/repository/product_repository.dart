@@ -6,7 +6,10 @@ import '../entity/product_entity.dart';
 
 abstract class ProductRepository {
   Future<Either<Failure, List<ProductEntity>>> getListProductById({
-    required ProductParams params
+    String? keyword,
+    int? categoryId,
+    required int page,
+    required int limit,
   });
 
   Future<Either<Failure, int>> addProduct(ProductInfoParam params);

@@ -13,12 +13,20 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
 
   @override
   Future<DataState<ProductResponse>> getListProductById({
-   required ProductParams params,
+    String? keyword,
+    int? categoryId,
+    required int page,
+    required int limit,
   }) async {
     try {
       final response = await _dioClient.get(
         ApiEndpoint.product,
-        queryParameters: params.toJson(),
+        queryParameters: {
+          'keyword': ?keyword,
+          'category_id': ?categoryId,
+          'page': page,
+          'limit': limit,
+        },
         requiresToken: true,
       );
       return DataSuccess(ProductResponse.fromJson(response.data));

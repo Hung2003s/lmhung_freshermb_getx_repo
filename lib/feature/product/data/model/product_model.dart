@@ -7,18 +7,6 @@ part 'product_model.freezed.dart';
 
 part 'product_model.g.dart';
 
-@freezed
-abstract class ProductParams with _$ProductParams {
-  const factory ProductParams({
-    @JsonKey(name: 'keyword') String? keyword,
-    @JsonKey(name: 'category_id') int? categoryId,
-    @JsonKey(name: 'page') required int page,
-    @JsonKey(name: 'limit') required int limit,
-  }) = _ProductParams;
-
-  factory ProductParams.fromJson(Map<String, dynamic> json) =>
-      _$ProductParamsFromJson(json);
-}
 
 @freezed
 abstract class ProductResponse with _$ProductResponse {

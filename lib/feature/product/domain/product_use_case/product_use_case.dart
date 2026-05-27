@@ -9,10 +9,16 @@ class ProductUseCase {
   ProductUseCase(this.repository);
 
   Future<List<ProductEntity>> call({
-    required ProductParams params,
+    String? keyword,
+    int? categoryId,
+    required int page,
+    required int limit,
   }) async {
     final result = await repository.getListProductById(
-      params: params
+      keyword: keyword,
+      categoryId: categoryId,
+      page: page,
+      limit: limit,
     );
     return result.fold(
       (failure) => throw Exception(failure.message),
