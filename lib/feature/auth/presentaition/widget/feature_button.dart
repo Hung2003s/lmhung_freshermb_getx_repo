@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import '../../../../core/common_widget/button/selected_widget.dart';
 
 class FeatureButton extends StatelessWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String title;
   final Widget icons;
 
   const FeatureButton({
     super.key,
-    required this.onTap,
+    this.onTap,
     required this.title,
     required this.icons,
   });

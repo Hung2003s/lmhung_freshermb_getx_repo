@@ -14,16 +14,10 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure,List<ProductEntity>>> getListProductById({
-    String? keyword,
-    int? categoryId,
-    required int page,
-    required int limit,
+    required ProductParams params
   }) async {
       final result  = await remoteDataSource.getListProductById(
-        keyword:  keyword,
-        categoryId: categoryId,
-        page: page,
-        limit: limit,
+        params: params
       );
       if (result is DataSuccess) {
         return Right(result.data!.responseToListEntities());

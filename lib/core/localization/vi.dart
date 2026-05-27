@@ -90,7 +90,7 @@ class Vi extends Translations {
           'register_success': 'Đăng ký thành công',
           'register_failed': 'Đăng ký thất bại',
           'invalid_credentials': 'Vui lòng nhập thông tin đăng nhập.',
-          'login_locked': 'Tài khoản đã bị khóa tạm thời. Vui lòng thử lại sau @s phút.',
+          'login_locked': 'Tài khoản đã bị khóa tạm thời. Vui lòng thử lại sau @s giây.',
           'login_attempts_left': 'Còn @s lần đăng nhập trước khi bị khóa.',
           'login_locked_button': 'Đã khóa',
           'no_products_in_category': 'Không tìm thấy sản phẩm nào của danh mục này',

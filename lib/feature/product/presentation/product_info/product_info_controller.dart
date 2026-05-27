@@ -4,7 +4,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/categor
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
 
-import '../../../../gen/colors.gen.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../data/model/product_model.dart';
 import '../../domain/product_use_case/product_use_case.dart';
 
@@ -227,22 +227,10 @@ class ProductInfoController extends GetxController {
       final productId = await _useCase.addProduct(param);
       // Pop trước rồi mới hiện snackbar để snackbar không bị nuốt theo route
       Get.back(result: productId);
-      Get.snackbar(
-        'add_success'.tr,
-        '',
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.greenLight.withValues(alpha: 0.9),
-      );
+      AppToast.showSuccess(title: 'add_success'.tr);
     } catch (e) {
       errorMessage.value = e.toString();
-      Get.snackbar(
-        'add_failed'.tr,
-        errorMessage.value,
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.error.withValues(alpha: 0.9),
-      );
+      AppToast.showError(title: 'add_failed'.tr, message: errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -257,33 +245,15 @@ class ProductInfoController extends GetxController {
       isLoading.value = true;
       final result = await _useCase.updateProduct(params, initialProduct!.id);
       if (!result) {
-        Get.snackbar(
-          'update_failed'.tr,
-          '',
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.white,
-          backgroundColor: ColorName.error.withValues(alpha: 0.9),
-        );
+        AppToast.showError(title: 'update_failed'.tr, message: '');
         return;
       }
 
       Get.back(result: true);
-      Get.snackbar(
-        'update_success'.tr,
-        '',
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.greenLight.withValues(alpha: 0.9),
-      );
+      AppToast.showSuccess(title: 'update_success'.tr);
     } catch (e) {
       errorMessage.value = e.toString();
-      Get.snackbar(
-        'update_failed'.tr,
-        errorMessage.value,
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.error.withValues(alpha: 0.9),
-      );
+      AppToast.showError(title: 'update_failed'.tr, message: errorMessage.value);
     } finally {
       isLoading.value = false;
     }

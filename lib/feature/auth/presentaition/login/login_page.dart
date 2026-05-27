@@ -122,7 +122,7 @@ class LoginPage extends GetView<LoginController> {
           rippleColor: Colors.grey,
           highlightColor: Colors.grey,
           borderRadius: BorderRadius.circular(16),
-          onTap: controller.isLocked.value ? null : () {
+          onTap: controller.isLocked.value ? null : controller.isLoading.value ?  null : () {
             controller.login();
           },
           backgroundColor: controller.isLocked.value ? Colors.grey : ColorName.orange,
@@ -132,13 +132,15 @@ class LoginPage extends GetView<LoginController> {
             ),
             padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
             child: Center(
-              child: Text(
+              child: (!controller.isLoading.value) ? Text(
                 controller.isLocked.value ? 'login_locked_button'.tr : 'login'.tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
+              ) : const CircularProgressIndicator(
+                color: Colors.white,
               ),
             ),
           ),
@@ -217,13 +219,11 @@ class LoginPage extends GetView<LoginController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FeatureButton(
-              onTap: () {},
               title: 'help'.tr,
               icons: Assets.icons.headphone.svg(width: 20),
             ),
             const SizedBox(width: 16),
             FeatureButton(
-              onTap: () {},
               title: 'Group',
               icons: Assets.icons.icon.svg(width: 20),
             ),

@@ -2,15 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/profile_app_bar.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/fast_feature_card.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
-import '../../../core/common_widget/button/selected_widget.dart';
-import '../../../core/common_widget/dialog/dialog_x.dart';
-import '../../../core/common_widget/input/text_input_field.dart';
 import '../../../gen/assets.gen.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -115,7 +111,7 @@ class HomePage extends GetView<HomeController> {
     return Text(
       title,
       style: context.textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.w600
+        fontWeight: FontWeight.w600,
       ),
     );
   }
@@ -125,7 +121,7 @@ class HomePage extends GetView<HomeController> {
       children: [
         Expanded(child: _buildAddProductAction()),
         const SizedBox(width: 16),
-        Expanded(child: _buildAddCategoryAction(context)),
+        Expanded(child: _buildAddCategoryAction()),
       ],
     );
   }
@@ -144,73 +140,14 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _buildAddCategoryAction(BuildContext context) {
+  Widget _buildAddCategoryAction() {
     return FastFeatureCard(
-      filledColor: context.theme.colorScheme.secondary.withValues(alpha: 0.4),
-      borderColor: context.theme.colorScheme.surface.withValues(alpha: 0.2),
+      filledColor: Theme.of(Get.context!).colorScheme.secondary.withValues(alpha: 0.4),
+      borderColor: Theme.of(Get.context!).colorScheme.surface.withValues(alpha: 0.2),
       icon: Assets.icons.whiteFolder.svg(),
       title: 'add_category'.tr,
       textColor: Colors.white,
-      onTap: fastAddCategoryMethod,
-    );
-  }
-
-  void fastAddCategoryMethod() {
-    final categoryController = Get.find<CategoryController>();
-    Get.showCustomDialog(
-      content: _buildFastAddCategoryContent(categoryController),
-      title: 'add_category'.tr,
-      footer: _buildFastAddCategoryFooter(categoryController),
-    );
-  }
-
-  Widget _buildFastAddCategoryContent(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'category_name'.tr,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextInputFields(
-          textStyle: TextStyle(
-            color: theme.colorScheme.onSurface,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          onChanged: (value) {
-            categoryController.addCategoryText.value = value;
-          },
-          controller: categoryController.addController,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFastAddCategoryFooter(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
-    return SelectedWidget(
-      onTap: () {
-        Get.back();
-        categoryController.addCategory();
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        child: Text(
-          'save'.tr,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-      ),
+      onTap: () => controller.fastAddCategoryMethod(),
     );
   }
 
@@ -226,7 +163,7 @@ class HomePage extends GetView<HomeController> {
       decoration: BoxDecoration(
         color: isDark
             ? const Color(0xFF1E1E1E)
-            : const Color(0xFFFFFFFF), // gần như trắng, chỉ hơi hơi xám cyan
+            : const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

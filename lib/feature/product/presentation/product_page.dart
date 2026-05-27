@@ -7,12 +7,10 @@ import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_sort_card.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/product_card.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
 import '../../../core/common_widget/base_view/base_view.dart';
-import '../../../core/common_widget/dialog/dialog_x.dart';
 import '../../../gen/assets.gen.dart';
 
 class ProductPage extends GetView<ProductController> {
@@ -75,7 +73,7 @@ class ProductPage extends GetView<ProductController> {
       borderRadius: BorderRadius.circular(12),
       rippleColor: Colors.grey.withValues(alpha: 0.4),
       highlightColor: Colors.grey.withValues(alpha: 0.4),
-      onTap: () => controller.navigateToCreate(),
+      onTap: () => controller.navigateToInfo(),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -114,7 +112,7 @@ class ProductPage extends GetView<ProductController> {
                 return card;
               },
               separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 8,);
+                return const SizedBox(height: 8);
               },
             ),
           ),
@@ -154,78 +152,7 @@ class ProductPage extends GetView<ProductController> {
       productEntity: item,
       categoryStatus: 'in_stock'.tr,
       onTap: () => controller.navigateToInfo(item),
-      onDelete: () => deleteProductAction(item),
-    );
-  }
-
-  void deleteProductAction(ProductEntity item) {
-    Get.showCustomDialog(
-      content: _buildDeleteDialogContent(),
-      footer: _buildDeleteDialogFooter(item),
-      title: '',
-    );
-  }
-
-  Widget _buildDeleteDialogContent() {
-    final theme = Theme.of(Get.context!);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'delete_product_confirm'.tr,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDeleteDialogFooter(ProductEntity item) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        _buildDialogButton(title: 'cancel'.tr, onTap: () => Get.back()),
-        const SizedBox(width: 12),
-        _buildDialogButton(
-          title: 'confirm'.tr,
-          onTap: () {
-            Get.back();
-            controller.deleteProduct(item.id);
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDialogButton({
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    final theme = Theme.of(Get.context!);
-    return SelectedWidget(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-          border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.4),
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-      ),
+      onDelete: () => controller.deleteProductAction(item),
     );
   }
 
@@ -349,7 +276,7 @@ class ProductPage extends GetView<ProductController> {
   Widget _buildCategoryPicker(CategoryController categoryController) {
     return Obx(
       () => SelectedWidget(
-        onTap: () => _showCategoryBottomSheet(categoryController),
+        onTap: () => controller.showCategoryBottomSheet(),
         child: _buildCategoryPickerContent(categoryController),
       ),
     );
@@ -372,7 +299,7 @@ class ProductPage extends GetView<ProductController> {
         children: [
           Expanded(
             child: Text(
-              _selectedCategoryTitle(categoryController),
+              controller.selectedCategoryTitle(categoryController),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -431,136 +358,4 @@ class ProductPage extends GetView<ProductController> {
       ],
     );
   }
-
-  String _selectedCategoryTitle(CategoryController categoryController) {
-    final selectedIndex = controller.currentFilterIndex.value;
-    if (selectedIndex == 0) {
-      return 'all_categories'.tr;
-    }
-
-    final categoryIndex = selectedIndex - 1;
-    if (categoryIndex < 0 ||
-        categoryIndex >= categoryController.listCategory.length) {
-      return 'all_categories'.tr;
-    }
-
-    return categoryController.listCategory[categoryIndex].name;
-  }
-
-  void _showCategoryBottomSheet(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
-    Get.bottomSheet(
-      Container(
-        constraints: BoxConstraints(maxHeight: Get.height * 0.65),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildBottomSheetHandle(),
-              _buildBottomSheetHeader(),
-              Divider(
-                height: 1,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.12),
-              ),
-              _buildCategoryBottomSheetList(categoryController),
-            ],
-          ),
-        ),
-      ),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
-  }
-
-  Widget _buildBottomSheetHandle() {
-    final theme = Theme.of(Get.context!);
-    return Container(
-      width: 40,
-      height: 4,
-      margin: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.25),
-        borderRadius: BorderRadius.circular(2),
-      ),
-    );
-  }
-
-  Widget _buildBottomSheetHeader() {
-    final theme = Theme.of(Get.context!);
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'select_category'.tr,
-              style: TextStyle(
-                color: theme.colorScheme.onSurface,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(Icons.close_rounded, color: theme.colorScheme.onSurface),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryBottomSheetList(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
-    return Flexible(
-      child: Obx(
-        () => ListView.separated(
-          shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          itemCount: categoryController.listCategory.length + 1,
-          separatorBuilder: (context, index) => Divider(
-            height: 1,
-            indent: 16,
-            endIndent: 16,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
-          ),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return CategorySortCard(
-                title: 'all'.tr,
-                isSelected: controller.currentFilterIndex.value == 0,
-                onTap: () => _selectAllCategories(),
-              );
-            }
-
-            final item = categoryController.listCategory[index - 1];
-            return CategorySortCard(
-              title: item.name,
-              isSelected: controller.currentFilterIndex.value == index,
-              onTap: () => _selectCategory(index: index, categoryId: item.id),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  void _selectAllCategories() {
-    controller.currentFilterIndex.value = 0;
-    controller.fetchListProduct(isLoadMore: false);
-    Get.back();
-  }
-
-  void _selectCategory({required int index, required int categoryId}) {
-    controller.currentFilterIndex.value = index;
-    controller.onSelectedFilter(categoryId);
-    Get.back();
-  }
-
-
 }

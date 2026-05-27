@@ -90,7 +90,7 @@ class En extends Translations {
           'register_success': 'Register successful',
           'register_failed': 'Register failed',
           'invalid_credentials': 'Please enter your credentials.',
-          'login_locked': 'Account is temporarily locked. Please try again in @s minutes.',
+          'login_locked': 'Account is temporarily locked. Please try again in @s seconds.',
           'login_attempts_left': '@s attempts remaining before lockout.',
           'login_locked_button': 'Locked',
           'no_products_in_category': 'No products found for this category',

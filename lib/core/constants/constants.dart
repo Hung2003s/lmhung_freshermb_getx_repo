@@ -18,5 +18,5 @@ class Constants {
   static const loginAttemptCountKey = 'LOGIN_ATTEMPT_COUNT_KEY';
   static const loginLockoutTimeKey = 'LOGIN_LOCKOUT_TIME_KEY';
   static const int maxLoginAttempts = 5;
-  static const int lockoutDurationMinutes = 1;
+  static const int lockoutDurationSeconds = 30;
 }

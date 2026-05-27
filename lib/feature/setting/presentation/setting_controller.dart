@@ -5,6 +5,7 @@ import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
 import '../../../core/storage/secure_storage/token/token_manager.dart';
+import '../../../core/utils/app_toast.dart';
 
 class SettingController extends GetxController {
   final GetStorage _storage = Get.find<GetStorage>();
@@ -81,7 +82,9 @@ class SettingController extends GetxController {
   }
 
   bool get isDarkMode => themeMode.value == ThemeMode.dark;
+
   bool get isLightMode => themeMode.value == ThemeMode.light;
+
   bool get isSystemMode => themeMode.value == ThemeMode.system;
 
   String get currentLanguageCode => currentLocale.value.languageCode;
@@ -91,13 +94,7 @@ class SettingController extends GetxController {
       await Get.find<TokenManager>().clearToken();
       Get.offAllNamed(Routes.login);
     } catch (e) {
-      Get.snackbar(
-        'error_title'.tr,
-        'logout_failed'.tr,
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: Colors.red.withValues(alpha: 0.2),
-      );
+      AppToast.showError(title: 'error_title'.tr, message: 'logout_failed'.tr);
     }
   }
 }

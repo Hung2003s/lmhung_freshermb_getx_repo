@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
+
+import '../../../../core/utils/app_toast.dart';
 import '../../data/models/login_model/login_model.dart';
 import '../../domain/usecases/auth_usecase.dart';
-import 'package:flutter/services.dart';
 
 class LoginController extends GetxController {
   final AuthUseCase _loginUseCase;
@@ -50,8 +51,11 @@ class LoginController extends GetxController {
       if (lockoutTime != null && DateTime.now().isBefore(lockoutTime)) {
         // Still locked
         isLocked.value = true;
-        final remainingMinutes = lockoutTime.difference(DateTime.now()).inMinutes + 1;
-        lockoutMessage.value = 'login_locked'.trParams({'s': remainingMinutes.toString()});
+        final remainingMinutes =
+            lockoutTime.difference(DateTime.now()).inMinutes + 1;
+        lockoutMessage.value = 'login_locked'.trParams({
+          's': remainingMinutes.toString(),
+        });
         loginAttemptCount.value = Constants.maxLoginAttempts;
         return;
       } else {
@@ -83,12 +87,17 @@ class LoginController extends GetxController {
       // Lock the account
       isLocked.value = true;
       final lockoutUntil = DateTime.now().add(
-        Duration(minutes: Constants.lockoutDurationMinutes),
+        Duration(seconds: Constants.lockoutDurationSeconds),
       );
-      _storage.write(Constants.loginLockoutTimeKey, lockoutUntil.toIso8601String());
+      _storage.write(
+        Constants.loginLockoutTimeKey,
+        lockoutUntil.toIso8601String(),
+      );
 
-      final remainingMinutes = Constants.lockoutDurationMinutes;
-      lockoutMessage.value = 'login_locked'.trParams({'s': remainingMinutes.toString()});
+      final remainingSeconds = Constants.lockoutDurationSeconds;
+      lockoutMessage.value = 'login_locked'.trParams({
+        's': remainingSeconds.toString(),
+      });
     }
   }
 
@@ -116,12 +125,9 @@ class LoginController extends GetxController {
   Future<void> login() async {
     // Check if locked
     if (isLocked.value) {
-      Get.snackbar(
-        'login_locked_button'.tr,
-        lockoutMessage.value,
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      AppToast.showError(
+        title: 'login_locked_button'.tr,
+        message: lockoutMessage.value,
       );
       return;
     }
@@ -129,10 +135,9 @@ class LoginController extends GetxController {
     String username = userNameText.value.trim();
     String password = passwordText.value.trim();
     if (username.isEmpty || password.isEmpty) {
-      Get.snackbar(
-        'login_failed'.tr,
-        'invalid_credentials'.tr,
-        snackPosition: SnackPosition.TOP,
+      AppToast.showError(
+        title: 'login_failed'.tr,
+        message: 'invalid_credentials'.tr,
       );
       return;
     }
@@ -141,24 +146,19 @@ class LoginController extends GetxController {
       isLoading.value = true;
       errorMessage.value = '';
 
-      final request = LoginParams(
-          userName: username,
-          password: password);
+      final request = LoginParams(userName: username, password: password);
 
       final response = await _loginUseCase(request);
-        if (response.accessToken.isNotEmpty && response.accessToken != null) {
-          TextInput.finishAutofillContext(shouldSave: true);
-          // Reset attempts on successful login
-          _resetLoginAttempts();
-          Get.offAllNamed(Routes.dashboard);
-          Get.snackbar(
-            'login_success'.tr,
-            errorMessage.value,
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: ColorName.greenLight,
-            colorText: Colors.white,
-          );
-        }
+      if (response.accessToken.isNotEmpty && response.accessToken != null) {
+        TextInput.finishAutofillContext(shouldSave: true);
+        // Reset attempts on successful login
+        _resetLoginAttempts();
+        Get.offAllNamed(Routes.dashboard);
+        AppToast.showSuccess(
+          title: 'login_success'.tr,
+          message: errorMessage.value,
+        );
+      }
     } catch (e) {
       errorMessage.value = e.toString();
 
@@ -166,26 +166,17 @@ class LoginController extends GetxController {
       _incrementAttemptCount();
 
       if (isLocked.value) {
-        Get.snackbar(
-          'login_locked_button'.tr,
-          lockoutMessage.value,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+        AppToast.showError(
+          title: 'login_locked_button'.tr,
+          message: lockoutMessage.value,
         );
       } else {
-        final attemptsLeft = Constants.maxLoginAttempts - loginAttemptCount.value;
+        final attemptsLeft =
+            Constants.maxLoginAttempts - loginAttemptCount.value;
         final subtitle = attemptsLeft > 0
             ? 'login_attempts_left'.trParams({'s': attemptsLeft.toString()})
             : errorMessage.value;
-
-        Get.snackbar(
-          'login_failed'.tr,
-          subtitle,
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
+        AppToast.showError(title: 'login_failed'.tr, message: subtitle);
       }
     } finally {
       isLoading.value = false;
