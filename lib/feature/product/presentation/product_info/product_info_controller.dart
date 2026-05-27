@@ -58,7 +58,7 @@ class ProductInfoController extends GetxController {
     final price = double.tryParse(priceText);
     final stock = int.tryParse(stockText);
 
-    nameError.value = name.isEmpty ? 'name_required'.tr : null;
+    nameError.value = name.isEmpty ? 'Ten bat buoc' : null;
     skuError.value = _validateSku(sku);
     priceError.value = _validatePrice(priceText, price);
     stockError.value = _validateStock(stockText, stock);
@@ -73,7 +73,7 @@ class ProductInfoController extends GetxController {
 
   String? _validateSku(String sku) {
     if (sku.isEmpty) {
-      return 'code_required'.tr;
+      return 'Ma bat buoc';
     }
 
     if (!Get.isRegistered<ProductController>()) {
@@ -87,18 +87,18 @@ class ProductInfoController extends GetxController {
           product.id != initialProduct?.id,
     );
 
-    return isDuplicated ? 'code_exists'.tr : null;
+    return isDuplicated ? 'Ma san pham da ton tai' : null;
   }
 
   String? _validatePrice(String priceText, double? price) {
     if (priceText.isEmpty) {
-      return 'price_required'.tr;
+      return 'Gia bat buoc';
     }
     if (price == null) {
-      return 'price_invalid'.tr;
+      return 'Gia khong hop le';
     }
     if (price <= 0) {
-      return 'price_positive'.tr;
+      return 'Gia phai lon hon 0';
     }
     return null;
   }
@@ -108,10 +108,10 @@ class ProductInfoController extends GetxController {
       return null;
     }
     if (stock == null) {
-      return 'stock_invalid'.tr;
+      return 'Ton kho khong hop le';
     }
     if (stock < 0) {
-      return 'stock_non_negative'.tr;
+      return 'Ton kho phai lon hon hoac bang 0';
     }
     return null;
   }
@@ -119,7 +119,7 @@ class ProductInfoController extends GetxController {
   String? _validateCategory() {
     final categoryId = selectedCategoryId.value;
     if (categoryId == null) {
-      return 'category_required'.tr;
+      return 'Danh muc bat buoc';
     }
 
     if (!Get.isRegistered<CategoryController>()) {
@@ -130,7 +130,7 @@ class ProductInfoController extends GetxController {
       (category) => category.id == categoryId,
     );
 
-    return isCategoryExists ? null : 'category_invalid'.tr;
+    return isCategoryExists ? null : 'Danh muc khong hop le';
   }
 
   void clearValidationErrors() {
@@ -228,7 +228,7 @@ class ProductInfoController extends GetxController {
       // Pop trước rồi mới hiện snackbar để snackbar không bị nuốt theo route
       Get.back(result: productId);
       Get.snackbar(
-        'add_success'.tr,
+        'Thêm thành công',
         '',
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,
@@ -237,7 +237,7 @@ class ProductInfoController extends GetxController {
     } catch (e) {
       errorMessage.value = e.toString();
       Get.snackbar(
-        'add_failed'.tr,
+        'Thêm thất bại',
         errorMessage.value,
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,
@@ -258,7 +258,7 @@ class ProductInfoController extends GetxController {
       final result = await _useCase.updateProduct(params, initialProduct!.id);
       if (!result) {
         Get.snackbar(
-          'update_failed'.tr,
+          'Cap nhat that bai',
           '',
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -269,7 +269,7 @@ class ProductInfoController extends GetxController {
 
       Get.back(result: true);
       Get.snackbar(
-        'update_success'.tr,
+        'Cập nhật thành công',
         '',
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,
@@ -278,7 +278,7 @@ class ProductInfoController extends GetxController {
     } catch (e) {
       errorMessage.value = e.toString();
       Get.snackbar(
-        'update_failed'.tr,
+        'Cập nhật thất bại',
         errorMessage.value,
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,

@@ -23,29 +23,17 @@ class ProductController extends GetxController {
   final RxnInt selectedCategoryId = RxnInt();
   final TextEditingController searchController = TextEditingController();
 
-  final ScrollController scrollController = ScrollController();
-
   final Rx<SortOption> currentSort = SortOption.nameAsc.obs;
 
   final RxList<ProductEntity> listProduct = <ProductEntity>[].obs;
   RxInt page = 1.obs;
   RxInt limit = 20.obs;
-  bool hasMore = true;
   Timer? debounce;
 
   @override
   void onInit() {
     fetchListProduct(isLoadMore: false);
-    scrollController.addListener(_onScroll);
     super.onInit();
-  }
-
-
-  @override
-  void onClose() {
-    scrollController.removeListener(_onScroll);
-    scrollController.dispose();
-    super.onClose();
   }
 
   Future<void> fetchListProduct({
@@ -57,7 +45,6 @@ class ProductController extends GetxController {
       if (!isLoadMore) {
         isLoading.value = true;
         page.value = 1;
-        hasMore = true;
         final result = await _useCase(
           keyword: productSearchText.value,
           categoryId: categoryId,
@@ -66,13 +53,12 @@ class ProductController extends GetxController {
         );
         if (result.isEmpty) {
           listProduct.assignAll([]);
-          errorMessage.value = "no_products_in_category".tr;
+          errorMessage.value = "Không tìm thấy sản phẩm nào của danh mục này";
         } else {
           listProduct.assignAll(result);
         }
         isLoading.value = false;
       } else {
-        if (isLoadingMore.value || !hasMore) return;
         isLoadingMore.value = true;
         page.value += 1;
         final result = await _useCase(
@@ -83,7 +69,6 @@ class ProductController extends GetxController {
         );
         if (result.isEmpty) {
           page.value -= 1;
-          hasMore = false;
         } else {
           listProduct.addAll(result);
         }
@@ -130,7 +115,7 @@ class ProductController extends GetxController {
       final result = await _useCase.deleteProduct(id);
       if (result) {
         Get.snackbar(
-          'delete_success'.tr,
+          'Xoá thành công',
           '',
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -140,7 +125,7 @@ class ProductController extends GetxController {
         listProduct.insert(index, originalProduct);
         listProduct.refresh();
         Get.snackbar(
-          'delete_failed'.tr,
+          'Xoá thất bại',
           errorMessage.value,
           snackPosition: SnackPosition.TOP,
           colorText: Colors.white,
@@ -154,19 +139,12 @@ class ProductController extends GetxController {
       }
       errorMessage.value = e.toString();
       Get.snackbar(
-        'delete_failed'.tr,
+        'Xoá thất bại',
         errorMessage.value,
         snackPosition: SnackPosition.TOP,
         colorText: Colors.white,
         backgroundColor: ColorName.error.withValues(alpha: 0.2),
       );
-    }
-  }
-
-  void _onScroll() {
-    if (scrollController.position.pixels >=
-        scrollController.position.maxScrollExtent - 200) {
-      fetchListProduct(isLoadMore: true);
     }
   }
 

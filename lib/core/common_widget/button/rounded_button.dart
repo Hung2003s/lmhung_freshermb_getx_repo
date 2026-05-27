@@ -18,15 +18,13 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
     return OutlinedButton(
       // Nếu đang loading thì chặn không cho bấm tiếp
       onPressed: isLoading ? null : onPressed,
       style: OutlinedButton.styleFrom(
-        backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
-        side: BorderSide(
-          color: isDark ? const Color(0xFF333333) : Colors.grey.withValues(alpha: 0.3),
+        backgroundColor: const Color(0xFF1E1E1E),
+        side: const BorderSide(
+          color: Color(0xFF333333),
           width: 1.0,
         ),
         shape: const StadiumBorder(),
@@ -34,20 +32,18 @@ class RoundedButton extends StatelessWidget {
           horizontal: 32,
           vertical: 16,
         ),
-        foregroundColor: theme.colorScheme.onSurface,
-        disabledBackgroundColor: isDark ? const Color(0xFF161616) : Colors.grey.withValues(alpha: 0.1),
+        foregroundColor: Colors.white10,
+        disabledBackgroundColor: const Color(0xFF161616),
       ),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         child: isLoading
-            ? SizedBox(
+            ? const SizedBox(
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
             strokeWidth: 2.0,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              theme.colorScheme.onSurface.withValues(alpha: 0.5),
-            ),
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF9E9E9E)),
           ),
         )
             : Row(
@@ -56,8 +52,8 @@ class RoundedButton extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              style: const TextStyle(
+                color: Color(0xFF9E9E9E),
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.3,
@@ -67,7 +63,7 @@ class RoundedButton extends StatelessWidget {
               const SizedBox(width: 8),
               Icon(
                 icon,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                color: const Color(0xFF9E9E9E),
                 size: 16,
               ),
             ],

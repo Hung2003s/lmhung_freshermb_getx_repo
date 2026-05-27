@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/custom_app_bar.dart';
@@ -5,6 +6,7 @@ import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 import '../../../../core/common_widget/base_view/base_view.dart';
 import '../../../../core/common_widget/button/selected_widget.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../navigation/routes.dart';
 import '../widget/feature_button.dart';
 import '../widget/input_field.dart';
 import 'login_controller.dart';
@@ -55,53 +57,45 @@ class LoginPage extends GetView<LoginController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text('welcome_back'.tr, style: context.textTheme.headlineSmall),
+        Text('Chào mừng trở lại',
+            style: context.textTheme.headlineSmall),
         const SizedBox(height: 8),
         Text(
-          'login_description'.tr,
+          'Đăng nhập để quản lý kho của bạn',
           style: context.textTheme.titleSmall,
         ),
         const SizedBox(height: 24),
-        AutofillGroup(
-          child: Column(
-            children: [
-              InputField(
-                isShowClearButton: true,
-                controller: controller.userNameController,
-                onChanged: (value) {
-                  controller.userNameText.value = value;
-                },
-                hint: 'username'.tr,
-                title: 'username'.tr,
-                autoFillHint: const [AutofillHints.username],
-                // errorText: controller.showError ? state.userNameError : null,
-              ),
-              const SizedBox(height: 4),
-              InputField(
-                isPassword: true,
-                controller: controller.passwordController,
-                onChanged: (value) {
-                  controller.passwordText.value = value;
-                },
-                hint: 'password'.tr,
-                title: 'password'.tr,
-                textInputAction: TextInputAction.done,
-                autoFillHint: const [AutofillHints.password],
-                // errorText: state.showError ? state.passwordError : null,
-                onSubmitted: (value) {
-                  controller.login();
-                },
-              ),
-            ],
-          ),
+        InputField(
+          isShowClearButton: true,
+          controller: controller.userNameController,
+          onChanged: (value) {
+            controller.userNameText.value = value;
+          },
+          hint: 'Tài khoản',
+          title: 'Tài khoản',
+          // errorText: controller.showError ? state.userNameError : null,
         ),
-
+        const SizedBox(height: 4),
+        InputField(
+          isPassword: true,
+          controller: controller.passwordController,
+          onChanged: (value) {
+            controller.passwordText.value = value;
+          },
+          hint: 'Mật khẩu',
+          title: 'Mật khẩu',
+          textInputAction: TextInputAction.done,
+          // errorText: state.showError ? state.passwordError : null,
+          onSubmitted: (value) {
+            controller.login();
+          },
+        ),
         Container(
           alignment: Alignment.centerRight,
           child: SelectedWidget(
             onTap: () {},
             child: Text(
-              'forgot_password'.tr,
+              'Quên mật khẩu?',
               style: TextStyle(
                 fontSize: 14,
                 color: ColorName.orange,
@@ -117,23 +111,16 @@ class LoginPage extends GetView<LoginController> {
   Widget loginFooter(BuildContext context) {
     return Column(
       children: [
-        Obx(
-          () => SelectedWidget(
-          rippleColor: Colors.grey,
-          highlightColor: Colors.grey,
-          borderRadius: BorderRadius.circular(16),
-          onTap: controller.isLocked.value ? null : () {
+        SelectedWidget(
+          onTap: () {
             controller.login();
           },
-          backgroundColor: controller.isLocked.value ? Colors.grey : ColorName.orange,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
-            child: Center(
+          backgroundColor: ColorName.orange,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Text(
-                controller.isLocked.value ? 'login_locked_button'.tr : 'login'.tr,
+                'Đăng nhập',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -143,24 +130,6 @@ class LoginPage extends GetView<LoginController> {
             ),
           ),
         ),
-        ),
-        // Show lockout message if locked
-        if (controller.isLocked.value)
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Obx(
-              () => Text(
-                controller.lockoutMessage.value,
-                style: TextStyle(
-                  color: Colors.red[300],
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.italic,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
         const SizedBox(height: 8),
         SelectedWidget(
           onTap: () {
@@ -170,9 +139,9 @@ class LoginPage extends GetView<LoginController> {
             text: TextSpan(
               style: context.textTheme.labelLarge,
               children: [
-                TextSpan(text: "no_account".tr),
+                TextSpan(text: "Chưa có tài khoản?"),
                 TextSpan(
-                  text: "register".tr,
+                  text: "Đăng ký",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -191,12 +160,14 @@ class LoginPage extends GetView<LoginController> {
             Expanded(
               child: Container(
                 height: 1,
-                decoration: BoxDecoration(color: ColorName.primary),
+                decoration: BoxDecoration(
+                  color: ColorName.primary,
+                ),
               ),
             ),
             const SizedBox(width: 16),
             Text(
-              'or_login_with'.tr,
+              'Hoặc đăng nhập với',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
@@ -207,7 +178,9 @@ class LoginPage extends GetView<LoginController> {
             Expanded(
               child: Container(
                 height: 1,
-                decoration: BoxDecoration(color: ColorName.primary),
+                decoration: BoxDecoration(
+                  color: ColorName.primary,
+                ),
               ),
             ),
           ],
@@ -218,7 +191,7 @@ class LoginPage extends GetView<LoginController> {
           children: [
             FeatureButton(
               onTap: () {},
-              title: 'help'.tr,
+              title: 'Trợ giúp',
               icons: Assets.icons.headphone.svg(width: 20),
             ),
             const SizedBox(width: 16),
@@ -241,9 +214,9 @@ class LoginPage extends GetView<LoginController> {
                 decoration: TextDecoration.underline,
               ),
               children: [
-                TextSpan(text: "need_help".tr),
+                TextSpan(text: "Cần trợ giúp?"),
                 TextSpan(
-                  text: "contact_support".tr,
+                  text: "Liên hệ hỗ trợ",
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

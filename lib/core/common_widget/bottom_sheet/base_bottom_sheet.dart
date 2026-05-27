@@ -42,21 +42,20 @@ class BaseBottomSheet extends StatelessWidget {
   /// xay dung giao dien khung cua bottom sheet
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Container(
       height: height ?? MediaQuery.of(context).size.height * 0.8,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: Column(
         children: [
-          _buildHandle(context),
+          _buildHandle(),
           _buildHeader(context),
-          Divider(height: 1, color: theme.dividerColor),
+          const Divider(height: 1),
           Expanded(child: body),
           if (actions != null && actions!.isNotEmpty) ...[
-            Divider(height: 1, color: theme.dividerColor),
+            const Divider(height: 1),
             _buildActions(),
           ],
         ],
@@ -65,14 +64,13 @@ class BaseBottomSheet extends StatelessWidget {
   }
 
   /// tao thanh cam de keo mo hoac dong bottom sheet
-  Widget _buildHandle(BuildContext context) {
-    final theme = Theme.of(context);
+  Widget _buildHandle() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
       width: 40,
       height: 4,
       decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+        color: Colors.grey[300],
         borderRadius: BorderRadius.circular(2),
       ),
     );
@@ -80,7 +78,6 @@ class BaseBottomSheet extends StatelessWidget {
 
   /// tao phan dau trang bao gom tieu de va nut dong
   Widget _buildHeader(BuildContext context) {
-    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 8, 8),
       child: Row(
@@ -88,21 +85,21 @@ class BaseBottomSheet extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary,
+                color: Color(0xFF1A237E),
               ),
             ),
           ),
           if (showCloseButton)
             IconButton(
-              icon: Icon(Icons.close, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+              icon: const Icon(Icons.close, color: Colors.grey),
               onPressed: () {
                 Navigator.pop(context);
               },
-              splashColor: theme.colorScheme.primary.withValues(alpha: 0.1),
-              highlightColor: theme.colorScheme.primary.withValues(alpha: 0.05),
+              splashColor: const Color(0x1F1A237E),
+              highlightColor: const Color(0x141A237E),
             ),
         ],
       ),

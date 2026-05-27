@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../domain/entities/categories_entity.dart';
+
 part 'category_delete_model.freezed.dart';
 part 'category_delete_model.g.dart';
 

@@ -28,8 +28,18 @@ class _BouncingLoadingWidgetState extends State<BouncingLoadingWidget>
       vsync: this,
     )..repeat(); // Lặp lại vô tận
 
+    // Thiết lập 3 interval lệch nhau (0.0 -> 1.0)
+    final double start = 0.0;
+    final double end = 0.8; // Dùng 80% thời gian đầu để nhảy, 20% cuối để nghỉ (mượt hơn)
 
     for (int i = 0; i < 3; i++) {
+      // Tính toán khoảng thời gian bắt đầu nhảy cho từng chấm
+      final double beginInterval = start + (i * 0.2);
+      final double endInterval = beginInterval + 0.4;
+
+      // Đảm bảo không vượt quá 1.0
+      final double safeEnd = endInterval > 1.0 ? 1.0 : endInterval;
+      final double safeBegin = beginInterval > 1.0 ? 1.0 : beginInterval;
 
       _animations.add(
         TweenSequence<double>([

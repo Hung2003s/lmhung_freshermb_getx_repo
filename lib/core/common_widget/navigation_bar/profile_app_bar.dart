@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:get/get_utils/src/extensions/context_extensions.dart';
 import '../../../../gen/colors.gen.dart'; // Import file màu hệ thống của bạn
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -8,7 +7,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? greetingText;
   final VoidCallback? onNotificationPressed;
   final bool hasNotification;
-  final Color? backgroundColor;
+  final Color backgroundColor;
 
   const ProfileAppBar({
     super.key,
@@ -16,23 +15,21 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.greetingText,
     this.onNotificationPressed,
     this.hasNotification = true,
-    this.backgroundColor,
+    this.backgroundColor = const Color(0xFF111417),
   });
 
   String _getGreeting() {
     if (greetingText != null) return greetingText!;
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'greeting_morning'.tr;
-    if (hour < 18) return 'greeting_afternoon'.tr;
-    return 'greeting_evening'.tr;
+    if (hour < 12) return 'Chào buổi sáng,';
+    if (hour < 18) return 'Chào buổi chiều,';
+    return 'Chào buổi tối,';
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final bgColor = backgroundColor ?? theme.scaffoldBackgroundColor;
     return AppBar(
-      backgroundColor: theme.colorScheme.primary.withValues(alpha: 0.3),
+      backgroundColor: ColorName.orange.withValues(alpha: 0.3),
       elevation: 0,
       automaticallyImplyLeading: false,
       title: Row(
@@ -41,19 +38,19 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary,
+              color: ColorName.orange,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  color: ColorName.orange.withOpacity(0.3),
                   blurRadius: 10,
                   spreadRadius: 1,
                 )
               ],
             ),
-            child: Icon(
+            child: const Icon(
               Icons.person_rounded,
-              color: theme.colorScheme.onPrimary,
+              color: Colors.white,
               size: 24,
             ),
           ),
@@ -66,7 +63,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   _getGreeting(),
                   style: TextStyle(
-                    color: theme.colorScheme.onSurface,
+                    color: context.theme.colorScheme.secondary,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
@@ -75,7 +72,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   username,
                   style: TextStyle(
-                    color: theme.colorScheme.onSurface,
+                    color: context.theme.colorScheme.secondary,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -95,16 +92,16 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                    color:  context.theme.colorScheme.secondary,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.2),
+                      color: Colors.white.withOpacity(0.05),
                       width: 1,
                     ),
                   ),
                   child: Icon(
                     Icons.notifications_none_rounded,
-                    color: theme.colorScheme.primary,
+                    color: context.theme.colorScheme.surface,
                     size: 22,
                   ),
                 ),
@@ -116,10 +113,10 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                       width: 11,
                       height: 11,
                       decoration: BoxDecoration(
-                        color: ColorName.error,
+                        color: ColorName.orange,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: bgColor,
+                          color: const Color(0xFF111417),
                           width: 1.5,
                         ),
                       ),

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/gradient_border_animation.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
 import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_sort_card.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/product_card.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
@@ -20,9 +18,8 @@ class ProductPage extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return BaseView(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Colors.black,
       buildBody: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         child: RefreshIndicator(
@@ -53,14 +50,13 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildTitleRow() {
-    final theme = Theme.of(Get.context!);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          'products'.tr,
+        const Text(
+          'San pham',
           style: TextStyle(
-            color: theme.colorScheme.onSurface,
+            color: Colors.white,
             fontSize: 32,
             fontWeight: FontWeight.w500,
           ),
@@ -72,9 +68,6 @@ class ProductPage extends GetView<ProductController> {
 
   Widget _buildAddProductButton() {
     return SelectedWidget(
-      borderRadius: BorderRadius.circular(12),
-      rippleColor: Colors.grey.withValues(alpha: 0.4),
-      highlightColor: Colors.grey.withValues(alpha: 0.4),
       onTap: () => controller.navigateToCreate(),
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -93,53 +86,33 @@ class ProductPage extends GetView<ProductController> {
         return _buildEmptyState();
       }
 
-      return Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              controller: controller.scrollController,
-              scrollDirection: Axis.vertical,
-              itemCount: controller.listProduct.length,
-              itemBuilder: (BuildContext context, int index) {
-                final item = controller.listProduct[index];
-                final isLastItem = index == controller.listProduct.length - 1;
-                final card = _buildProductCard(item);
-                if (isLastItem) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 60),
-                    child: card,
-                  );
-                }
+      return ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: controller.listProduct.length,
+        itemBuilder: (BuildContext context, int index) {
+          final item = controller.listProduct[index];
+          final isLastItem = index == controller.listProduct.length - 1;
+          final card = _buildProductCard(item);
 
-                return card;
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 8,);
-              },
-            ),
-          ),
-          Obx(
-            () => controller.isLoadingMore.value
-                ? const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Center(
-                      child: CircularProgressIndicator(color: ColorName.orange),
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
-        ],
+          if (isLastItem) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 60),
+              child: card,
+            );
+          }
+
+          return card;
+        },
       );
     });
   }
 
   Widget _buildEmptyState() {
-    final theme = Theme.of(Get.context!);
     return Center(
       child: Text(
         controller.errorMessage.value,
-        style: TextStyle(
-          color: theme.colorScheme.onSurface,
+        style: const TextStyle(
+          color: Colors.white,
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),
@@ -152,7 +125,7 @@ class ProductPage extends GetView<ProductController> {
       icon: Assets.icons.whiteFolder.svg(width: 16),
       iconColor: ColorName.blueLight,
       productEntity: item,
-      categoryStatus: 'in_stock'.tr,
+      categoryStatus: 'Còn hàng',
       onTap: () => controller.navigateToInfo(item),
       onDelete: () => deleteProductAction(item),
     );
@@ -167,16 +140,15 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildDeleteDialogContent() {
-    final theme = Theme.of(Get.context!);
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'delete_product_confirm'.tr,
+          'Ban co chac chan muon xoa san pham nay?',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
+            color: Colors.white,
           ),
         ),
       ],
@@ -187,10 +159,10 @@ class ProductPage extends GetView<ProductController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        _buildDialogButton(title: 'cancel'.tr, onTap: () => Get.back()),
+        _buildDialogButton(title: 'Huy', onTap: () => Get.back()),
         const SizedBox(width: 12),
         _buildDialogButton(
-          title: 'confirm'.tr,
+          title: 'Xac nhan',
           onTap: () {
             Get.back();
             controller.deleteProduct(item.id);
@@ -204,25 +176,24 @@ class ProductPage extends GetView<ProductController> {
     required String title,
     required VoidCallback onTap,
   }) {
-    final theme = Theme.of(Get.context!);
     return SelectedWidget(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
+          color: Colors.white.withValues(alpha: 0.2),
           border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.4),
+            color: Colors.white.withValues(alpha: 0.4),
             width: 2,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
-            color: theme.colorScheme.onSurface,
+            color: Colors.white,
           ),
         ),
       ),
@@ -230,90 +201,66 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildCategoryFilter() {
-    final theme = Theme.of(Get.context!);
     final categoryController = Get.find<CategoryController>();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 12),
-        GradientBorderAnimation(child: _buildSearchField()),
+        _buildSearchField(),
         const SizedBox(height: 16),
         Row(
           children: [
             Expanded(child: _buildCategoryPicker(categoryController)),
-            const SizedBox(width: 16),
+            const SizedBox(width: 16,),
             Obx(
               () => Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
-                  ),
+                    color: Colors.white.withValues(alpha: 0.2),
+                  )
                 ),
                 child: PopupMenuButton<SortOption>(
-                  tooltip: 'sort_filter'.tr,
-                  color: theme.colorScheme.surface,
+                  tooltip: 'Sắp xếp & Lọc',
+                  color: Colors.black,
                   onSelected: (SortOption result) {
                     controller.currentSort.value = result;
                     controller.sortProduct(result);
                   },
-                  itemBuilder: (BuildContext context) => SortOption.values.map((
-                    option,
-                  ) {
+                  itemBuilder: (BuildContext context) => SortOption.values.map((option) {
                     final isSelected = controller.currentSort.value == option;
                     return PopupMenuItem<SortOption>(
                       value: option,
-                      child: Text(
-                        option.title,
-                        style: TextStyle(
-                          color: isSelected
-                              ? ColorName.orange
-                              : theme.colorScheme.onSurface,
-                          fontSize: 16,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w500,
-                        ),
-                      ),
+                      child: Text(option.title, style: TextStyle(
+                        color: isSelected ? ColorName.orange : Colors.white,
+                        fontSize: 16,
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                      ),), // Tự động lấy string từ hàm get title của bạn
                     );
                   }).toList(),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      border: Border.all(
-                        color: theme.colorScheme.onSurface.withValues(
-                          alpha: 0.3,
-                        ),
-                      ),
-                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.transparent, // Hoặc Colors.grey.shade800 nếu dùng Dark Mode như ảnh
+                      border: Border.all(color: Colors.grey), // Viền nút
+                      borderRadius: BorderRadius.circular(8), // Bo góc giống ảnh của bạn
                     ),
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.min, // Để Row tự co lại vừa với nội dung
                       children: [
-                        Icon(
-                          Icons.sort,
-                          size: 20,
-                          color: theme.colorScheme.onSurface,
-                        ),
+                        const Icon(Icons.sort, size: 20, color: Colors.white,), // Icon bộ lọc
                         const SizedBox(width: 8),
+                        // HIỂN THỊ TITLE CỦA ENUM ĐANG CHỌN TẠI ĐÂY
                         Text(
                           controller.currentSort.value.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.onSurface,
+                            color: Colors.white
                           ),
                         ),
                         const SizedBox(width: 4),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 20,
-                          color: theme.colorScheme.onSurface,
-                        ),
+                        const Icon(Icons.keyboard_arrow_down, size: 20), // Icon mũi tên chỉ xuống
                       ],
                     ),
                   ),
@@ -331,13 +278,6 @@ class ProductPage extends GetView<ProductController> {
 
   Widget _buildSearchField() {
     return CustomSearchField(
-      focusColor: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(
-          color: Colors.transparent,
-          width: 1.5,
-        ),
-      ),
       controller: controller.searchController,
       onChanged: (value) {
         controller.searchProduct(value);
@@ -356,14 +296,13 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildCategoryPickerContent(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+        color: Colors.white.withValues(alpha: 0.1),
         border: Border.all(
-          color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+          color: Colors.white.withValues(alpha: 0.2),
           width: 1.5,
         ),
         borderRadius: BorderRadius.circular(12),
@@ -375,57 +314,48 @@ class ProductPage extends GetView<ProductController> {
               _selectedCategoryTitle(categoryController),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: theme.colorScheme.onSurface,
+              style: const TextStyle(
+                color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
           ),
           const SizedBox(width: 8),
-          Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: theme.colorScheme.onSurface,
-          ),
+          const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white),
         ],
       ),
     );
   }
 
   Widget _buildListMetaRow() {
-    final theme = Theme.of(Get.context!);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Obx(
           () => Text(
-            'showing_products'.trParams({
-              's': controller.listProduct.length.toString(),
-            }),
+            'Hien thi ${controller.listProduct.length} san pham',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+              color: Colors.white.withValues(alpha: 0.4),
             ),
           ),
         ),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
             Text(
-              'newest'.tr,
+              'Moi nhat',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSurface,
+                color: Colors.white,
               ),
             ),
-            const SizedBox(width: 4),
-            Icon(
-              Icons.keyboard_arrow_down_rounded,
-              color: theme.colorScheme.onSurface,
-            ),
+            SizedBox(width: 4),
+            Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white),
           ],
         ),
       ],
@@ -435,26 +365,25 @@ class ProductPage extends GetView<ProductController> {
   String _selectedCategoryTitle(CategoryController categoryController) {
     final selectedIndex = controller.currentFilterIndex.value;
     if (selectedIndex == 0) {
-      return 'all_categories'.tr;
+      return 'Tat ca danh muc';
     }
 
     final categoryIndex = selectedIndex - 1;
     if (categoryIndex < 0 ||
         categoryIndex >= categoryController.listCategory.length) {
-      return 'all_categories'.tr;
+      return 'Tat ca danh muc';
     }
 
     return categoryController.listCategory[categoryIndex].name;
   }
 
   void _showCategoryBottomSheet(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
     Get.bottomSheet(
       Container(
         constraints: BoxConstraints(maxHeight: Get.height * 0.65),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        decoration: const BoxDecoration(
+          color: Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: SafeArea(
           top: false,
@@ -463,10 +392,7 @@ class ProductPage extends GetView<ProductController> {
             children: [
               _buildBottomSheetHandle(),
               _buildBottomSheetHeader(),
-              Divider(
-                height: 1,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.12),
-              ),
+              Divider(height: 1, color: Colors.white.withValues(alpha: 0.12)),
               _buildCategoryBottomSheetList(categoryController),
             ],
           ),
@@ -478,29 +404,27 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildBottomSheetHandle() {
-    final theme = Theme.of(Get.context!);
     return Container(
       width: 40,
       height: 4,
       margin: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.25),
+        color: Colors.white.withValues(alpha: 0.25),
         borderRadius: BorderRadius.circular(2),
       ),
     );
   }
 
   Widget _buildBottomSheetHeader() {
-    final theme = Theme.of(Get.context!);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
       child: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: Text(
-              'select_category'.tr,
+              'Chon danh muc',
               style: TextStyle(
-                color: theme.colorScheme.onSurface,
+                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
@@ -508,7 +432,7 @@ class ProductPage extends GetView<ProductController> {
           ),
           IconButton(
             onPressed: () => Get.back(),
-            icon: Icon(Icons.close_rounded, color: theme.colorScheme.onSurface),
+            icon: const Icon(Icons.close_rounded, color: Colors.white),
           ),
         ],
       ),
@@ -516,7 +440,6 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildCategoryBottomSheetList(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
     return Flexible(
       child: Obx(
         () => ListView.separated(
@@ -527,19 +450,19 @@ class ProductPage extends GetView<ProductController> {
             height: 1,
             indent: 16,
             endIndent: 16,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
+            color: Colors.white.withValues(alpha: 0.08),
           ),
           itemBuilder: (context, index) {
             if (index == 0) {
-              return CategorySortCard(
-                title: 'all'.tr,
+              return _categoryBottomSheetItem(
+                title: 'Tat ca',
                 isSelected: controller.currentFilterIndex.value == 0,
                 onTap: () => _selectAllCategories(),
               );
             }
 
             final item = categoryController.listCategory[index - 1];
-            return CategorySortCard(
+            return _categoryBottomSheetItem(
               title: item.name,
               isSelected: controller.currentFilterIndex.value == index,
               onTap: () => _selectCategory(index: index, categoryId: item.id),
@@ -562,5 +485,34 @@ class ProductPage extends GetView<ProductController> {
     Get.back();
   }
 
-
+  Widget _categoryBottomSheetItem({
+    required String title,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return SelectedWidget(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: isSelected ? ColorName.orange : Colors.white,
+                  fontSize: 16,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(Icons.check_rounded, color: ColorName.orange),
+          ],
+        ),
+      ),
+    );
+  }
 }

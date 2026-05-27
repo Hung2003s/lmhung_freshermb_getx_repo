@@ -55,9 +55,9 @@ class HomePage extends GetView<HomeController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('warehouse_overview'.tr, style: context.textTheme.titleLarge),
+        Text('Tong quan kho', style: context.textTheme.titleLarge),
         Text(
-          'updated_at'.tr,
+          'Cap nhat luc: 08:30 AM, 24/10/2023',
           style: context.textTheme.bodyMedium,
         ),
       ],
@@ -102,7 +102,7 @@ class HomePage extends GetView<HomeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('quick_actions'.tr, context),
+            _buildSectionTitle('Loi tat nhanh',context),
             const SizedBox(height: 16),
             _buildFastFeatureActions(context),
           ],
@@ -132,11 +132,10 @@ class HomePage extends GetView<HomeController> {
 
   Widget _buildAddProductAction() {
     return FastFeatureCard(
-      rippleColor: Colors.grey,
       filledColor: ColorName.orange,
       borderColor: ColorName.orange,
       icon: Assets.icons.whiteAdd.svg(),
-      title: 'add_product'.tr,
+      title: 'Them san pham',
       textColor: Colors.white,
       onTap: () {
         Get.toNamed(Routes.productsInfo);
@@ -146,10 +145,10 @@ class HomePage extends GetView<HomeController> {
 
   Widget _buildAddCategoryAction(BuildContext context) {
     return FastFeatureCard(
-      filledColor: context.theme.colorScheme.secondary.withValues(alpha: 0.4),
+      filledColor: context.theme.colorScheme.secondary.withValues(alpha: 0.2),
       borderColor: context.theme.colorScheme.surface.withValues(alpha: 0.2),
       icon: Assets.icons.whiteFolder.svg(),
-      title: 'add_category'.tr,
+      title: 'Them danh muc',
       textColor: Colors.white,
       onTap: fastAddCategoryMethod,
     );
@@ -159,31 +158,31 @@ class HomePage extends GetView<HomeController> {
     final categoryController = Get.find<CategoryController>();
     Get.showCustomDialog(
       content: _buildFastAddCategoryContent(categoryController),
-      title: 'add_category'.tr,
+      title: 'Them danh muc',
       footer: _buildFastAddCategoryFooter(categoryController),
     );
   }
 
   Widget _buildFastAddCategoryContent(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'category_name'.tr,
+        const Text(
+          'Ten danh muc',
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
+            color: Colors.white,
           ),
         ),
         const SizedBox(height: 8),
         TextInputFields(
-          textStyle: TextStyle(
-            color: theme.colorScheme.onSurface,
+          textStyle: const TextStyle(
+            color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
+          filledColor: Colors.white,
           onChanged: (value) {
             categoryController.addCategoryText.value = value;
           },
@@ -194,20 +193,19 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildFastAddCategoryFooter(CategoryController categoryController) {
-    final theme = Theme.of(Get.context!);
     return SelectedWidget(
       onTap: () {
         Get.back();
         categoryController.addCategory();
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Text(
-          'save'.tr,
+          'Luu',
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
-            color: theme.colorScheme.onSurface,
+            color: Colors.white,
           ),
         ),
       ),
@@ -220,23 +218,15 @@ class HomePage extends GetView<HomeController> {
     bool hasGrow = false,
     required BuildContext context,
   }) {
-    final isDark = context.theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-        color: isDark
-            ? const Color(0xFF1E1E1E)
-            : const Color(0xFFFFFFFF), // gần như trắng, chỉ hơi hơi xám cyan
+        color: context.theme.colorScheme.surface.withValues(alpha: 0.4),
+        border: Border.all(
+          color: context.theme.colorScheme.secondary.withValues(alpha: 0.4),
+          width: 2,
+        ),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withValues(alpha: 0.3)
-                : const Color(0xFFB0C4D8).withValues(alpha: 0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +302,7 @@ class HomePage extends GetView<HomeController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('total_products'.tr, style: context.textTheme.titleSmall),
+        Text('Tong san pham', style: context.textTheme.titleSmall),
         const SizedBox(height: 2),
         Text('1200', style: context.textTheme.headlineSmall),
       ],
