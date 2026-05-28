@@ -83,6 +83,21 @@ class BarcodeScanController extends GetxController {
     selectedProducts.removeWhere((p) => p.id == productId);
   }
 
+  Future<void> startCameraScan() async {
+    try {
+      isScanning.value = true;
+      final barcode = await _scannerPlugin.startCameraScan();
+      if (barcode != null && barcode.isNotEmpty) {
+        await handleScannedBarcode(barcode);
+      }
+    } catch (e) {
+      debugPrint('Camera scan error: $e');
+      AppToast.showError(title: 'scan_error'.tr, message: e.toString());
+    } finally {
+      isScanning.value = false;
+    }
+  }
+
   void clearAll() {
     selectedProducts.clear();
     lastScannedCode.value = '';

@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>NSFaceIDUsageDescription</key>
+    <string>Ứng dụng cần dùng Face ID để đăng nhập an toàn.</string>
 	<key>CFBundleDisplayName</key>
 	<string>Lmhung Freshermb Getx Repo</string>
 	<key>CFBundleExecutable</key>

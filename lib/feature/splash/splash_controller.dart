@@ -15,15 +15,15 @@ class SplashController extends GetxController {
   }
 
   Future<void> _initApp() async {
-    // Load saved settings (theme & language) after build phase completes
+    // Load cài đặ đã lưu (theme & language)
     await Future.microtask(() => _loadSavedSettings());
 
     // Đợi TokenManager khởi tạo và đọc token từ storage
     final tokenManager = Get.find<TokenManager>();
     await tokenManager.init();
 
-    // Chờ một chút cho hiệu ứng splash
-    await Future.delayed(const Duration(milliseconds: 120));
+    // Delay cho hiệu ứng splash
+    await Future.delayed(const Duration(milliseconds: 150));
 
     splashNavigate();
   }
@@ -32,7 +32,7 @@ class SplashController extends GetxController {
     final storage = Get.find<GetStorage>();
     final settingController = Get.find<SettingController>();
 
-    // Load saved theme mode
+    // Load thême mode đã lưu
     final savedThemeMode = storage.read<String>(Constants.themeModeKey);
     if (savedThemeMode != null) {
       switch (savedThemeMode) {
@@ -48,7 +48,7 @@ class SplashController extends GetxController {
     }
     Get.changeThemeMode(settingController.themeMode.value);
 
-    // Load saved language
+    // Load ngôn ngữ đã lưu
     final savedLanguageCode = storage.read<String>(Constants.languageCodeKey);
     if (savedLanguageCode != null) {
       settingController.currentLocale.value = Locale(

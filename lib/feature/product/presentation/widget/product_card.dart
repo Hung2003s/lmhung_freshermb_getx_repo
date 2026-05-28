@@ -102,7 +102,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${"sku_code".tr}: SP-IP15-256',
+                      '${"sku_code".tr}: ${productEntity.code}',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

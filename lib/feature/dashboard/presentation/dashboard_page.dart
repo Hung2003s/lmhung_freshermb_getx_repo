@@ -22,13 +22,19 @@ class DashboardPage extends GetView<DashboardController> {
     ];
 
     return Scaffold(
-      // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
+        fit: StackFit.expand,
         children: [
           Obx(
             () => IndexedStack(
               index: controller.currentTabIndex.value,
-              children: pages,
+              children: [
+                _buildLazyTab(0, pages[0]),
+                _buildLazyTab(1, pages[1]),
+                _buildLazyTab(2, pages[2]),
+                _buildLazyTab(3, pages[3]),
+                _buildLazyTab(4, pages[4]),
+              ],
             ),
           ),
           const Align(
@@ -38,5 +44,12 @@ class DashboardPage extends GetView<DashboardController> {
         ],
       ),
     );
+  }
+  Widget _buildLazyTab(int index, Widget view) {
+    // Check: Nếu tab này đã được đánh dấu HOẶC đang là tab được chọn
+    if (controller.initializedTabs[index] == true) {
+      return view;
+    }
+    return const SizedBox.shrink();
   }
 }

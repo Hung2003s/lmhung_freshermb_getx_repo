@@ -21,6 +21,7 @@ class Vi extends Translations {
       'category_name': 'Tên danh mục',
       'save': 'Lưu',
       'total_products': 'Tổng sản phẩm',
+      'growing_percent': '+12%',
 
       // Category Page
       'manage': 'Quản lý',
@@ -138,6 +139,60 @@ class Vi extends Translations {
       // Auth - Register
       'register_title': 'Đăng ký tài khoản',
       'or_register_with': 'Hoặc đăng ký với',
+      'session_expired': 'Phiên đăng nhập đã hết hạn',
+      'pls_login_again': 'Vui lòng đăng nhập lại',
+
+      // Biometric Authentication
+      'biometric': 'Sinh trắc học',
+      'face_id': 'Face ID',
+      'fingerprint': 'Vân tay',
+      'biometric_not_enrolled': 'Thiết bị chưa đăng ký sinh trắc học',
+      'biometric_locked_out': 'Xác thực sinh trắc học đã bị khóa',
+      'biometric_canceled': 'Đã hủy xác thực sinh trắc học',
+      'biometric_error': 'Lỗi xác thực sinh trắc học',
+      'biometric_login': 'Đăng nhập bằng @s',
+      'biometric_login_reason': 'Xác thực để đăng nhập bằng thông tin đã lưu',
+      'biometric_login_failed': 'Đăng nhập vân tay thất bại',
+      'biometric_login_failed_credentials':
+          'Thông tin đã lưu không hợp lệ. Vui lòng đăng nhập thủ công.',
+      'biometric_save_reason': 'Xác thực để bật đăng nhập sinh trắc học',
+      'biometric_enable_failed': 'Bật sinh trắc học thất bại',
+      'biometric_enable_from_login':
+          'Vui lòng đăng nhập trước khi bật sinh trắc học',
+      'biometric_enabled': 'Đã bật đăng nhập sinh trắc học',
+      'biometric_disabled': 'Đã tắt đăng nhập sinh trắc học',
+      'biometric_enabled_desc': 'Đăng nhập bằng vân tay/khuôn mặt',
+      'biometric_disabled_desc': 'Không sử dụng đăng nhập sinh trắc học',
+      'security': 'Bảo mật',
+      'enable': 'Bật',
+      'disable': 'Tắt',
+
+      // Empty States
+      'no_categories_found': 'Không tìm thấy danh mục',
+      'try_adding_category': 'Hãy thử thêm một danh mục mới',
+      'no_products_found': 'Không tìm thấy sản phẩm',
+      'try_adding_product': 'Hãy thử thêm một sản phẩm mới',
+      'retry': 'Thử lại',
+
+      // Barcode Scan
+      'barcode_scan': 'Quét mã vạch',
+      'scan_with_camera': 'Quét bằng camera',
+      'clear_all': 'Xoá tất cả',
+      'scanning_status': 'Trạng thái quét',
+      'scanned_count': 'Đã quét: @count sản phẩm',
+      'scanning': 'Đang quét',
+      'last_scanned': 'Mã cuối: @code',
+      'scan_barcode_to_start': 'Quét mã vạch để bắt đầu',
+      'added_product': 'Đã thêm @name',
+      'product_already_selected': 'Sản phẩm đã được chọn',
+      'scan_error': 'Lỗi quét',
+
+      // Language names
+      'vietnamese': 'Tiếng Việt',
+      'english': 'English',
+
+      // Quick actions
+      'group': 'Nhóm',
     },
   };
 }

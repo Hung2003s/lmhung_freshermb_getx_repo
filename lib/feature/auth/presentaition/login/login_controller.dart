@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
+import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
 import '../../../../core/utils/app_toast.dart';
@@ -12,6 +13,7 @@ import '../../domain/usecases/auth_usecase.dart';
 class LoginController extends GetxController {
   final AuthUseCase _loginUseCase;
   final GetStorage _storage = Get.find<GetStorage>();
+  final BiometricAuthService _biometricAuth = BiometricAuthService();
 
   LoginController(this._loginUseCase);
 
@@ -22,6 +24,11 @@ class LoginController extends GetxController {
   final RxInt loginAttemptCount = 0.obs;
   final RxBool isLocked = false.obs;
   final RxString lockoutMessage = ''.obs;
+
+  // Biometric login
+  final RxBool isBiometricAvailable = false.obs;
+  final RxBool isBiometricEnabled = false.obs;
+  final RxString biometricTypeName = ''.obs;
 
   //Bien trang thai ô nhập tên đăng nhập
   final userNameText = ''.obs;
@@ -41,7 +48,30 @@ class LoginController extends GetxController {
       userNameText.value = userNameController.text;
     });
     _checkLockoutStatus();
+    _initBiometric();
     super.onInit();
+  }
+
+  Future<void> _initBiometric() async {
+    final available = await _biometricAuth.isBiometricAvailable();
+    isBiometricAvailable.value = available;
+    if (available) {
+      biometricTypeName.value = await _biometricAuth.getBiometricDisplayName();
+      final savedUsername = _storage.read<String>(
+        Constants.biometricUsernameKey,
+      );
+      final savedPassword = _storage.read<String>(
+        Constants.biometricPasswordKey,
+      );
+      // Only consider if both username and password are real credentials
+      isBiometricEnabled.value =
+          savedUsername != null &&
+          savedUsername.isNotEmpty &&
+          savedUsername != 'enabled' &&
+          savedPassword != null &&
+          savedPassword.isNotEmpty &&
+          savedPassword != 'enabled';
+    }
   }
 
   void _checkLockoutStatus() {
@@ -71,6 +101,7 @@ class LoginController extends GetxController {
     }
   }
 
+  ///Reset lại các biến đếm số lần đăng nhập sai
   void _resetLoginAttempts() {
     loginAttemptCount.value = 0;
     isLocked.value = false;
@@ -123,7 +154,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> login() async {
-    // Check if locked
+    // Kiểm tra nếu bị lock
     if (isLocked.value) {
       AppToast.showError(
         title: 'login_locked_button'.tr,
@@ -141,7 +172,6 @@ class LoginController extends GetxController {
       );
       return;
     }
-
     try {
       isLoading.value = true;
       errorMessage.value = '';
@@ -149,10 +179,13 @@ class LoginController extends GetxController {
       final request = LoginParams(userName: username, password: password);
 
       final response = await _loginUseCase(request);
-      if (response.accessToken.isNotEmpty && response.accessToken != null) {
+      if (response.accessToken.isNotEmpty) {
         TextInput.finishAutofillContext(shouldSave: true);
-        // Reset attempts on successful login
-        _resetLoginAttempts();
+        _resetLoginAttempts(); // Reset attempts on successful login
+        await _saveBiometricCredentials(
+          username,
+          password,
+        ); // Lưu thông tin xác thực sinh học
         Get.offAllNamed(Routes.dashboard);
         AppToast.showSuccess(
           title: 'login_success'.tr,
@@ -162,7 +195,7 @@ class LoginController extends GetxController {
     } catch (e) {
       errorMessage.value = e.toString();
 
-      // Increment failed attempt counter
+      // tăng số lần đăng nhập sai
       _incrementAttemptCount();
 
       if (isLocked.value) {
@@ -180,6 +213,76 @@ class LoginController extends GetxController {
       }
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  /// Lưu thông tin đăng nhập và dữ liệu sinh học sau khi đăng nhập
+  Future<void> _saveBiometricCredentials(
+    String username,
+    String password,
+  ) async {
+    await _storage.write(Constants.biometricUsernameKey, username);
+    await _storage.write(Constants.biometricPasswordKey, password);
+    isBiometricEnabled.value = true;
+  }
+
+  /// Đang nhap bang van tay
+  Future<bool> loginWithBiometric() async {
+    if (!isBiometricAvailable.value || !isBiometricEnabled.value) {
+      return false;
+    }
+
+    try {
+      final authenticated = await _biometricAuth.authenticate(
+        reason: 'biometric_login_reason'.tr,
+      );
+      if (!authenticated) return false;
+
+      // Lấy thông tin xác thực từ vân tay đã lưu
+      final savedUsername =
+          _storage.read<String>(Constants.biometricUsernameKey) ?? '';
+      final savedPassword =
+          _storage.read<String>(Constants.biometricPasswordKey) ?? '';
+
+      if (savedUsername.isEmpty || savedPassword.isEmpty) {
+        isBiometricEnabled.value = false;
+        return false;
+      }
+
+      // đăng nhập bằng thông tin xác thực đã lưu
+      try {
+        isLoading.value = true;
+        errorMessage.value = '';
+
+        final request = LoginParams(
+          userName: savedUsername,
+          password: savedPassword,
+        );
+        final response = await _loginUseCase(request);
+        if (response.accessToken.isNotEmpty) {
+          _resetLoginAttempts();
+          Get.offAllNamed(Routes.dashboard);
+          AppToast.showSuccess(title: 'login_success'.tr);
+          return true;
+        }
+      } catch (e) {
+        errorMessage.value = e.toString();
+        AppToast.showError(
+          title: 'login_failed'.tr,
+          message: 'biometric_login_failed_credentials'.tr,
+        );
+      } finally {
+        isLoading.value = false;
+      }
+      return false;
+    } on BiometricException catch (e) {
+      if (e.message != 'biometric_canceled'.tr) {
+        AppToast.showError(
+          title: 'biometric_login_failed'.tr,
+          message: e.message,
+        );
+      }
+      return false;
     }
   }
 

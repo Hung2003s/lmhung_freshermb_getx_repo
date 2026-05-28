@@ -151,7 +151,7 @@ class RegisterPage extends GetView<RegisterController> {
             const SizedBox(width: 16),
             FeatureButton(
               onTap: () {},
-              title: 'Group',
+              title: 'group'.tr,
               icons: Assets.icons.icon.svg(width: 20),
             ),
           ],

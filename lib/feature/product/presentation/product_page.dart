@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/gradient_border_animation.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
@@ -88,14 +89,31 @@ class ProductPage extends GetView<ProductController> {
 
   Widget _buildProductList() {
     return Obx(() {
+      if (controller.isLoading.value) {
+        return const LoadingStateWidget();
+      }
+
+      if (controller.errorMessage.value.isNotEmpty &&
+          controller.listProduct.isEmpty) {
+        return ErrorStateWidget(
+          message: controller.errorMessage.value,
+          onRetry: () => controller.fetchListProduct(isLoadMore: false),
+        );
+      }
+
       if (controller.listProduct.isEmpty) {
-        return _buildEmptyState();
+        return EmptyStateWidget(
+          icon: Icons.inventory_2_outlined,
+          title: 'no_products_found'.tr,
+          subtitle: 'try_adding_product'.tr,
+        );
       }
 
       return Column(
         children: [
           Expanded(
             child: ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: controller.scrollController,
               scrollDirection: Axis.vertical,
               itemCount: controller.listProduct.length,
@@ -130,20 +148,6 @@ class ProductPage extends GetView<ProductController> {
         ],
       );
     });
-  }
-
-  Widget _buildEmptyState() {
-    final theme = Theme.of(Get.context!);
-    return Center(
-      child: Text(
-        controller.errorMessage.value,
-        style: TextStyle(
-          color: theme.colorScheme.onSurface,
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
   }
 
   Widget _buildProductCard(ProductEntity item) {

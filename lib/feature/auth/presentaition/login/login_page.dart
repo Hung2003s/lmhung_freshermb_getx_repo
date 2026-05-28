@@ -44,7 +44,6 @@ class LoginPage extends GetView<LoginController> {
         builder: (context, constraints) {
           final screenHeight = constraints.maxHeight;
           final screenWidth = constraints.maxWidth;
-          // Responsive scale factor based on screen height (baseline: 800px)
           final scale = (screenHeight / 800).clamp(0.7, 1.2);
           final isTablet = screenWidth > 600;
           final horizontalPadding = isTablet ? screenWidth * 0.15 : 12.0;
@@ -215,35 +214,46 @@ class LoginPage extends GetView<LoginController> {
             ),
           ),
         ),
-        SizedBox(height: 16 * scale),
-        // Divider: "or_login_with"
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                height: 1,
-                decoration: BoxDecoration(color: ColorName.primary),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                'or_login_with'.tr,
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                  color: ColorName.primary,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                height: 1,
-                decoration: BoxDecoration(color: ColorName.primary),
-              ),
-            ),
-          ],
+        Obx(
+          () =>
+              controller.isBiometricAvailable.value &&
+                  controller.isBiometricEnabled.value
+              ? Column(
+                  children: [
+                    SizedBox(height: 16 * scale),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            decoration: BoxDecoration(color: ColorName.primary),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            'or_login_with'.tr,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                              color: ColorName.primary,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 1,
+                            decoration: BoxDecoration(color: ColorName.primary),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16 * scale),
+                    _buildBiometricLoginButton(context, scale),
+                  ],
+                )
+              : const SizedBox.shrink(),
         ),
         SizedBox(height: 16 * scale),
         FittedBox(
@@ -256,7 +266,7 @@ class LoginPage extends GetView<LoginController> {
               ),
               SizedBox(width: screenWidth * 0.04),
               FeatureButton(
-                title: 'Group',
+                title: 'group'.tr,
                 icons: Assets.icons.icon.svg(width: 20),
               ),
             ],
@@ -290,6 +300,44 @@ class LoginPage extends GetView<LoginController> {
         ),
         SizedBox(height: 24 * scale),
       ],
+    );
+  }
+
+  Widget _buildBiometricLoginButton(BuildContext context, double scale) {
+    return SelectedWidget(
+      borderRadius: BorderRadius.circular(16),
+      onTap: controller.isLoading.value
+          ? null
+          : () => controller.loginWithBiometric(),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 14 * scale),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: ColorName.orange.withValues(alpha: 0.5),
+            width: 1.5,
+          ),
+          color: ColorName.orange.withValues(alpha: 0.1),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.fingerprint, size: 24, color: ColorName.orange),
+            const SizedBox(width: 12),
+            Text(
+              'biometric_login'.trParams({
+                's': controller.biometricTypeName.value,
+              }),
+              style: const TextStyle(
+                color: ColorName.orange,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

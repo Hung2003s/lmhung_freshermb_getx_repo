@@ -44,11 +44,6 @@ class SplashPage extends GetView<SplashController> {
           ),
         ),
         const SizedBox(height: 16),
-        // RoundedButton(
-        //     onPressed: () {
-        //
-        //     },
-        //     title: 'Chạm để tiếp tục'),
       ],
     );
   }

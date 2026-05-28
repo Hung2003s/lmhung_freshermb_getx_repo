@@ -4,6 +4,7 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_vie
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/profile_app_bar.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/fast_feature_card.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/info_card.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
@@ -28,6 +29,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
+  /// Tổng quan kho hàng
   SliverToBoxAdapter _buildOverviewSection(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
@@ -35,11 +37,33 @@ class HomePage extends GetView<HomeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //Tổng quan kho hàng
             _buildOverviewHeader(context),
             const SizedBox(height: 16),
-            _buildTotalProductCard(context),
+            //Thông số hàng hoá
+            InfoCard(
+              icon: Assets.icons.productCount.svg(),
+              iconColor: ColorName.orange,
+              hasGrow: true,
+            ),
             const SizedBox(height: 16),
-            _buildSmallInfoCards(context),
+            Row(
+              children: [
+                Expanded(
+                  child: InfoCard(
+                    icon: Assets.icons.allCategory.svg(),
+                    iconColor: ColorName.blueLight,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: InfoCard(
+                    icon: Assets.icons.lowProduct.svg(),
+                    iconColor: ColorName.error,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
           ],
         ),
@@ -57,37 +81,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _buildTotalProductCard(BuildContext context) {
-    return _buildInfoCard(
-      icon: Assets.icons.productCount.svg(),
-      iconColor: ColorName.orange,
-      hasGrow: true,
-      context: context,
-    );
-  }
-
-  Widget _buildSmallInfoCards(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _buildInfoCard(
-            icon: Assets.icons.allCategory.svg(),
-            iconColor: ColorName.blueLight,
-            context: context,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: _buildInfoCard(
-            icon: Assets.icons.lowProduct.svg(),
-            iconColor: ColorName.error,
-            context: context,
-          ),
-        ),
-      ],
-    );
-  }
-
+  //Phần chức năng nhanh
   SliverToBoxAdapter _buildFastFeatureSection(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
@@ -95,7 +89,13 @@ class HomePage extends GetView<HomeController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionTitle('quick_actions'.tr, context),
+            //title
+            Text(
+              'quick_actions'.tr,
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 16),
             _buildFastFeatureActions(context),
           ],
@@ -104,15 +104,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _buildSectionTitle(String title, BuildContext context) {
-    return Text(
-      title,
-      style: context.textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
-
+  ///Các nút chức năng
   Widget _buildFastFeatureActions(BuildContext context) {
     return Row(
       children: [
@@ -123,6 +115,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
+  //Card thêm sản phẩm
   Widget _buildAddProductAction() {
     return FastFeatureCard(
       rippleColor: Colors.grey,
@@ -137,6 +130,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
+  //Card thêm danh mục
   Widget _buildAddCategoryAction() {
     return FastFeatureCard(
       filledColor: Theme.of(
@@ -149,109 +143,6 @@ class HomePage extends GetView<HomeController> {
       title: 'add_category'.tr,
       textColor: Colors.white,
       onTap: () => controller.fastAddCategoryMethod(),
-    );
-  }
-
-  Container _buildInfoCard({
-    required Widget icon,
-    required Color iconColor,
-    bool hasGrow = false,
-    required BuildContext context,
-  }) {
-    final isDark = context.theme.brightness == Brightness.dark;
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E1E1E) : const Color(0xFFFFFFFF),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withValues(alpha: 0.3)
-                : const Color(0xFFB0C4D8).withValues(alpha: 0.3),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildInfoCardHeader(
-            icon: icon,
-            iconColor: iconColor,
-            hasGrow: hasGrow,
-          ),
-          const SizedBox(height: 16),
-          _buildInfoCardText(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCardHeader({
-    required Widget icon,
-    required Color iconColor,
-    required bool hasGrow,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildInfoIcon(icon: icon, iconColor: iconColor),
-        if (hasGrow) _buildGrowBadge(),
-      ],
-    );
-  }
-
-  Widget _buildInfoIcon({required Widget icon, required Color iconColor}) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: iconColor.withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: iconColor.withValues(alpha: 0.4), width: 2),
-      ),
-      child: icon,
-    );
-  }
-
-  Widget _buildGrowBadge() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: ColorName.greenLight.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: ColorName.greenLight.withValues(alpha: 0.6),
-          width: 2,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Assets.icons.growUp.svg(),
-          const Text(
-            ' +12%',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: ColorName.greenLight,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInfoCardText(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('total_products'.tr, style: context.textTheme.titleSmall),
-        const SizedBox(height: 2),
-        Text('1200', style: context.textTheme.headlineSmall),
-      ],
     );
   }
 }

@@ -44,6 +44,11 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
         onPressed: () => Get.back(),
       ),
       actions: [
+        IconButton(
+          icon: const Icon(Icons.qr_code_scanner, color: ColorName.blueLight),
+          tooltip: 'scan_with_camera'.tr,
+          onPressed: () => controller.startCameraScan(),
+        ),
         Obx(
           () => controller.selectedProducts.isNotEmpty
               ? IconButton(

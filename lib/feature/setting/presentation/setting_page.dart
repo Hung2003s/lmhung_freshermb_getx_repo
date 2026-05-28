@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/setting/presentation/setting_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
+
+import '../../../core/common_widget/button/selected_widget.dart';
 
 class SettingPage extends GetView<SettingController> {
   const SettingPage({super.key});
@@ -9,9 +12,9 @@ class SettingPage extends GetView<SettingController> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
+    return BaseView(
       backgroundColor: theme.scaffoldBackgroundColor,
-      appBar: AppBar(
+      buildAppBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
@@ -24,7 +27,9 @@ class SettingPage extends GetView<SettingController> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
+      buildBody: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -38,8 +43,21 @@ class SettingPage extends GetView<SettingController> {
               const SizedBox(height: 8),
               _buildLanguageSelector(context),
               const SizedBox(height: 24),
+              Obx(
+                () => controller.isBiometricAvailable.value
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildSectionTitle('security'.tr, context),
+                          const SizedBox(height: 8),
+                          _buildBiometricToggle(context),
+                          const SizedBox(height: 24),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+              ),
               _buildLogoutButton(context),
-              const SizedBox(height: 32),
+              const SizedBox(height: 100),
             ],
           ),
         ),
@@ -48,37 +66,34 @@ class SettingPage extends GetView<SettingController> {
   }
 
   Widget _buildLogoutButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () => _showLogoutConfirm(),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: ColorName.orange.withValues(alpha: 0.1),
-          foregroundColor: ColorName.orange,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(
-              color: ColorName.orange.withValues(alpha: 0.3),
-              width: 1.5,
-            ),
+    return ElevatedButton(
+      onPressed: () => _showLogoutConfirm(),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: ColorName.orange.withValues(alpha: 0.1),
+        foregroundColor: ColorName.orange,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: ColorName.orange.withValues(alpha: 0.3),
+            width: 1.5,
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.logout_rounded, size: 20),
-            const SizedBox(width: 8),
-            Text(
-              'logout'.tr,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: ColorName.orange,
-              ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.logout_rounded, size: 20),
+          const SizedBox(width: 8),
+          Text(
+            'logout'.tr,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: ColorName.orange,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -283,7 +298,7 @@ class SettingPage extends GetView<SettingController> {
             _buildLanguageOption(
               context: context,
               flag: '🇻🇳',
-              title: 'Tiếng Việt',
+              title: 'vietnamese'.tr,
               subtitle: 'Vietnamese',
               isSelected: controller.currentLanguageCode == 'vi',
               onTap: () => controller.setLanguage('vi'),
@@ -292,7 +307,7 @@ class SettingPage extends GetView<SettingController> {
             _buildLanguageOption(
               context: context,
               flag: '🇺🇸',
-              title: 'English',
+              title: 'english'.tr,
               subtitle: 'Tiếng Anh',
               isSelected: controller.currentLanguageCode == 'en',
               onTap: () => controller.setLanguage('en'),
@@ -370,6 +385,80 @@ class SettingPage extends GetView<SettingController> {
       indent: 16,
       endIndent: 16,
       color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+    );
+  }
+
+  Widget _buildBiometricToggle(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.15),
+          width: 1.5,
+        ),
+      ),
+      child: SelectedWidget(
+        onTap: () => controller.toggleBiometric(),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: controller.isBiometricEnabled.value
+                      ? ColorName.orange.withValues(alpha: 0.2)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.fingerprint,
+                  color: controller.isBiometricEnabled.value
+                      ? ColorName.orange
+                      : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'biometric'.tr,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      controller.isBiometricEnabled.value
+                          ? 'biometric_enabled_desc'.tr
+                          : 'biometric_disabled_desc'.tr,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Switch(
+                value: controller.isBiometricEnabled.value,
+                onChanged: (_) => controller.toggleBiometric(),
+                activeThumbColor: ColorName.orange,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

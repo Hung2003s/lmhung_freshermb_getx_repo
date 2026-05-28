@@ -1,12 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/data/datasources/remote/product_remote_data_source.dart';
 
 import '../../../../../core/network/api_endpoint.dart';
 import '../../../../../core/network/data/data_state.dart';
 import '../../../../../core/network/dio_client.dart';
+import '../../../../../core/network/error/remote_exception_handle.dart';
 import '../../model/product_model.dart';
 
-class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
+class ProductRemoteDataSourceImpl with RemoteExceptionHandler implements ProductRemoteDataSource {
   final DioClient _dioClient;
 
   ProductRemoteDataSourceImpl(this._dioClient);
@@ -30,14 +30,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         requiresToken: true,
       );
       return DataSuccess(ProductResponse.fromJson(response.data));
-    } on DioException catch (e) {
-      if (e.response != null && e.response?.data != null) {
-        final errorResponse = ResponseError.fromJson(e.response!.data);
-        return DataFailed(errorResponse); // Hết lỗi đỏ!
-      }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
-      throw Exception("$e");
+      return handleNetworkException<ProductResponse>(e);
     }
   }
 
@@ -52,14 +46,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         requiresToken: true,
       );
       return DataSuccess(AddProductRes.fromJson(response.data));
-    } on DioException catch (e) {
-      if (e.response != null && e.response?.data != null) {
-        final errorResponse = ResponseError.fromJson(e.response!.data);
-        return DataFailed(errorResponse); // Hết lỗi đỏ!
-      }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
-      throw Exception("$e");
+      return handleNetworkException<AddProductRes>(e);
     }
   }
 
@@ -71,14 +59,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
         requiresToken: true,
       );
       return DataSuccess(DeleteProductRes.fromJson(response.data));
-    } on DioException catch (e) {
-      if (e.response != null && e.response?.data != null) {
-        final errorResponse = ResponseError.fromJson(e.response!.data);
-        return DataFailed(errorResponse); // Hết lỗi đỏ!
-      }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
-      throw Exception("$e");
+      return handleNetworkException<DeleteProductRes>(e);
     }
   }
 
@@ -95,14 +77,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       );
 
       return DataSuccess(UpdateProductRes.fromJson(response.data));
-    } on DioException catch (e) {
-      if (e.response != null && e.response?.data != null) {
-        final errorResponse = ResponseError.fromJson(e.response!.data);
-        return DataFailed(errorResponse); // Hết lỗi đỏ!
-      }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
-      throw Exception("$e");
+      return handleNetworkException<UpdateProductRes>(e);
     }
   }
 }

@@ -154,7 +154,7 @@ class CategoryCard extends StatelessWidget {
                               categoryStatus,
                               style: TextStyle(
                                 color: ColorName.greenLight,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w600,
                                 fontSize: 12,
                               ),
                             ),

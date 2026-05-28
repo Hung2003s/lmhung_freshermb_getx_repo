@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:lmhung_freshermb_getx_repo/core/network/interceptor/token_interceptor.dart';
 import '../../core/config/app_config.dart';
 import 'interceptor/curl_log_interceptor.dart';
 import 'interceptor/header_interceptor.dart';
@@ -24,7 +25,7 @@ class DioClient {
       },
     );
     _dio = Dio(options);
-    _dio.interceptors.addAll([HeaderInterceptor(), CurlLogInterceptor()]);
+    _dio.interceptors.addAll([HeaderInterceptor(),  TokenInterceptor(), CurlLogInterceptor(),]);
   }
 
   Future<Response> get(

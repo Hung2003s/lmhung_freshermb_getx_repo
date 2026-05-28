@@ -21,6 +21,7 @@ class En extends Translations {
       'category_name': 'Category name',
       'save': 'Save',
       'total_products': 'Total Products',
+      'growing_percent': '+12%',
 
       // Category Page
       'manage': 'Manage',
@@ -139,6 +140,60 @@ class En extends Translations {
       // Auth - Register
       'register_title': 'Register account',
       'or_register_with': 'Or register with',
+      'session_expired': 'Session expired',
+      'pls_login_again': 'Please login again',
+
+      // Biometric Authentication
+      'biometric': 'Biometric',
+      'face_id': 'Face ID',
+      'fingerprint': 'Fingerprint',
+      'biometric_not_enrolled': 'No biometrics enrolled on this device',
+      'biometric_locked_out': 'Biometric authentication is locked out',
+      'biometric_canceled': 'Biometric authentication canceled',
+      'biometric_error': 'Biometric authentication error',
+      'biometric_login': 'Login with @s',
+      'biometric_login_reason': 'Authenticate to login with saved credentials',
+      'biometric_login_failed': 'Biometric login failed',
+      'biometric_login_failed_credentials':
+          'Saved credentials are invalid. Please login manually.',
+      'biometric_save_reason': 'Authenticate to enable biometric login',
+      'biometric_enable_failed': 'Enable biometric failed',
+      'biometric_enable_from_login':
+          'Please login first before enabling biometric',
+      'biometric_enabled': 'Biometric login enabled',
+      'biometric_disabled': 'Biometric login disabled',
+      'biometric_enabled_desc': 'Login with fingerprint/face',
+      'biometric_disabled_desc': 'Not using biometric login',
+      'security': 'Security',
+      'enable': 'Enable',
+      'disable': 'Disable',
+
+      // Empty States
+      'no_categories_found': 'No categories found',
+      'try_adding_category': 'Try adding a new category',
+      'no_products_found': 'No products found',
+      'try_adding_product': 'Try adding a new product',
+      'retry': 'Retry',
+
+      // Barcode Scan
+      'barcode_scan': 'Barcode Scan',
+      'scan_with_camera': 'Scan with camera',
+      'clear_all': 'Clear all',
+      'scanning_status': 'Scanning Status',
+      'scanned_count': 'Scanned: @count products',
+      'scanning': 'Scanning',
+      'last_scanned': 'Last scanned: @code',
+      'scan_barcode_to_start': 'Scan a barcode to start',
+      'added_product': 'Added @name',
+      'product_already_selected': 'Product already selected',
+      'scan_error': 'Scan error',
+
+      // Language names
+      'vietnamese': 'Vietnamese',
+      'english': 'English',
+
+      // Quick actions
+      'group': 'Group',
     },
   };
 }

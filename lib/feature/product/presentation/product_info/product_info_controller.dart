@@ -150,7 +150,16 @@ class ProductInfoController extends GetxController {
 
   void _checkPageModeAndFillData() {
     if (initialProduct != null) {
-      // 🟢 Nếu có sản phẩm truyền sang: Mặc định vào chế độ XEM CHI TIẾT
+      // Kiểm tra nếu là product giả được tạo để quét mã vạch (id = 0, name rỗng)
+      // thì chuyển sang chế độ tạo mới với code đã được điền sẵn
+      if (initialProduct!.id == 0 && initialProduct!.name.isEmpty) {
+        pageMode.value = ProductPageMode.create;
+        skuController.text = initialProduct!.code ?? '';
+        selectedCategoryId.value = null;
+        return;
+      }
+
+      // 🟢 Nếu có sản phẩm thật truyền sang: Mặc định vào chế độ XEM CHI TIẾT
       pageMode.value = ProductPageMode.view;
 
       // Đổ dữ liệu cũ vào các ô Input

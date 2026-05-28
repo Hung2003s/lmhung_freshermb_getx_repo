@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/draggabble_button.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/widget/category_card.dart';
@@ -65,14 +66,35 @@ class CategoryPage extends GetView<CategoryController> {
 
   Widget _buildCategoryList() {
     return Obx(() {
+      if (controller.isLoading.value) {
+        return const LoadingStateWidget();
+      }
+
+      if (controller.errorMessage.value.isNotEmpty &&
+          controller.listCategory.isEmpty) {
+        return ErrorStateWidget(
+          message: controller.errorMessage.value,
+          onRetry: () => controller.getListCategory(),
+        );
+      }
+
       final displayList = controller.searchCategoryText.value.trim().isEmpty
           ? controller.listCategory
           : controller.filteredCategory;
+
+      if (displayList.isEmpty) {
+        return EmptyStateWidget(
+          icon: Icons.folder_open_outlined,
+          title: 'no_categories_found'.tr,
+          subtitle: 'try_adding_category'.tr,
+        );
+      }
 
       return Column(
         children: [
           Expanded(
             child: ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
               controller: controller.scrollController,
               scrollDirection: Axis.vertical,
               itemCount: displayList.length,

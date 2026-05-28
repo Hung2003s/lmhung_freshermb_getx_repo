@@ -12,7 +12,7 @@ import 'login_controller.dart';
 class LoginBinding extends Bindings {
   @override
   void dependencies() {
-    // 1. Inject DataSource (Cần truyền instance Dio từ core hệ thống vào)
+    // 1. Inject DataSource
     Get.lazyPut<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(Get.find()),
     );
