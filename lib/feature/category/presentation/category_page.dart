@@ -100,7 +100,7 @@ class CategoryPage extends GetView<CategoryController> {
               itemCount: displayList.length,
               itemBuilder: (context, index) {
                 final item = displayList[index];
-                final card = _buildCategoryCard(item);
+                final card = RepaintBoundary(child: _buildCategoryCard(item));
 
                 if (index == displayList.length - 1) {
                   return Column(children: [card, const SizedBox(height: 60)]);

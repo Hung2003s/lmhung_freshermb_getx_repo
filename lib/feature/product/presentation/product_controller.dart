@@ -345,18 +345,22 @@ class ProductController extends GetxController {
           ),
           itemBuilder: (context, index) {
             if (index == 0) {
-              return CategorySortCard(
-                title: 'all'.tr,
-                isSelected: currentFilterIndex.value == 0,
-                onTap: () => selectAllCategories(),
+              return RepaintBoundary(
+                child: CategorySortCard(
+                  title: 'all'.tr,
+                  isSelected: currentFilterIndex.value == 0,
+                  onTap: () => selectAllCategories(),
+                ),
               );
             }
 
             final item = categoryController.listCategory[index - 1];
-            return CategorySortCard(
-              title: item.name,
-              isSelected: currentFilterIndex.value == index,
-              onTap: () => selectCategory(index: index, categoryId: item.id),
+            return RepaintBoundary(
+              child: CategorySortCard(
+                title: item.name,
+                isSelected: currentFilterIndex.value == index,
+                onTap: () => selectCategory(index: index, categoryId: item.id),
+              ),
             );
           },
         ),

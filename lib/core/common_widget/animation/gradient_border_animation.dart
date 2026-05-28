@@ -12,7 +12,8 @@ class GradientBorderAnimation extends StatefulWidget {
 
 class _GradientBorderAnimationState extends State<GradientBorderAnimation>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  late final AnimationController _controller;
+  late final RotatingBorderPainter _painter;
 
   @override
   void initState() {
@@ -20,7 +21,9 @@ class _GradientBorderAnimationState extends State<GradientBorderAnimation>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
-    )..repeat(); // Lặp vô hạn
+    )..repeat();
+
+    _painter = RotatingBorderPainter(_controller);
   }
 
   @override
@@ -31,60 +34,55 @@ class _GradientBorderAnimationState extends State<GradientBorderAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      child: widget.child,
-      animation: _controller,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: RotatingBorderPainter(_controller.value),
-          child: Padding(padding: const EdgeInsets.all(2.0), child: child),
-        );
-      },
+    return CustomPaint(
+      painter: _painter,
+      child: Padding(padding: const EdgeInsets.all(2.0), child: widget.child),
     );
   }
 }
 
 class RotatingBorderPainter extends CustomPainter {
-  final double progress;
-  RotatingBorderPainter(this.progress);
+  final Animation<double> animation;
+
+  RotatingBorderPainter(this.animation) : super(repaint: animation);
+
+  // Cache Paint object — tránh tạo mới mỗi frame
+  final Paint _paint = Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 2;
+
+  // Cache gradient colors — const list, chỉ tạo 1 lần
+  static const List<Color> _gradientColors = [
+    Color(0xFF00C6FF),
+    Color(0xFF103ABB),
+    Color(0xFF8A2387),
+    Color(0xFF00C6FF),
+  ];
 
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
+    final progress = animation.value;
+
     final sweepGradient = SweepGradient(
       startAngle: 0,
       endAngle: math.pi * 2,
-      colors: const [
-        // Colors.red,
-        // Colors.orange,
-        // Colors.yellow,
-        // Colors.green,
-        // Colors.blue,
-        // Colors.purple,
-        // Colors.red, // lặp lại để mượt
-        Color(0xFF00C6FF),
-        Color(0xFF103ABB),
-        Color(0xFF8A2387), // Tím không gian
-        Color(0xFF00C6FF),
-      ],
+      colors: _gradientColors,
       transform: GradientRotation(progress * 2 * math.pi),
     );
 
-    final paint = Paint()
-      ..shader = sweepGradient.createShader(rect)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+    _paint.shader = sweepGradient.createShader(rect);
 
     final rRect = RRect.fromRectAndRadius(
-      rect.deflate(3), // khoảng cách viền
+      rect.deflate(3),
       const Radius.circular(16),
     );
 
-    canvas.drawRRect(rRect, paint);
+    canvas.drawRRect(rRect, _paint);
   }
 
   @override
   bool shouldRepaint(covariant RotatingBorderPainter oldDelegate) {
-    return oldDelegate.progress != progress;
+    return oldDelegate.animation.value != animation.value;
   }
 }

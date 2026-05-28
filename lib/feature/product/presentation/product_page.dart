@@ -88,76 +88,88 @@ class ProductPage extends GetView<ProductController> {
   }
 
   Widget _buildProductList() {
-    return Obx(() {
-      if (controller.isLoading.value) {
-        return const LoadingStateWidget();
-      }
-
-      if (controller.errorMessage.value.isNotEmpty &&
-          controller.listProduct.isEmpty) {
-        return ErrorStateWidget(
-          message: controller.errorMessage.value,
-          onRetry: () => controller.fetchListProduct(isLoadMore: false),
-        );
-      }
-
-      if (controller.listProduct.isEmpty) {
-        return EmptyStateWidget(
-          icon: Icons.inventory_2_outlined,
-          title: 'no_products_found'.tr,
-          subtitle: 'try_adding_product'.tr,
-        );
-      }
-
-      return Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              physics: const AlwaysScrollableScrollPhysics(),
-              controller: controller.scrollController,
-              scrollDirection: Axis.vertical,
-              itemCount: controller.listProduct.length,
-              itemBuilder: (BuildContext context, int index) {
-                final item = controller.listProduct[index];
-                final isLastItem = index == controller.listProduct.length - 1;
-                final card = _buildProductCard(item);
-                if (isLastItem) {
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 60),
-                    child: card,
-                  );
-                }
-
-                return card;
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 8);
-              },
-            ),
-          ),
-          Obx(
-            () => controller.isLoadingMore.value
-                ? const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Center(
-                      child: CircularProgressIndicator(color: ColorName.orange),
+    return Stack(
+      children: [
+        // ListView — luôn mounted, chỉ rebuild khi listProduct thay đổi
+        Obx(
+          () => controller.listProduct.isEmpty
+              ? const SizedBox.shrink()
+              : Column(
+                  children: [
+                    Expanded(
+                      child: ListView.separated(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        controller: controller.scrollController,
+                        scrollDirection: Axis.vertical,
+                        itemCount: controller.listProduct.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final item = controller.listProduct[index];
+                          final isLastItem =
+                              index == controller.listProduct.length - 1;
+                          final card = _buildProductCard(item);
+                          if (isLastItem) {
+                            return Container(
+                              margin: const EdgeInsets.only(bottom: 60),
+                              child: card,
+                            );
+                          }
+                          return card;
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 8);
+                        },
+                      ),
                     ),
-                  )
-                : const SizedBox.shrink(),
-          ),
-        ],
-      );
-    });
+                    Obx(
+                      () => controller.isLoadingMore.value
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: ColorName.orange,
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
+                ),
+        ),
+        // Loading/Error/Empty states — Obx riêng, không ảnh hưởng ListView
+        Obx(() {
+          if (controller.isLoading.value && controller.listProduct.isEmpty) {
+            return const LoadingStateWidget();
+          }
+          if (controller.errorMessage.value.isNotEmpty &&
+              controller.listProduct.isEmpty) {
+            return ErrorStateWidget(
+              message: controller.errorMessage.value,
+              onRetry: () => controller.fetchListProduct(isLoadMore: false),
+            );
+          }
+          if (controller.listProduct.isEmpty && !controller.isLoading.value) {
+            return EmptyStateWidget(
+              icon: Icons.inventory_2_outlined,
+              title: 'no_products_found'.tr,
+              subtitle: 'try_adding_product'.tr,
+            );
+          }
+          return const SizedBox.shrink();
+        }),
+      ],
+    );
   }
 
   Widget _buildProductCard(ProductEntity item) {
-    return ProductCard(
-      icon: Assets.icons.whiteFolder.svg(width: 16),
-      iconColor: ColorName.blueLight,
-      productEntity: item,
-      categoryStatus: 'in_stock'.tr,
-      onTap: () => controller.navigateToInfo(item),
-      onDelete: () => controller.deleteProductAction(item),
+    return RepaintBoundary(
+      child: ProductCard(
+        icon: Assets.icons.whiteFolder.svg(width: 16),
+        iconColor: ColorName.blueLight,
+        productEntity: item,
+        categoryStatus: 'in_stock'.tr,
+        onTap: () => controller.navigateToInfo(item),
+        onDelete: () => controller.deleteProductAction(item),
+      ),
     );
   }
 
