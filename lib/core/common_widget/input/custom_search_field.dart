@@ -13,7 +13,8 @@ class CustomSearchField extends StatelessWidget {
     this.hintText = 'Tìm kiếm...',
     this.onChanged,
     this.onSortPressed,
-    this.showSortButton = true, this.focusColor, // Mặc định luôn hiện nút Sort như trong ảnh
+    this.showSortButton = true,
+    this.focusColor, // Mặc định luôn hiện nút Sort như trong ảnh
   });
 
   @override
@@ -25,40 +26,53 @@ class CustomSearchField extends StatelessWidget {
           child: TextField(
             controller: controller,
             onChanged: onChanged,
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 15),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 15,
+            ),
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),
               // Kính lúp tìm kiếm ở đầu
               prefixIcon: Icon(
                 Icons.search_rounded,
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 22,
               ),
               filled: true,
-              fillColor: Theme.of(context).colorScheme.surface.withValues(alpha: 0.1),
+              fillColor: Theme.of(
+                context,
+              ).colorScheme.surface.withValues(alpha: 0.1),
               // Nền theo theme
               contentPadding: const EdgeInsets.symmetric(vertical: 14),
               // Trạng thái viền bình thường
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16), // Bo góc 16 mềm mại
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
               // Trạng thái viền khi nhấn chọn gõ chữ
-              focusedBorder: focusColor ?? OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: 1.5,
-                ),
-              ),
+              focusedBorder:
+                  focusColor ??
+                  OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 1.5,
+                    ),
+                  ),
             ),
           ),
         ),
@@ -74,17 +88,23 @@ class CustomSearchField extends StatelessWidget {
               height: 50,
               // Chiều cao 50 khớp hoàn toàn với độ dày của TextField trên
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.1),
+                color: Theme.of(
+                  context,
+                ).colorScheme.surface.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
               child: Icon(
                 Icons.swap_vert_rounded,
                 // Icon mũi tên lên xuống đảo chiều giống ảnh
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 24,
               ),
             ),

@@ -97,7 +97,10 @@ class BaseBottomSheet extends StatelessWidget {
           ),
           if (showCloseButton)
             IconButton(
-              icon: Icon(Icons.close, color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+              icon: Icon(
+                Icons.close,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },

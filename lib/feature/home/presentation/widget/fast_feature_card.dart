@@ -18,7 +18,8 @@ class FastFeatureCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.textColor,
-    this.onTap, this.rippleColor,
+    this.onTap,
+    this.rippleColor,
   });
 
   @override
@@ -44,7 +45,7 @@ class FastFeatureCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               icon,
-              const SizedBox(width: 4,),
+              const SizedBox(width: 4),
               Text(
                 title,
                 style: TextStyle(

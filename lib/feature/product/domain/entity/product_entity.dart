@@ -3,8 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../category/domain/entities/categories_entity.dart';
 
 part 'product_entity.freezed.dart';
+
 @freezed
-abstract class ProductEntity with _$ProductEntity{
+abstract class ProductEntity with _$ProductEntity {
   const factory ProductEntity({
     @JsonKey(name: 'id') required int id,
     @JsonKey(name: 'name') required String name,
@@ -18,5 +19,4 @@ abstract class ProductEntity with _$ProductEntity{
     @JsonKey(name: 'description') String? description,
     @JsonKey(name: 'image') String? image,
   }) = _ProductEntity;
-
 }

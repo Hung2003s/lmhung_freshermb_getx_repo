@@ -19,13 +19,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         requiresToken: false,
         data: params.toJson(),
       );
-        return DataSuccess(LoginResponse.fromJson(response.data));
+      return DataSuccess(LoginResponse.fromJson(response.data));
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
         final errorResponse = ResponseError.fromJson(e.response!.data);
         return DataFailed(errorResponse); // Hết lỗi đỏ!
       }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
+      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
       throw Exception('$e');
     }
@@ -45,7 +45,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final errorResponse = ResponseError.fromJson(e.response!.data);
         return DataFailed(errorResponse); // Hết lỗi đỏ!
       }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
+      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
       throw Exception('$e');
     }

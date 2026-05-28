@@ -19,7 +19,8 @@ class _BouncingLoadingWidgetState extends State<BouncingLoadingWidget>
   final double _bounceHeight = 15.0;
 
   @override
-  void initState() { // initState
+  void initState() {
+    // initState
     super.initState();
 
     _controller = AnimationController(
@@ -28,21 +29,23 @@ class _BouncingLoadingWidgetState extends State<BouncingLoadingWidget>
       vsync: this,
     )..repeat(); // Lặp lại vô tận
 
-
     for (int i = 0; i < 3; i++) {
-
       _animations.add(
         TweenSequence<double>([
           // 1. Nhảy lên
           TweenSequenceItem(
-            tween: Tween<double>(begin: 0.0, end: -_bounceHeight)
-                .chain(CurveTween(curve: Curves.easeOutCubic)),
+            tween: Tween<double>(
+              begin: 0.0,
+              end: -_bounceHeight,
+            ).chain(CurveTween(curve: Curves.easeOutCubic)),
             weight: 50, // Chiếm 50% thời gian của interval này
           ),
           // 2. Rơi xuống lại
           TweenSequenceItem(
-            tween: Tween<double>(begin: -_bounceHeight, end: 0.0)
-                .chain(CurveTween(curve: Curves.easeInCubic)),
+            tween: Tween<double>(
+              begin: -_bounceHeight,
+              end: 0.0,
+            ).chain(CurveTween(curve: Curves.easeInCubic)),
             weight: 50, // Chiếm 50% thời gian của interval này
           ),
         ]).animate(

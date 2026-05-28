@@ -41,27 +41,27 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
     }
   }
 
-    @override
-    Future<DataState<AddProductRes>> addProduct({
-      required ProductInfoParam params,
-    }) async {
-      try {
-        final response = await _dioClient.post(
-          ApiEndpoint.product,
-          data: params,
-          requiresToken: true,
-        );
-        return DataSuccess(AddProductRes.fromJson(response.data));
-      } on DioException catch (e) {
-        if (e.response != null && e.response?.data != null) {
-          final errorResponse = ResponseError.fromJson(e.response!.data);
-          return DataFailed(errorResponse); // Hết lỗi đỏ!
-        }
-        return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
-      } catch (e) {
-        throw Exception("$e");
+  @override
+  Future<DataState<AddProductRes>> addProduct({
+    required ProductInfoParam params,
+  }) async {
+    try {
+      final response = await _dioClient.post(
+        ApiEndpoint.product,
+        data: params,
+        requiresToken: true,
+      );
+      return DataSuccess(AddProductRes.fromJson(response.data));
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final errorResponse = ResponseError.fromJson(e.response!.data);
+        return DataFailed(errorResponse); // Hết lỗi đỏ!
       }
+      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
+    } catch (e) {
+      throw Exception("$e");
     }
+  }
 
   @override
   Future<DataState<DeleteProductRes>> deleteProduct({required int id}) async {
@@ -83,7 +83,10 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   }
 
   @override
-  Future<DataState<UpdateProductRes>> updateProduct({required ProductInfoParam params, required int id}) async {
+  Future<DataState<UpdateProductRes>> updateProduct({
+    required ProductInfoParam params,
+    required int id,
+  }) async {
     try {
       final response = await _dioClient.put(
         '${ApiEndpoint.product}/$id',

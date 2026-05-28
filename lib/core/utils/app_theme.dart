@@ -18,7 +18,10 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.3), width: 1),
+        borderSide: BorderSide(
+          color: Colors.grey.withValues(alpha: 0.3),
+          width: 1,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -139,7 +142,8 @@ class AppTheme {
       labelSmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w400,
-        color: Colors.black, // Nếu muốn chú thích mờ hơn, bạn có thể đổi thành Colors.black54 sau này
+        color: Colors
+            .black, // Nếu muốn chú thích mờ hơn, bạn có thể đổi thành Colors.black54 sau này
       ),
     ),
   );
@@ -148,7 +152,9 @@ class AppTheme {
   static final ThemeData darkTheme = ThemeData(
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: const Color(0xFF1E1E1E), // Nền tối cho text field trong dark mode
+      fillColor: const Color(
+        0xFF1E1E1E,
+      ), // Nền tối cho text field trong dark mode
       hintStyle: TextStyle(
         color: Colors.white.withValues(alpha: 0.6), // Màu xám vừa phải cho hint
         fontSize: 16,
@@ -157,7 +163,10 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.2), width: 1),
+        borderSide: BorderSide(
+          color: Colors.white.withValues(alpha: 0.2),
+          width: 1,
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),

@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lmhung_freshermb_getx_repo/core/network/data/data_state.dart';
@@ -14,31 +13,33 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final AuthLocalDataSource localDataSource;
 
-  AuthRepositoryImpl({required this.remoteDataSource,required this.localDataSource});
+  AuthRepositoryImpl({
+    required this.remoteDataSource,
+    required this.localDataSource,
+  });
   String? _cachedToken;
   @override
-  Future< Either<Failure,AuthToken>> login(LoginParams params) async {
-      final result = await remoteDataSource.login(params);
-      if(result is DataSuccess) {
-        final authToken = result.data?.map(
-              (model) => AuthToken(accessToken: model.data.accessToken),
-        );
-        _cachedToken = result.data?.data.accessToken;
-        await localDataSource.saveToken(_cachedToken!);
-        if (kDebugMode) {
-          print("LoginRepositoryImpl saving token:: $_cachedToken");
-        }
-        return Right(authToken!);
-      } else {
-        final responseError = result.error;
-        return Left(
-          Failure.serverFailure(
-            message: responseError?.message ?? 'Lỗi không xác định',
-            statusCode: responseError?.statusCode,
-          ),
-        );
+  Future<Either<Failure, AuthToken>> login(LoginParams params) async {
+    final result = await remoteDataSource.login(params);
+    if (result is DataSuccess) {
+      final authToken = result.data?.map(
+        (model) => AuthToken(accessToken: model.data.accessToken),
+      );
+      _cachedToken = result.data?.data.accessToken;
+      await localDataSource.saveToken(_cachedToken!);
+      if (kDebugMode) {
+        print("LoginRepositoryImpl saving token:: $_cachedToken");
       }
-
+      return Right(authToken!);
+    } else {
+      final responseError = result.error;
+      return Left(
+        Failure.serverFailure(
+          message: responseError?.message ?? 'Lỗi không xác định',
+          statusCode: responseError?.statusCode,
+        ),
+      );
+    }
   }
 
   @override
@@ -63,9 +64,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, AuthToken>> register(RegisterParams params) async {
     final result = await remoteDataSource.register(params);
-    if(result is DataSuccess) {
+    if (result is DataSuccess) {
       final authToken = result.data?.map(
-            (model) => AuthToken(accessToken: model.data.accessToken),
+        (model) => AuthToken(accessToken: model.data.accessToken),
       );
       _cachedToken = result.data?.data.accessToken;
       await localDataSource.saveToken(_cachedToken!);

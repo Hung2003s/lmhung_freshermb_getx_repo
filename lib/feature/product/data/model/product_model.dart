@@ -7,7 +7,6 @@ part 'product_model.freezed.dart';
 
 part 'product_model.g.dart';
 
-
 @freezed
 abstract class ProductResponse with _$ProductResponse {
   const ProductResponse._();

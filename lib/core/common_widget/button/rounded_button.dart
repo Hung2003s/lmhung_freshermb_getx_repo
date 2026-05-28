@@ -26,53 +26,54 @@ class RoundedButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
         side: BorderSide(
-          color: isDark ? const Color(0xFF333333) : Colors.grey.withValues(alpha: 0.3),
+          color: isDark
+              ? const Color(0xFF333333)
+              : Colors.grey.withValues(alpha: 0.3),
           width: 1.0,
         ),
         shape: const StadiumBorder(),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 32,
-          vertical: 16,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         foregroundColor: theme.colorScheme.onSurface,
-        disabledBackgroundColor: isDark ? const Color(0xFF161616) : Colors.grey.withValues(alpha: 0.1),
+        disabledBackgroundColor: isDark
+            ? const Color(0xFF161616)
+            : Colors.grey.withValues(alpha: 0.1),
       ),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         child: isLoading
             ? SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.0,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              theme.colorScheme.onSurface.withValues(alpha: 0.5),
-            ),
-          ),
-        )
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.0,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                  ),
+                ),
+              )
             : Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.3,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  if (showIcon && icon != null) ...[
+                    const SizedBox(width: 8),
+                    Icon(
+                      icon,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                      size: 16,
+                    ),
+                  ],
+                ],
               ),
-            ),
-            if (showIcon && icon != null) ...[
-              const SizedBox(width: 8),
-              Icon(
-                icon,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
-                size: 16,
-              ),
-            ],
-          ],
-        ),
       ),
     );
   }

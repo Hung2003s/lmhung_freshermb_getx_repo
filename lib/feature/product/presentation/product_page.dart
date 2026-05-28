@@ -12,6 +12,7 @@ import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
 import '../../../core/common_widget/base_view/base_view.dart';
 import '../../../gen/assets.gen.dart';
+import '../../../navigation/routes.dart';
 
 class ProductPage extends GetView<ProductController> {
   const ProductPage({super.key});
@@ -156,6 +157,31 @@ class ProductPage extends GetView<ProductController> {
     );
   }
 
+  Widget _buildBarcodeScanButton(ThemeData theme) {
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(Routes.barcodeScan);
+      },
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+            width: 1.5,
+          ),
+        ),
+        child: const Icon(
+          Icons.qr_code_scanner_rounded,
+          color: ColorName.orange,
+          size: 24,
+        ),
+      ),
+    );
+  }
+
   Widget _buildCategoryFilter() {
     final theme = Theme.of(Get.context!);
     final categoryController = Get.find<CategoryController>();
@@ -163,7 +189,15 @@ class ProductPage extends GetView<ProductController> {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 12),
-        GradientBorderAnimation(child: _buildSearchField()),
+        Row(
+          children: [
+            Expanded(
+              child: GradientBorderAnimation(child: _buildSearchField()),
+            ),
+            const SizedBox(width: 8),
+            _buildBarcodeScanButton(theme),
+          ],
+        ),
         const SizedBox(height: 16),
         Row(
           children: [
@@ -260,10 +294,7 @@ class ProductPage extends GetView<ProductController> {
     return CustomSearchField(
       focusColor: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(
-          color: Colors.transparent,
-          width: 1.5,
-        ),
+        borderSide: BorderSide(color: Colors.transparent, width: 1.5),
       ),
       controller: controller.searchController,
       onChanged: (value) {

@@ -2,9 +2,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 
 import '../storage/secure_storage/token/token_manager.dart';
+
 class HeaderProvider {
-
-
   Map<String, String> getDefaultHeader() {
     return {
       'Cache-Control': 'no-cache',

@@ -26,9 +26,7 @@ class BaseDialog extends StatelessWidget {
       backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
       elevation: 5,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         width: width ?? (screenSize.width * 0.85),
         padding: const EdgeInsets.all(20.0),
@@ -39,7 +37,7 @@ class BaseDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 10,),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     title,
@@ -53,7 +51,8 @@ class BaseDialog extends StatelessWidget {
                   ),
                 ),
                 if (showCloseIcon)
-                  IconButton( // Dùng IconButton để có hit test area tốt hơn
+                  IconButton(
+                    // Dùng IconButton để có hit test area tốt hơn
                     icon: Icon(
                       Icons.close_rounded,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
@@ -67,17 +66,10 @@ class BaseDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Flexible(
-              child: SingleChildScrollView(
-                child: content,
-              ),
-            ),
+            Flexible(child: SingleChildScrollView(child: content)),
             if (footer != null) ...[
               const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: footer!,
-              ),
+              Align(alignment: Alignment.centerRight, child: footer!),
             ],
           ],
         ),

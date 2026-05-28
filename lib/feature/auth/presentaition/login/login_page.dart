@@ -50,7 +50,10 @@ class LoginPage extends GetView<LoginController> {
           final horizontalPadding = isTablet ? screenWidth * 0.15 : 12.0;
 
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 12 * scale),
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: 12 * scale,
+            ),
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: screenHeight - 80),
               child: Column(
@@ -74,10 +77,7 @@ class LoginPage extends GetView<LoginController> {
       children: <Widget>[
         Text('welcome_back'.tr, style: context.textTheme.headlineSmall),
         SizedBox(height: 8 * scale),
-        Text(
-          'login_description'.tr,
-          style: context.textTheme.titleSmall,
-        ),
+        Text('login_description'.tr, style: context.textTheme.titleSmall),
         SizedBox(height: 24 * scale),
         AutofillGroup(
           child: Column(
@@ -141,16 +141,23 @@ class LoginPage extends GetView<LoginController> {
             onTap: controller.isLocked.value || controller.isLoading.value
                 ? null
                 : () => controller.login(),
-            backgroundColor: controller.isLocked.value ? Colors.grey : ColorName.orange,
+            backgroundColor: controller.isLocked.value
+                ? Colors.grey
+                : ColorName.orange,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
               ),
-              padding: EdgeInsets.symmetric(vertical: 16 * scale, horizontal: 16),
+              padding: EdgeInsets.symmetric(
+                vertical: 16 * scale,
+                horizontal: 16,
+              ),
               child: Center(
                 child: !controller.isLoading.value
                     ? Text(
-                        controller.isLocked.value ? 'login_locked_button'.tr : 'login'.tr,
+                        controller.isLocked.value
+                            ? 'login_locked_button'.tr
+                            : 'login'.tr,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -213,7 +220,12 @@ class LoginPage extends GetView<LoginController> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(child: Container(height: 1, decoration: BoxDecoration(color: ColorName.primary))),
+            Expanded(
+              child: Container(
+                height: 1,
+                decoration: BoxDecoration(color: ColorName.primary),
+              ),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),
               child: Text(
@@ -225,7 +237,12 @@ class LoginPage extends GetView<LoginController> {
                 ),
               ),
             ),
-            Expanded(child: Container(height: 1, decoration: BoxDecoration(color: ColorName.primary))),
+            Expanded(
+              child: Container(
+                height: 1,
+                decoration: BoxDecoration(color: ColorName.primary),
+              ),
+            ),
           ],
         ),
         SizedBox(height: 16 * scale),

@@ -52,10 +52,7 @@ class HomePage extends GetView<HomeController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('warehouse_overview'.tr, style: context.textTheme.titleLarge),
-        Text(
-          'updated_at'.tr,
-          style: context.textTheme.bodyMedium,
-        ),
+        Text('updated_at'.tr, style: context.textTheme.bodyMedium),
       ],
     );
   }
@@ -142,8 +139,12 @@ class HomePage extends GetView<HomeController> {
 
   Widget _buildAddCategoryAction() {
     return FastFeatureCard(
-      filledColor: Theme.of(Get.context!).colorScheme.secondary.withValues(alpha: 0.4),
-      borderColor: Theme.of(Get.context!).colorScheme.surface.withValues(alpha: 0.2),
+      filledColor: Theme.of(
+        Get.context!,
+      ).colorScheme.secondary.withValues(alpha: 0.4),
+      borderColor: Theme.of(
+        Get.context!,
+      ).colorScheme.surface.withValues(alpha: 0.2),
       icon: Assets.icons.whiteFolder.svg(),
       title: 'add_category'.tr,
       textColor: Colors.white,
@@ -161,9 +162,7 @@ class HomePage extends GetView<HomeController> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
-        color: isDark
-            ? const Color(0xFF1E1E1E)
-            : const Color(0xFFFFFFFF),
+        color: isDark ? const Color(0xFF1E1E1E) : const Color(0xFFFFFFFF),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

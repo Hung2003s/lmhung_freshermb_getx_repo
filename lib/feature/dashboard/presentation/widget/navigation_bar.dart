@@ -28,13 +28,17 @@ class CustomFloatingNavBar extends GetView<DashboardController> {
             ],
             border: Border.all(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
-              width: 2
-            )
+              width: 2,
+            ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildNavItem(index: 0, icon: Icons.home, isSelectedBgCircle: true),
+              _buildNavItem(
+                index: 0,
+                icon: Icons.home,
+                isSelectedBgCircle: true,
+              ),
               _buildNavItem(index: 1, icon: Icons.grid_view_rounded),
               _buildCenterSearchItem(index: 2),
               _buildNavItem(index: 3, icon: Icons.favorite_border_rounded),
@@ -72,8 +76,8 @@ class CustomFloatingNavBar extends GetView<DashboardController> {
             size: 26,
             color: isSelected
                 ? (isSelectedBgCircle
-                    ? (isDark ? Colors.black : Colors.white)
-                    : theme.colorScheme.onSurface)
+                      ? (isDark ? Colors.black : Colors.white)
+                      : theme.colorScheme.onSurface)
                 : theme.colorScheme.onSurface.withValues(alpha: 0.4),
           ),
         ),
@@ -99,13 +103,15 @@ class CustomFloatingNavBar extends GetView<DashboardController> {
               color: isDark ? const Color(0xFF111417) : Colors.white,
               width: 3,
             ),
-            boxShadow: isSelected ? [
-              BoxShadow(
-                color: ColorName.orange.withValues(alpha: 0.4),
-                blurRadius: 12,
-                spreadRadius: 2,
-              )
-            ] : null,
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: ColorName.orange.withValues(alpha: 0.4),
+                      blurRadius: 12,
+                      spreadRadius: 2,
+                    ),
+                  ]
+                : null,
           ),
           child: const Icon(
             Icons.search_rounded,

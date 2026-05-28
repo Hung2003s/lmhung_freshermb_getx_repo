@@ -24,10 +24,7 @@ class DioClient {
       },
     );
     _dio = Dio(options);
-    _dio.interceptors.addAll([
-      HeaderInterceptor(),
-      CurlLogInterceptor(),
-    ]);
+    _dio.interceptors.addAll([HeaderInterceptor(), CurlLogInterceptor()]);
   }
 
   Future<Response> get(
@@ -46,7 +43,11 @@ class DioClient {
     }
   }
 
-  Future<Response> post(String path, {dynamic data, required bool requiresToken}) async {
+  Future<Response> post(
+    String path, {
+    dynamic data,
+    required bool requiresToken,
+  }) async {
     try {
       return await _dio.post(
         path,
@@ -58,19 +59,33 @@ class DioClient {
     }
   }
 
-  Future<Response> put(String path, {dynamic data, required bool requiresToken}) async {
+  Future<Response> put(
+    String path, {
+    dynamic data,
+    required bool requiresToken,
+  }) async {
     try {
-      return await _dio.put(path, data: data,
-          options: Options(extra: {'requiresToken': requiresToken}));
+      return await _dio.put(
+        path,
+        data: data,
+        options: Options(extra: {'requiresToken': requiresToken}),
+      );
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Response> delete(String path, {dynamic data, required bool requiresToken}) async {
+  Future<Response> delete(
+    String path, {
+    dynamic data,
+    required bool requiresToken,
+  }) async {
     try {
-      return await _dio.delete(path, data: data,
-        options: Options(extra: {'requiresToken': requiresToken}),);
+      return await _dio.delete(
+        path,
+        data: data,
+        options: Options(extra: {'requiresToken': requiresToken}),
+      );
     } catch (e) {
       rethrow;
     }

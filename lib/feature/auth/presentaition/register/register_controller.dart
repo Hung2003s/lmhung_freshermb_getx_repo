@@ -74,9 +74,7 @@ class RegisterController extends GetxController {
       final response = await _loginUseCase.register(request);
       if (response.accessToken.isNotEmpty && response.accessToken != null) {
         Get.offAllNamed(Routes.dashboard);
-        AppToast.showSuccess(
-          title: 'register_success'.tr,
-        );
+        AppToast.showSuccess(title: 'register_success'.tr);
       }
     } catch (e) {
       errorMessage.value = e.toString();

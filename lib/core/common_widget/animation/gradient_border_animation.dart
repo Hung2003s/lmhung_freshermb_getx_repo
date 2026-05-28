@@ -6,7 +6,8 @@ class GradientBorderAnimation extends StatefulWidget {
   const GradientBorderAnimation({super.key, required this.child});
 
   @override
-  State<GradientBorderAnimation> createState() => _GradientBorderAnimationState();
+  State<GradientBorderAnimation> createState() =>
+      _GradientBorderAnimationState();
 }
 
 class _GradientBorderAnimationState extends State<GradientBorderAnimation>
@@ -36,10 +37,7 @@ class _GradientBorderAnimationState extends State<GradientBorderAnimation>
       builder: (context, child) {
         return CustomPaint(
           painter: RotatingBorderPainter(_controller.value),
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: child,
-          )
+          child: Padding(padding: const EdgeInsets.all(2.0), child: child),
         );
       },
     );
@@ -68,7 +66,6 @@ class RotatingBorderPainter extends CustomPainter {
         Color(0xFF103ABB),
         Color(0xFF8A2387), // Tím không gian
         Color(0xFF00C6FF),
-
       ],
       transform: GradientRotation(progress * 2 * math.pi),
     );

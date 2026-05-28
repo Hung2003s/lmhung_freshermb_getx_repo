@@ -9,22 +9,27 @@ import '../../data/datasources/local/auth_local_data_source.dart';
 import '../../data/datasources/local/auth_local_data_source_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
 
-class RegisterBinding  extends  Bindings {
+class RegisterBinding extends Bindings {
   @override
   void dependencies() {
-// 1. Inject DataSource (Cần truyền instance Dio từ core hệ thống vào)
-    Get.lazyPut<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(Get.find()));
+    // 1. Inject DataSource (Cần truyền instance Dio từ core hệ thống vào)
+    Get.lazyPut<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(Get.find()),
+    );
     Get.lazyPut<AuthLocalDataSource>(() => AuthLocalDataSourceImpl());
 
     // 2. Inject Repository
-    Get.lazyPut<AuthRepository>(()=> AuthRepositoryImpl(
-      remoteDataSource: Get.find<AuthRemoteDataSource>(),
-      localDataSource: Get.find<AuthLocalDataSource>(),));
+    Get.lazyPut<AuthRepository>(
+      () => AuthRepositoryImpl(
+        remoteDataSource: Get.find<AuthRemoteDataSource>(),
+        localDataSource: Get.find<AuthLocalDataSource>(),
+      ),
+    );
 
     // 3. Inject UseCase
     Get.lazyPut(() => AuthUseCase(Get.find()));
 
     // 4. Inject Controller cho tầng Presentation dùng
-    Get.lazyPut<RegisterController>(() => RegisterController(Get.find()));  }
-
+    Get.lazyPut<RegisterController>(() => RegisterController(Get.find()));
+  }
 }

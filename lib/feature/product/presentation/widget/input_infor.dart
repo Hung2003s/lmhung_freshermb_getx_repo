@@ -23,7 +23,9 @@ class InputInfor extends StatelessWidget {
     required this.hint,
     required this.title,
     this.keyboardType = TextInputType.text,
-    this.errorText, this.onSubmitted, this.textInputAction,
+    this.errorText,
+    this.onSubmitted,
+    this.textInputAction,
     this.maxLine = 1,
     required this.enable,
   });
@@ -48,8 +50,9 @@ class InputInfor extends StatelessWidget {
           maxLine: maxLine,
           contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 20),
           textStyle: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurface,
           ),
           onSubmitted: onSubmitted,
           textInputAction: textInputAction ?? TextInputAction.next,

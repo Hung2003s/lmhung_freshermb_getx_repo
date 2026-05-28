@@ -15,12 +15,9 @@ abstract class Failure with _$Failure {
   }) = ConnectionFailure;
 
   // Lỗi xác thực (Hết hạn token, sai tài khoản)
-  const factory Failure.authFailure({
-    required String message,
-  }) = AuthFailure;
+  const factory Failure.authFailure({required String message}) = AuthFailure;
 
   // Lỗi dữ liệu không hợp lệ từ local
-  const factory Failure.validationFailure({
-    required String message,
-  }) = ValidationFailure;
+  const factory Failure.validationFailure({required String message}) =
+      ValidationFailure;
 }

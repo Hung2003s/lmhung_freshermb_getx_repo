@@ -48,7 +48,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: theme.colorScheme.primary.withValues(alpha: 0.3),
                   blurRadius: 10,
                   spreadRadius: 1,
-                )
+                ),
               ],
             ),
             child: Icon(
@@ -118,10 +118,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                       decoration: BoxDecoration(
                         color: ColorName.error,
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: bgColor,
-                          width: 1.5,
-                        ),
+                        border: Border.all(color: bgColor, width: 1.5),
                       ),
                     ),
                   ),

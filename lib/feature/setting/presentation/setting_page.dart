@@ -47,7 +47,7 @@ class SettingPage extends GetView<SettingController> {
     );
   }
 
-  Widget  _buildLogoutButton(BuildContext context) {
+  Widget _buildLogoutButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -92,11 +92,7 @@ class SettingPage extends GetView<SettingController> {
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           children: [
-            Icon(
-              Icons.logout_rounded,
-              size: 48,
-              color: ColorName.error,
-            ),
+            Icon(Icons.logout_rounded, size: 48, color: ColorName.error),
             const SizedBox(height: 16),
             Text(
               'logout_confirm'.tr,
@@ -220,7 +216,9 @@ class SettingPage extends GetView<SettingController> {
               ),
               child: Icon(
                 icon,
-                color: isSelected ? ColorName.orange : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                color: isSelected
+                    ? ColorName.orange
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 size: 24,
               ),
             ),

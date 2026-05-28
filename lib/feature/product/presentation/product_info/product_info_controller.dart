@@ -253,7 +253,10 @@ class ProductInfoController extends GetxController {
       AppToast.showSuccess(title: 'update_success'.tr);
     } catch (e) {
       errorMessage.value = e.toString();
-      AppToast.showError(title: 'update_failed'.tr, message: errorMessage.value);
+      AppToast.showError(
+        title: 'update_failed'.tr,
+        message: errorMessage.value,
+      );
     } finally {
       isLoading.value = false;
     }

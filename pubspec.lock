@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.1"
+  barcode_scanner_plugin:
+    dependency: "direct main"
+    description:
+      name: barcode_scanner_plugin
+      sha256: ffb4a78e49c43e46b95b5864ed201303739d8b583e61f235e4baa0208418eff4
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   boolean_selector:
     dependency: transitive
     description:

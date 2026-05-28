@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-class GetStorageService extends GetxService{
+class GetStorageService extends GetxService {
   final GetStorage _box = GetStorage();
 
   // --- QUẢN LÝ THEME ---
@@ -27,7 +27,6 @@ class GetStorageService extends GetxService{
     _box.write(_langKey, langCode);
     // Ví dụ: Get.updateLocale(Locale(langCode));
   }
-
 
   // --- XÓA DỮ LIỆU (Khi đăng xuất) ---
   void clearAllSettings() {

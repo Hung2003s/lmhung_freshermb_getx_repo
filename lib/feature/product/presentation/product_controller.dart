@@ -9,9 +9,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/product_use_case/product_use_case.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_sort_card.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
-
 import '../../../core/utils/app_toast.dart';
-import '../data/model/product_model.dart';
 
 class ProductController extends GetxController {
   final ProductUseCase _useCase;

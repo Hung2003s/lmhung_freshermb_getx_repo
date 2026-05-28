@@ -97,8 +97,7 @@ class TextInputFields extends StatefulWidget {
   final Color? focusedColor;
   final Color? iconColor;
 
-  final Iterable<String>?  autoFillHint;
-
+  final Iterable<String>? autoFillHint;
 
   @override
   State<TextInputFields> createState() => _TextInputFieldsState();

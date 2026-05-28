@@ -9,7 +9,12 @@ class CategorySortCard extends StatelessWidget {
   final String title;
   final bool isSelected;
   final VoidCallback onTap;
-  const CategorySortCard({super.key, required this.title, required this.onTap, required this.isSelected});
+  const CategorySortCard({
+    super.key,
+    required this.title,
+    required this.onTap,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {

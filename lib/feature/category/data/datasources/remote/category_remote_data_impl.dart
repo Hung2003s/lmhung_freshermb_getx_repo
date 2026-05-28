@@ -15,36 +15,38 @@ class CategoryRemoteDataImpl implements CategoryRemoteData {
   CategoryRemoteDataImpl(this._dioClient);
 
   @override
-  Future<DataState<CategoryResponse>> getCategories({int page = 1, int limit = 20}) async {
+  Future<DataState<CategoryResponse>> getCategories({
+    int page = 1,
+    int limit = 20,
+  }) async {
     try {
       final response = await _dioClient.get(
         ApiEndpoint.categories,
         requiresToken: true,
-        queryParameters: {
-          'page': page,
-          'limit': limit,
-        },
+        queryParameters: {'page': page, 'limit': limit},
       );
 
-        return DataSuccess(CategoryResponse.fromJson(response.data));
+      return DataSuccess(CategoryResponse.fromJson(response.data));
     } on DioException catch (e) {
       if (e.response != null && e.response?.data != null) {
         final errorResponse = ResponseError.fromJson(e.response!.data);
         return DataFailed(errorResponse); // Hết lỗi đỏ!
       }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
+      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
       throw Exception('$e');
     }
   }
 
   @override
-  Future<DataState<CategoryAddRes>> addCategories(CategoryAddParams params) async {
+  Future<DataState<CategoryAddRes>> addCategories(
+    CategoryAddParams params,
+  ) async {
     try {
       final response = await _dioClient.post(
         ApiEndpoint.categories,
         requiresToken: true,
-        data: params
+        data: params,
       );
       return DataSuccess(CategoryAddRes.fromJson(response.data));
     } on DioException catch (e) {
@@ -52,14 +54,17 @@ class CategoryRemoteDataImpl implements CategoryRemoteData {
         final errorResponse = ResponseError.fromJson(e.response!.data);
         return DataFailed(errorResponse); // Hết lỗi đỏ!
       }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
+      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
       throw Exception('$e');
     }
   }
 
   @override
-  Future<DataState<UpdateCategoryRes>> updateCategories(UpdateCategoryParam params, int id) async {
+  Future<DataState<UpdateCategoryRes>> updateCategories(
+    UpdateCategoryParam params,
+    int id,
+  ) async {
     try {
       final response = await _dioClient.put(
         '${ApiEndpoint.categories}/$id',
@@ -72,7 +77,7 @@ class CategoryRemoteDataImpl implements CategoryRemoteData {
         final errorResponse = ResponseError.fromJson(e.response!.data);
         return DataFailed(errorResponse); // Hết lỗi đỏ!
       }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
+      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
       throw Exception('$e');
     }
@@ -91,7 +96,7 @@ class CategoryRemoteDataImpl implements CategoryRemoteData {
         final errorResponse = ResponseError.fromJson(e.response!.data);
         return DataFailed(errorResponse); // Hết lỗi đỏ!
       }
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng',));
+      return DataFailed(ResponseError(message: 'Mất kết nối mạng'));
     } catch (e) {
       throw Exception('$e');
     }

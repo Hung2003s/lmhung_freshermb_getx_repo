@@ -8,8 +8,7 @@ import '../core/storage/secure_storage/token/token_manager.dart';
 
 /// Nơi đăng ký các service được sử dụng trong suốt quá trình chạy ứng dụng
 
-
-class AppBinding extends Bindings{
+class AppBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<DioClient>(DioClient(), permanent: true);

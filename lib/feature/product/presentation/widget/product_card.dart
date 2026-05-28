@@ -32,7 +32,7 @@ class ProductCard extends StatelessWidget {
         extentRatio: 0.25,
         motion: const ScrollMotion(),
         children: [
-          const SizedBox(width: 12,),
+          const SizedBox(width: 12),
           Expanded(
             child: SelectedWidget(
               borderRadius: BorderRadius.circular(12),
@@ -106,7 +106,9 @@ class ProductCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.4,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -120,10 +122,14 @@ class ProductCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'products_count'.trParams({'s': productEntity.stock.toString()}),
+                          'products_count'.trParams({
+                            's': productEntity.stock.toString(),
+                          }),
                           style: TextStyle(
                             fontSize: 12,
-                            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.6,
+                            ),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -143,7 +149,10 @@ class ProductCard extends StatelessWidget {
                     width: 1,
                   ),
                 ),
-                child: Icon(Icons.keyboard_arrow_right_outlined, color: theme.colorScheme.onSurface),
+                child: Icon(
+                  Icons.keyboard_arrow_right_outlined,
+                  color: theme.colorScheme.onSurface,
+                ),
               ),
             ],
           ),
@@ -161,8 +170,8 @@ class ProductCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
-          child: Text(
-            'in_stock'.tr,
+        child: Text(
+          'in_stock'.tr,
           style: TextStyle(
             color: color,
             fontSize: 12,

@@ -22,15 +22,15 @@ class FeatureButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: context.theme.colorScheme.primary,
-          width: 2,
-        )
+        border: Border.all(color: context.theme.colorScheme.primary, width: 2),
       ),
       child: SelectedWidget(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsetsGeometry.symmetric(vertical: 20, horizontal: 20),
+          padding: const EdgeInsetsGeometry.symmetric(
+            vertical: 20,
+            horizontal: 20,
+          ),
           child: icons,
         ),
       ),

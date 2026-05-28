@@ -19,7 +19,10 @@ class CategoryPage extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     return BaseView(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      buildAppBar: ProfileAppBar(greetingText: 'manage'.tr, username: 'category'.tr),
+      buildAppBar: ProfileAppBar(
+        greetingText: 'manage'.tr,
+        username: 'category'.tr,
+      ),
       buildBody: Stack(
         children: [_buildCategoryContent(), _buildFloatingAddButton()],
       ),
@@ -61,45 +64,43 @@ class CategoryPage extends GetView<CategoryController> {
   }
 
   Widget _buildCategoryList() {
-    return Obx(
-      () {
-        final displayList = controller.searchCategoryText.value.trim().isEmpty
-            ? controller.listCategory
-            : controller.filteredCategory;
+    return Obx(() {
+      final displayList = controller.searchCategoryText.value.trim().isEmpty
+          ? controller.listCategory
+          : controller.filteredCategory;
 
-        return Column(
-          children: [
-            Expanded(
-              child: ListView.separated(
-                controller: controller.scrollController,
-                scrollDirection: Axis.vertical,
-                itemCount: displayList.length,
-                itemBuilder: (context, index) {
-                  final item = displayList[index];
-                  final card = _buildCategoryCard(item);
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              controller: controller.scrollController,
+              scrollDirection: Axis.vertical,
+              itemCount: displayList.length,
+              itemBuilder: (context, index) {
+                final item = displayList[index];
+                final card = _buildCategoryCard(item);
 
-                  if (index == displayList.length - 1) {
-                    return Column(children: [card, const SizedBox(height: 60)]);
-                  }
-                  return card;
-                },
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-              ),
+                if (index == displayList.length - 1) {
+                  return Column(children: [card, const SizedBox(height: 60)]);
+                }
+                return card;
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
             ),
-            Obx(
-              () => controller.searchCategoryText.value.trim().isNotEmpty
-                  ? const SizedBox.shrink()
-                  : controller.isLoadingMore.value
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Center(child: CircularProgressIndicator()),
-                        )
-                      : const SizedBox.shrink(),
-            ),
-          ],
-        );
-      },
-    );
+          ),
+          Obx(
+            () => controller.searchCategoryText.value.trim().isNotEmpty
+                ? const SizedBox.shrink()
+                : controller.isLoadingMore.value
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildCategoryCard(CategoryEntity item) {

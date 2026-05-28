@@ -6,8 +6,14 @@ import '../../models/category_delete_model/category_delete_model.dart';
 import '../../models/category_response/category_model.dart';
 
 abstract class CategoryRemoteData {
-  Future<DataState<CategoryResponse>> getCategories({int page = 1, int limit = 20});
+  Future<DataState<CategoryResponse>> getCategories({
+    int page = 1,
+    int limit = 20,
+  });
   Future<DataState<CategoryAddRes>> addCategories(CategoryAddParams params);
-  Future<DataState<UpdateCategoryRes>> updateCategories(UpdateCategoryParam params, int id);
-  Future<DataState<DeleteCategoryRes>> deleteCategories( int id);
+  Future<DataState<UpdateCategoryRes>> updateCategories(
+    UpdateCategoryParam params,
+    int id,
+  );
+  Future<DataState<DeleteCategoryRes>> deleteCategories(int id);
 }

@@ -14,22 +14,23 @@ class DashboardPage extends GetView<DashboardController> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      const  HomePage(),
+      const HomePage(),
       const CategoryPage(),
-       Container(),
+      Container(),
       const ProductPage(),
-       const SettingPage(),
+      const SettingPage(),
     ];
 
     return Scaffold(
       // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Stack(
         children: [
-          Obx(() =>
-              IndexedStack(
-                index: controller.currentTabIndex.value,
-                children: pages,
-              )),
+          Obx(
+            () => IndexedStack(
+              index: controller.currentTabIndex.value,
+              children: pages,
+            ),
+          ),
           const Align(
             alignment: Alignment.bottomCenter,
             child: CustomFloatingNavBar(),

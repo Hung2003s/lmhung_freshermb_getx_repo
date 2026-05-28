@@ -4,8 +4,5 @@ import 'en.dart';
 
 class AppTranslations extends Translations {
   @override
-  Map<String, Map<String, String>> get keys => {
-        ...Vi().keys,
-        ...En().keys,
-      };
+  Map<String, Map<String, String>> get keys => {...Vi().keys, ...En().keys};
 }

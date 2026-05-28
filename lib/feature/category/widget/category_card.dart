@@ -141,7 +141,8 @@ class CategoryCard extends StatelessWidget {
                           '${numberCount.toString()} ${'products'.tr}',
                           style: TextStyle(
                             color: theme.colorScheme.onSurface.withValues(
-                                alpha: 0.6),
+                              alpha: 0.6,
+                            ),
                           ),
                         ),
                         Row(

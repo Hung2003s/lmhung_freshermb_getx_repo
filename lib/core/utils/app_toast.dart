@@ -29,7 +29,6 @@ class AppToast {
     );
   }
 
-
   /// Toast Báo lỗi (Màu Đỏ)
   static void showError({String title = 'Lỗi', required String message}) {
     _show(

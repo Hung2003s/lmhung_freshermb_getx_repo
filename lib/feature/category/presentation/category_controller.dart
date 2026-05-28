@@ -57,7 +57,8 @@ class CategoryController extends GetxController {
   void _onScroll() {
     if (!hasMore || isLoadingMore.value) return;
     if (scrollController.position.maxScrollExtent <= 0) return;
-    if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 200) {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent - 200) {
       loadMore();
     }
   }
@@ -105,7 +106,9 @@ class CategoryController extends GetxController {
         hasMore = false;
       } else {
         final existingIds = listCategory.map((e) => e.id).toSet();
-        final newItems = result.where((item) => !existingIds.contains(item.id)).toList();
+        final newItems = result
+            .where((item) => !existingIds.contains(item.id))
+            .toList();
         if (newItems.isEmpty) {
           page.value -= 1;
           hasMore = false;
@@ -171,7 +174,10 @@ class CategoryController extends GetxController {
         listCategory.refresh();
       }
       errorMessage.value = e.toString();
-      AppToast.showError(title: 'update_failed'.tr, message: errorMessage.value);
+      AppToast.showError(
+        title: 'update_failed'.tr,
+        message: errorMessage.value,
+      );
     }
   }
 
@@ -199,7 +205,10 @@ class CategoryController extends GetxController {
         listCategory.refresh();
       }
       errorMessage.value = e.toString();
-      AppToast.showError(title: 'delete_failed'.tr, message: errorMessage.value);
+      AppToast.showError(
+        title: 'delete_failed'.tr,
+        message: errorMessage.value,
+      );
     }
   }
 
@@ -314,9 +323,7 @@ class CategoryController extends GetxController {
             hintText: 'category_name'.tr,
             filled: true,
             fillColor: theme.colorScheme.surface,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
         ),
       ],
@@ -332,7 +339,10 @@ class CategoryController extends GetxController {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: verticalPadding),
+        padding: EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: verticalPadding,
+        ),
         decoration: BoxDecoration(
           color: theme.colorScheme.primary.withValues(alpha: 0.2),
           border: Border.all(

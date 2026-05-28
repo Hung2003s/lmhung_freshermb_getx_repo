@@ -17,7 +17,10 @@ class HomeController extends GetxController {
     );
   }
 
-  Widget _buildFastAddContent(ThemeData theme, CategoryController categoryController) {
+  Widget _buildFastAddContent(
+    ThemeData theme,
+    CategoryController categoryController,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,9 +39,7 @@ class HomeController extends GetxController {
             hintText: 'category_name'.tr,
             filled: true,
             fillColor: theme.colorScheme.surface,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
           onChanged: (value) {
             categoryController.addCategoryText.value = value;

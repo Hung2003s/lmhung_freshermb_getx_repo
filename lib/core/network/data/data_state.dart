@@ -1,13 +1,11 @@
-
-
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'data_state.freezed.dart';
 part 'data_state.g.dart';
+
 @freezed
-abstract class ResponseError  with _$ResponseError {
+abstract class ResponseError with _$ResponseError {
   factory ResponseError({
-    @JsonKey(name: 'status_code')  int? statusCode,
+    @JsonKey(name: 'status_code') int? statusCode,
     @JsonKey(name: 'root_err') dynamic rootErr,
     @JsonKey(name: 'message') String? message,
     @JsonKey(name: 'log') String? log,

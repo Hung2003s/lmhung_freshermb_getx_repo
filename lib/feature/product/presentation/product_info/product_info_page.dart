@@ -104,7 +104,9 @@ class ProductInfoPage extends GetView<ProductInfoController> {
           children: [
             Icon(
               Icons.camera_alt,
-              color: isReadOnly ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : ColorName.orange,
+              color: isReadOnly
+                  ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
+                  : ColorName.orange,
             ),
             const SizedBox(height: 8),
             Text(
@@ -112,7 +114,9 @@ class ProductInfoPage extends GetView<ProductInfoController> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isReadOnly ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : ColorName.orange,
+                color: isReadOnly
+                    ? theme.colorScheme.onSurface.withValues(alpha: 0.5)
+                    : ColorName.orange,
               ),
             ),
           ],
@@ -228,7 +232,9 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         ),
         onPressed: () => controller.saveProduct(),
         child: Text(
-          mode == ProductPageMode.create ? 'create_new_product'.tr : 'save_changes'.tr,
+          mode == ProductPageMode.create
+              ? 'create_new_product'.tr
+              : 'save_changes'.tr,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
