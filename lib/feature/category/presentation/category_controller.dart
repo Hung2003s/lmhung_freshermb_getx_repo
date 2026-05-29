@@ -116,7 +116,7 @@ class CategoryController extends GetxController
     } else {
       filteredCategory.assignAll(
         listCategory.where(
-          (item) => StringUtils.containsIgnoreAccents(item.name, query.trim()),
+              (item) => StringUtils.containsIgnoreAccents(item.name, query.trim()),
         ),
       );
     }

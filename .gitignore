@@ -9,6 +9,9 @@
 .buildlog/
 .history
 .svn/
+*.env
+*.freezed.dart
+*.g.dart
 .swiftpm/
 migrate_working_dir/
 

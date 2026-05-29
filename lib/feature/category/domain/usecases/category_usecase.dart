@@ -12,11 +12,11 @@ class CategoryUseCase {
 
   CategoryUseCase(this.repository);
 
-  Future<List<CategoryEntity>> call() async {
-    final result = await repository.getCategories();
+  Future<List<CategoryEntity>> call({int page = 1, int limit = 20}) async {
+    final result = await repository.getCategories(page: page, limit: limit);
     return result.fold(
-      (failure) => throw Exception(failure.message),
-      (list) => list,
+          (failure) => throw Exception(failure.message),
+          (list) => list,
     );
   }
 
