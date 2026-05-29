@@ -37,7 +37,7 @@ class TextInputFields extends StatefulWidget {
       bottom: 12,
     ),
     this.textStyle,
-    this.textColor = Colors.white,
+    this.textColor,
     this.description,
     this.readOnly = false,
     this.textDescriptionStyle,
@@ -48,10 +48,11 @@ class TextInputFields extends StatefulWidget {
     this.hasPassWord = true,
     this.filled,
     this.filledColor,
-    this.defaultBorderColor = const Color(0xff969696),
-    this.errorColor = ColorName.error,
-    this.focusedColor = ColorName.primary,
-    this.iconColor = Colors.white,
+    this.defaultBorderColor,
+    this.errorColor,
+    this.focusedColor,
+    this.iconColor,
+    this.autoFillHint,
   });
 
   final String? title;
@@ -91,10 +92,12 @@ class TextInputFields extends StatefulWidget {
   final TextEditingController controller;
   final ValueChanged<TextEditingController>? onControllerCreated;
 
-  final Color defaultBorderColor;
-  final Color errorColor;
-  final Color focusedColor;
-  final Color iconColor;
+  final Color? defaultBorderColor;
+  final Color? errorColor;
+  final Color? focusedColor;
+  final Color? iconColor;
+
+  final Iterable<String>? autoFillHint;
 
   @override
   State<TextInputFields> createState() => _TextInputFieldsState();
@@ -132,7 +135,6 @@ class _TextInputFieldsState extends State<TextInputFields> {
 
   void _onTextChanged() {
     final bool hasText = widget.controller.text.isNotEmpty;
-    // Chỉ cập nhật ValueNotifier nếu giá trị thực sự thay đổi, tránh rebuild thừa
     if (_hasTextNotifier.value != hasText) {
       _hasTextNotifier.value = hasText;
     }
@@ -177,19 +179,25 @@ class _TextInputFieldsState extends State<TextInputFields> {
   }
 
   Widget buildTitle() {
+    final theme = Theme.of(context);
     return Text(
       widget.title!,
       style:
-          widget.titleTextStyle ?? const TextStyle(fontWeight: FontWeight.bold),
+          widget.titleTextStyle ??
+          TextStyle(
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface,
+          ),
     );
   }
 
   Widget buildTextField() {
-    // Chỉ lắng nghe việc ẩn/hiện mật khẩu để rebuild TextFormField
     return ValueListenableBuilder<bool>(
       valueListenable: _obscureTextNotifier,
       builder: (context, isObscure, child) {
+        final theme = Theme.of(context);
         return TextFormField(
+          autofillHints: widget.autoFillHint,
           controller: widget.controller,
           focusNode: focusNode,
           obscureText: widget.passwordType ? isObscure : false,
@@ -202,9 +210,13 @@ class _TextInputFieldsState extends State<TextInputFields> {
           onFieldSubmitted: widget.onSubmitted,
           inputFormatters: widget.inputFormatters,
           autofocus: widget.autofocus,
-          style: widget.textStyle ?? AppTextStyle.captionLarge,
+          style:
+              widget.textStyle?.copyWith(
+                color: widget.textColor ?? theme.colorScheme.onSurface,
+              ) ??
+              theme.textTheme.bodyMedium,
           maxLines: widget.passwordType ? 1 : widget.maxLine,
-          cursorColor: ColorName.gray,
+          cursorColor: theme.colorScheme.primary,
           readOnly: widget.readOnly,
           keyboardAppearance: widget.keyboardAppearance,
           decoration: getInputDecoration(isObscure),
@@ -214,13 +226,23 @@ class _TextInputFieldsState extends State<TextInputFields> {
   }
 
   InputDecoration getInputDecoration(bool isObscure) {
+    final theme = Theme.of(context);
+    final defaultBorderColor =
+        widget.defaultBorderColor ??
+        theme.colorScheme.onSurface.withValues(alpha: 0.3);
+    final errorColor = widget.errorColor ?? theme.colorScheme.error;
+    final focusedColor = widget.focusedColor ?? theme.colorScheme.primary;
+
     return InputDecoration(
-      fillColor: widget.filledColor,
-      filled: widget.filled,
+      fillColor: widget.filledColor ?? theme.inputDecorationTheme.fillColor,
+      filled: widget.filled ?? theme.inputDecorationTheme.filled,
       hintText: widget.hintText,
-      hintStyle: widget.hintTextStyle ?? AppTextStyle.hint,
+      hintStyle:
+          widget.hintTextStyle ??
+          theme.inputDecorationTheme.hintStyle?.copyWith(
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+          ),
       contentPadding: widget.contentPadding,
-      // suffixIcon chỉ lắng nghe _hasTextNotifier để tránh rebuild toàn bộ field khi gõ phím
       suffixIcon: ValueListenableBuilder<bool>(
         valueListenable: _hasTextNotifier,
         builder: (context, hasText, child) {
@@ -236,28 +258,28 @@ class _TextInputFieldsState extends State<TextInputFields> {
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(
           width: 1,
-          color: widget.errorText == null
-              ? widget.focusedColor
-              : widget.errorColor,
+          color: widget.errorText == null ? focusedColor : errorColor,
         ),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(width: 1, color: widget.errorColor),
+        borderSide: BorderSide(width: 1, color: errorColor),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(width: 1, color: widget.defaultBorderColor),
+        borderSide: BorderSide(width: 1, color: defaultBorderColor),
       ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(width: 2, color: widget.focusedColor),
+        borderSide: BorderSide(width: 2, color: focusedColor),
       ),
       counterText: '',
     );
   }
 
   Widget buildCleanButton() {
+    final theme = Theme.of(context);
+    final iconColor = widget.iconColor ?? theme.colorScheme.onSurface;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -268,10 +290,7 @@ class _TextInputFieldsState extends State<TextInputFields> {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Assets.icons.clearText.svg(
-          colorFilter: ColorFilter.mode(
-            widget.iconColor, // Màu bạn muốn nhuộm cho SVG
-            BlendMode.srcIn, // Chế độ hòa trộn (Gần như luôn dùng srcIn cho icon)
-          ),
+          colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
         ),
       ),
     );
@@ -286,6 +305,8 @@ class _TextInputFieldsState extends State<TextInputFields> {
   }
 
   Widget buildPasswordSuffixIcon(bool isObscure) {
+    final theme = Theme.of(context);
+    final iconColor = widget.iconColor ?? theme.colorScheme.onSurface;
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
@@ -300,20 +321,12 @@ class _TextInputFieldsState extends State<TextInputFields> {
                 ? Assets.icons.showPass.svg(
                     width: 20,
                     height: 20,
-                    colorFilter: ColorFilter.mode(
-                      widget.iconColor, // Màu bạn muốn nhuộm cho SVG
-                      BlendMode
-                          .srcIn, // Chế độ hòa trộn (Gần như luôn dùng srcIn cho icon)
-                    ),
+                    colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
                   )
                 : Assets.icons.hidePass.svg(
                     width: 20,
                     height: 20,
-                    colorFilter: ColorFilter.mode(
-                      widget.iconColor, // Màu bạn muốn nhuộm cho SVG
-                      BlendMode
-                          .srcIn, // Chế độ hòa trộn (Gần như luôn dùng srcIn cho icon)
-                    ),
+                    colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
                   ),
           ),
         ),

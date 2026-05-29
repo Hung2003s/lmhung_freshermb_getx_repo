@@ -9,17 +9,22 @@ import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/auth_usecase.dart';
 import 'login_controller.dart';
 
-class LoginBinding  extends Bindings{
+class LoginBinding extends Bindings {
   @override
   void dependencies() {
-    // 1. Inject DataSource (Cần truyền instance Dio từ core hệ thống vào)
-    Get.lazyPut<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(Get.find()));
+    // 1. Inject DataSource
+    Get.lazyPut<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(Get.find()),
+    );
     Get.lazyPut<AuthLocalDataSource>(() => AuthLocalDataSourceImpl());
 
     // 2. Inject Repository
-    Get.lazyPut<AuthRepository>(()=> AuthRepositoryImpl(
-      remoteDataSource: Get.find<AuthRemoteDataSource>(),
-      localDataSource: Get.find<AuthLocalDataSource>(),));
+    Get.lazyPut<AuthRepository>(
+      () => AuthRepositoryImpl(
+        remoteDataSource: Get.find<AuthRemoteDataSource>(),
+        localDataSource: Get.find<AuthLocalDataSource>(),
+      ),
+    );
 
     // 3. Inject UseCase
     Get.lazyPut(() => AuthUseCase(Get.find()));

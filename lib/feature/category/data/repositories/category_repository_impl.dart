@@ -15,21 +15,26 @@ class CategoryRepositoryImpl implements CategoriesRepository {
   CategoryRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure,List<CategoryEntity>>> getCategories() async {
+  Future<Either<Failure, List<CategoryEntity>>> getCategories({
+    int page = 1,
+    int limit = 20,
+  }) async {
+    final result = await remoteDataSource.getCategories(
+      page: page,
+      limit: limit,
+    );
+    if (result is DataSuccess) {
+      return Right(result.data!.responseToListEntities());
+    } else {
+      final responseError = result.error;
 
-      final result = await remoteDataSource.getCategories();
-      if (result is DataSuccess) {
-        return Right(result.data!.responseToListEntities());
-      } else {
-        final responseError = result.error;
-
-        return Left(
-          Failure.serverFailure(
-            message: responseError?.message ?? 'Lỗi không xác định',
-            statusCode: responseError?.statusCode,
-          ),
-        );
-      }
+      return Left(
+        Failure.serverFailure(
+          message: responseError?.message ?? 'Lỗi không xác định',
+          statusCode: responseError?.statusCode,
+        ),
+      );
+    }
   }
 
   @override
@@ -53,7 +58,10 @@ class CategoryRepositoryImpl implements CategoriesRepository {
   }
 
   @override
-  Future<Either<Failure, UpdateCategoryRes>> updateCategories(UpdateCategoryParam params, int id) async {
+  Future<Either<Failure, UpdateCategoryRes>> updateCategories(
+    UpdateCategoryParam params,
+    int id,
+  ) async {
     final result = await remoteDataSource.updateCategories(params, id);
     if (result is DataSuccess) {
       return Right(result.data!);

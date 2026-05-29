@@ -14,9 +14,11 @@ class CategoryBinding extends Bindings {
     Get.lazyPut<CategoryRemoteData>(() => CategoryRemoteDataImpl(Get.find()));
 
     // 2. Inject Repository
-    Get.lazyPut<CategoriesRepository>(()=> CategoryRepositoryImpl(
-      remoteDataSource: Get.find<CategoryRemoteData>(),
-     ));
+    Get.lazyPut<CategoriesRepository>(
+      () => CategoryRepositoryImpl(
+        remoteDataSource: Get.find<CategoryRemoteData>(),
+      ),
+    );
 
     // 3. Inject UseCase
     Get.lazyPut(() => CategoryUseCase(Get.find()));

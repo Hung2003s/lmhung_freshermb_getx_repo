@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../common_widget/dialog/base_dialog.dart';
 
 extension DialogX on GetInterface {
-
   Future<T?> showCustomDialog<T>({
     required String title,
     required Widget content,

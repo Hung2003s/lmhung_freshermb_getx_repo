@@ -8,6 +8,8 @@ import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashbo
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_page.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_bindings.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_page.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/barcode_scan/barcode_scan_binding.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/barcode_scan/barcode_scan_page.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_info/product_info_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_info/product_info_page.dart';
@@ -67,6 +69,11 @@ class AppRouters {
       name: Routes.productsInfo,
       page: () => const ProductInfoPage(),
       binding: ProductInfoBinding(),
+    ),
+    GetPage(
+      name: Routes.barcodeScan,
+      page: () => const BarcodeScanPage(),
+      binding: BarcodeScanBinding(),
     ),
   ];
 }

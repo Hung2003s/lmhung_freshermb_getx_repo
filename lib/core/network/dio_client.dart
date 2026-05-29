@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:lmhung_freshermb_getx_repo/core/network/interceptor/token_interceptor.dart';
 import '../../core/config/app_config.dart';
 import 'interceptor/curl_log_interceptor.dart';
 import 'interceptor/header_interceptor.dart';
@@ -24,10 +25,7 @@ class DioClient {
       },
     );
     _dio = Dio(options);
-    _dio.interceptors.addAll([
-      HeaderInterceptor(),
-      CurlLogInterceptor(),
-    ]);
+    _dio.interceptors.addAll([HeaderInterceptor(),  TokenInterceptor(), CurlLogInterceptor(),]);
   }
 
   Future<Response> get(
@@ -46,7 +44,11 @@ class DioClient {
     }
   }
 
-  Future<Response> post(String path, {dynamic data, required bool requiresToken}) async {
+  Future<Response> post(
+    String path, {
+    dynamic data,
+    required bool requiresToken,
+  }) async {
     try {
       return await _dio.post(
         path,
@@ -58,19 +60,33 @@ class DioClient {
     }
   }
 
-  Future<Response> put(String path, {dynamic data, required bool requiresToken}) async {
+  Future<Response> put(
+    String path, {
+    dynamic data,
+    required bool requiresToken,
+  }) async {
     try {
-      return await _dio.put(path, data: data,
-          options: Options(extra: {'requiresToken': requiresToken}));
+      return await _dio.put(
+        path,
+        data: data,
+        options: Options(extra: {'requiresToken': requiresToken}),
+      );
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Response> delete(String path, {dynamic data, required bool requiresToken}) async {
+  Future<Response> delete(
+    String path, {
+    dynamic data,
+    required bool requiresToken,
+  }) async {
     try {
-      return await _dio.delete(path, data: data,
-        options: Options(extra: {'requiresToken': requiresToken}),);
+      return await _dio.delete(
+        path,
+        data: data,
+        options: Options(extra: {'requiresToken': requiresToken}),
+      );
     } catch (e) {
       rethrow;
     }

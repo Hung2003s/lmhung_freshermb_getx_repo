@@ -19,14 +19,14 @@ class BaseDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Dialog(
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
       elevation: 5,
       insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         width: width ?? (screenSize.width * 0.85),
         padding: const EdgeInsets.all(20.0),
@@ -37,12 +37,12 @@ class BaseDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 10,),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: theme.colorScheme.onSurface,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -51,10 +51,11 @@ class BaseDialog extends StatelessWidget {
                   ),
                 ),
                 if (showCloseIcon)
-                  IconButton( // Dùng IconButton để có hit test area tốt hơn
-                    icon: const Icon(
+                  IconButton(
+                    // Dùng IconButton để có hit test area tốt hơn
+                    icon: Icon(
                       Icons.close_rounded,
-                      color: Color(0xFF9E9E9E),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                       size: 22,
                     ),
                     onPressed: () {
@@ -65,17 +66,10 @@ class BaseDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Flexible(
-              child: SingleChildScrollView(
-                child: content,
-              ),
-            ),
+            Flexible(child: SingleChildScrollView(child: content)),
             if (footer != null) ...[
               const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerRight,
-                child: footer!,
-              ),
+              Align(alignment: Alignment.centerRight, child: footer!),
             ],
           ],
         ),

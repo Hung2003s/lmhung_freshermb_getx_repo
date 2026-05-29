@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import '../header_provider.dart';
 
 class HeaderInterceptor extends Interceptor {
-  final HeaderProvider _headerProvider =  HeaderProvider();
+  final HeaderProvider _headerProvider = HeaderProvider();
 
   @override
   void onRequest(
@@ -17,7 +17,8 @@ class HeaderInterceptor extends Interceptor {
 
     if (requiresToken) {
       // 3. Lấy headers đã bao gồm Authorization từ Provider
-      final authenticatedHeader = await _headerProvider.getAuthenticatedHeader();
+      final authenticatedHeader = await _headerProvider
+          .getAuthenticatedHeader();
       options.headers.addAll(authenticatedHeader);
     }
 

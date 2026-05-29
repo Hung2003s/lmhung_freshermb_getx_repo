@@ -1,4 +1,3 @@
-
 import '../../data/model/product_model.dart';
 import '../entity/product_entity.dart';
 import '../repository/product_repository.dart';
@@ -33,6 +32,7 @@ class ProductUseCase {
       (data) => data,
     );
   }
+
   Future<bool> updateProduct(ProductInfoParam params, int id) async {
     final result = await repository.updateProduct(params, id);
     return result.fold(
@@ -40,6 +40,7 @@ class ProductUseCase {
       (data) => data,
     );
   }
+
   Future<bool> deleteProduct(int id) async {
     final result = await repository.deleteProduct(id);
     return result.fold(

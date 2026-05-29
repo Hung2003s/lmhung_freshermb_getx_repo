@@ -54,40 +54,40 @@ class RegisterPage extends GetView<RegisterController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'Chào mừng trở lại',
-          style:  context.textTheme.headlineSmall,
-        ),
+        Text('welcome_back'.tr, style: context.textTheme.headlineSmall),
         const SizedBox(height: 8),
-        Text(
-          'Đăng ký tài khoản',
-          style: context.textTheme.titleSmall,
-        ),
+        Text('register_title'.tr, style: context.textTheme.titleSmall),
         const SizedBox(height: 24),
-        InputField(
-          isShowClearButton: true,
-          controller: controller.userNameController,
-          onChanged: (value) {
-            controller.userNameText.value = value;
-          },
-          hint: 'Tài khoản',
-          title: 'Tài khoản',
-          // errorText: controller.showError ? state.userNameError : null,
+        Obx(
+          () => InputField(
+            shakeKey: controller.userNameShakeKey.value,
+            isShowClearButton: true,
+            controller: controller.userNameController,
+            onChanged: (value) {
+              controller.userNameText.value = value;
+            },
+            hint: 'username'.tr,
+            title: 'username'.tr,
+            errorText: controller.displayedUserNameError,
+          ),
         ),
         const SizedBox(height: 4),
-        InputField(
-          isPassword: true,
-          controller: controller.passwordController,
-          onChanged: (value) {
-            controller.passwordText.value = value;
-          },
-          hint: 'Mật khẩu',
-          title: 'Mật khẩu',
-          textInputAction: TextInputAction.done,
-          // errorText: state.showError ? state.passwordError : null,
-          onSubmitted: (value) {
-            controller.register();
-          },
+        Obx(
+          () => InputField(
+            shakeKey: controller.passwordShakeKey.value,
+            isPassword: true,
+            controller: controller.passwordController,
+            onChanged: (value) {
+              controller.passwordText.value = value;
+            },
+            hint: 'password'.tr,
+            title: 'password'.tr,
+            errorText: controller.displayedPasswordError,
+            textInputAction: TextInputAction.done,
+            onSubmitted: (value) {
+              controller.register();
+            },
+          ),
         ),
       ],
     );
@@ -97,15 +97,17 @@ class RegisterPage extends GetView<RegisterController> {
     return Column(
       children: [
         SelectedWidget(
+          borderRadius: BorderRadius.circular(12),
           onTap: () {
             controller.register();
           },
           backgroundColor: ColorName.orange,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+          child: Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: Center(
               child: Text(
-                'Đăng ký',
+                'register'.tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -122,14 +124,12 @@ class RegisterPage extends GetView<RegisterController> {
             Expanded(
               child: Container(
                 height: 1,
-                decoration: BoxDecoration(
-                  color: ColorName.primary,
-                ),
+                decoration: BoxDecoration(color: ColorName.primary),
               ),
             ),
             const SizedBox(width: 16),
             Text(
-              'Hoặc đăng ký với',
+              'or_register_with'.tr,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
@@ -140,9 +140,7 @@ class RegisterPage extends GetView<RegisterController> {
             Expanded(
               child: Container(
                 height: 1,
-                decoration: BoxDecoration(
-                  color: ColorName.primary,
-                ),
+                decoration: BoxDecoration(color: ColorName.primary),
               ),
             ),
           ],
@@ -153,13 +151,13 @@ class RegisterPage extends GetView<RegisterController> {
           children: [
             FeatureButton(
               onTap: () {},
-              title: 'Trợ giúp',
+              title: 'help'.tr,
               icons: Assets.icons.headphone.svg(width: 20),
             ),
             const SizedBox(width: 16),
             FeatureButton(
               onTap: () {},
-              title: 'Group',
+              title: 'group'.tr,
               icons: Assets.icons.icon.svg(width: 20),
             ),
           ],
@@ -167,31 +165,30 @@ class RegisterPage extends GetView<RegisterController> {
         const SizedBox(height: 16),
         SelectedWidget(
           onTap: () {},
-          child: RichText(text: TextSpan(
+          child: RichText(
+            text: TextSpan(
               style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white.withValues(alpha: 0.4),
-                  decoration: TextDecoration.underline
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.white.withValues(alpha: 0.4),
+                decoration: TextDecoration.underline,
               ),
               children: [
+                TextSpan(text: "need_help".tr),
                 TextSpan(
-                  text: "Cần trợ giúp?",
+                  text: "contact_support".tr,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
-                TextSpan(
-                    text: "Liên hệ hỗ trợ",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        decoration: TextDecoration.underline
-                    )
-                )
-              ]
-          )),
+              ],
+            ),
+          ),
         ),
         const SizedBox(height: 16),
-
       ],
     );
   }

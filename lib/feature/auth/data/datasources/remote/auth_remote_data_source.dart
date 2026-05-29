@@ -1,5 +1,3 @@
-
-
 import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
 
 import '../../../../../core/network/data/data_state.dart';

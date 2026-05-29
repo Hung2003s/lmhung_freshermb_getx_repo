@@ -42,7 +42,8 @@ class SelectedWidget extends StatelessWidget {
     this.onSecondaryTapDown,
     this.onSecondaryTapCancel,
     this.onHighlightChanged,
-    this.onHover, this.onFocusChange,
+    this.onHover,
+    this.onFocusChange,
   });
 
   /// xay dung giao dien nut bam co ban
@@ -54,8 +55,10 @@ class SelectedWidget extends StatelessWidget {
       color: themeColor,
       borderRadius: borderRadius ?? BorderRadius.circular(8),
       child: InkWell(
-        highlightColor: highlightColor ?? Colors.transparent,
-        splashColor: rippleColor ?? Colors.transparent,
+        borderRadius: borderRadius ?? BorderRadius.circular(8),
+        highlightColor:
+            highlightColor ?? ColorName.orange.withValues(alpha: 0.4),
+        splashColor: rippleColor ?? ColorName.orange.withValues(alpha: 0.4),
         onTap: onTap,
         onTapDown: onTapDown,
         onDoubleTap: onDoubleTap,

@@ -43,7 +43,6 @@ class CurlLogInterceptor extends Interceptor {
   }
 
   void _logCurlRequest(RequestOptions options, String traceId) {
-
     if (kDebugMode) {
       print('┌${'─' * 78}');
       print('│ [TRACE: $traceId] CURL REQUEST');
@@ -52,14 +51,15 @@ class CurlLogInterceptor extends Interceptor {
 
     // print(curlCommand);
     final curlCommand = _buildCurlCommand(options);
-    _logWithPagination( curlCommand ,'|');
+    _logWithPagination(curlCommand, '|');
     if (kDebugMode) {
       print('└${'─' * 78}');
     }
   }
 
   void _logResponse(Response response, String traceId) {
-    final statusInfo = 'Status: ${response.statusCode} ${response.statusMessage}';
+    final statusInfo =
+        'Status: ${response.statusCode} ${response.statusMessage}';
     final dataInfo = '\n Data: ${_formatResponseData(response.data)}';
     final responseInfo = '$statusInfo | $dataInfo';
 
@@ -68,10 +68,10 @@ class CurlLogInterceptor extends Interceptor {
       print('│ [TRACE: $traceId] RESPONSE ($responseInfo)');
       print('├${'─' * 78}');
 
-      print('='*60);
+      print('=' * 60);
     }
 
-    _logWithPagination( responseInfo, '|');
+    _logWithPagination(responseInfo, '|');
   }
 
   String _formatResponseData(dynamic data) {
@@ -93,17 +93,18 @@ class CurlLogInterceptor extends Interceptor {
     const maxChunkLength = 800;
     // Debug: log độ dài để kiểm tra
     if (kDebugMode) {
-      print('Content length: ${content.length} \n characters (max: $maxChunkLength)');
+      print(
+        'Content length: ${content.length} \n characters (max: $maxChunkLength)',
+      );
     }
 
     final lines = content.split('\n');
-    for(final line in lines) {
-
-      if(line.length <= maxChunkLength) {
+    for (final line in lines) {
+      if (line.length <= maxChunkLength) {
         if (kDebugMode) {
           print('$prefix\n');
         }
-      } else{
+      } else {
         final totalChunks = (line.length / maxChunkLength).ceil();
         for (int i = 0; i < totalChunks; i++) {
           final start = i * maxChunkLength;
@@ -120,7 +121,8 @@ class CurlLogInterceptor extends Interceptor {
       print('=' * 80);
     }
   }
-// .... _logError vaf _build CurlCommand
+
+  // .... _logError vaf _build CurlCommand
   void _logError(DioException error, String traceId) {
     if (kDebugMode) {
       print('[TRACE: $traceId] ERROR:');
@@ -128,12 +130,11 @@ class CurlLogInterceptor extends Interceptor {
       print('Message: ${error.message}');
     }
 
-    if(error.response != null) {
+    if (error.response != null) {
       if (kDebugMode) {
         print('Response Body:');
         print(_formatResponseData(error.response?.data));
       }
-
     }
     if (kDebugMode) {
       print('─' * 80);
@@ -169,12 +170,11 @@ class CurlLogInterceptor extends Interceptor {
       if (options.data is String) {
         body = options.data as String;
       } else if (options.data is Map || options.data is List) {
-        try{
+        try {
           body = jsonEncode(options.data);
         } catch (e) {
           body = options.data.toString();
         }
-
       } else if (options.data is FormData) {
         // Handle FormData
         final formData = options.data as FormData;

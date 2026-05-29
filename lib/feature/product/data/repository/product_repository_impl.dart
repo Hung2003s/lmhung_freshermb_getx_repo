@@ -13,34 +13,34 @@ class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure,List<ProductEntity>>> getListProductById({
+  Future<Either<Failure, List<ProductEntity>>> getListProductById({
     String? keyword,
     int? categoryId,
     required int page,
     required int limit,
   }) async {
-      final result  = await remoteDataSource.getListProductById(
-        keyword:  keyword,
-        categoryId: categoryId,
-        page: page,
-        limit: limit,
+    final result = await remoteDataSource.getListProductById(
+      keyword: keyword,
+      categoryId: categoryId,
+      page: page,
+      limit: limit,
+    );
+    if (result is DataSuccess) {
+      return Right(result.data!.responseToListEntities());
+    } else {
+      final responseError = result.error;
+      return Left(
+        Failure.serverFailure(
+          message: responseError?.message ?? 'Lỗi không xác định',
+          statusCode: responseError?.statusCode,
+        ),
       );
-      if (result is DataSuccess) {
-        return Right(result.data!.responseToListEntities());
-      } else {
-        final responseError = result.error;
-        return Left(
-          Failure.serverFailure(
-            message: responseError?.message ?? 'Lỗi không xác định',
-            statusCode: responseError?.statusCode,
-          ),
-        );
-      }
+    }
   }
 
   @override
   Future<Either<Failure, int>> addProduct(ProductInfoParam params) async {
-    final result  = await remoteDataSource.addProduct(params: params,);
+    final result = await remoteDataSource.addProduct(params: params);
     if (result is DataSuccess) {
       return Right(result.data!.data);
     } else {
@@ -56,7 +56,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure, bool>> deleteProduct(int id) async {
-    final result  = await remoteDataSource.deleteProduct(id: id,);
+    final result = await remoteDataSource.deleteProduct(id: id);
     if (result is DataSuccess) {
       return Right(result.data!.data);
     } else {
@@ -71,8 +71,11 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateProduct(ProductInfoParam params, int id) async {
-    final result  = await remoteDataSource.updateProduct(params: params, id: id);
+  Future<Either<Failure, bool>> updateProduct(
+    ProductInfoParam params,
+    int id,
+  ) async {
+    final result = await remoteDataSource.updateProduct(params: params, id: id);
     if (result is DataSuccess) {
       return Right(result.data!.data);
     } else {

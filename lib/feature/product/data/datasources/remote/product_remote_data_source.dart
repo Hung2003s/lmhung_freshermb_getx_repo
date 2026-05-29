@@ -1,4 +1,3 @@
-
 import '../../../../../core/network/data/data_state.dart';
 import '../../model/product_model.dart';
 
@@ -17,6 +16,5 @@ abstract class ProductRemoteDataSource {
     required ProductInfoParam params,
     required int id,
   });
-  Future<DataState<DeleteProductRes>> deleteProduct({
-    required int id,  });
+  Future<DataState<DeleteProductRes>> deleteProduct({required int id});
 }

@@ -14,23 +14,17 @@ abstract class LoginParams with _$LoginParams {
       _$LoginParamsFromJson(json);
 }
 
-
 @freezed
-abstract class LoginResponse  with _$LoginResponse{
-  factory LoginResponse({
-    @JsonKey(name: 'data') required Data data,
-  }) = _LoginResponse;
+abstract class LoginResponse with _$LoginResponse {
+  factory LoginResponse({@JsonKey(name: 'data') required Data data}) =
+      _LoginResponse;
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
       _$LoginResponseFromJson(json);
 }
 
 @freezed
-abstract class Data with _$Data{
-  factory Data({
-    @JsonKey(name: 'access_token') required String accessToken,
-  }) = _Data;
-  factory Data.fromJson(Map<String, dynamic> json) =>
-      _$DataFromJson(json);
+abstract class Data with _$Data {
+  factory Data({@JsonKey(name: 'access_token') required String accessToken}) =
+      _Data;
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 }
-
-

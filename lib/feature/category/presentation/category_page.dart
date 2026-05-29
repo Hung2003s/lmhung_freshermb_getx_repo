@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/draggabble_button.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
-import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
-import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/text_input_field.dart';
-import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/profile_app_bar.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/widget/category_card.dart';
 import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
 import '../../../core/common_widget/base_view/base_view.dart';
+import '../../../core/common_widget/navigation_bar/profile_app_bar.dart';
 import '../../../gen/assets.gen.dart';
 
 class CategoryPage extends GetView<CategoryController> {
@@ -19,8 +19,11 @@ class CategoryPage extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return BaseView(
-      backgroundColor: Colors.black,
-      buildAppBar: ProfileAppBar(greetingText: 'Quan ly', username: 'Danh muc'),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      buildAppBar: ProfileAppBar(
+        greetingText: 'manage'.tr,
+        username: 'category'.tr,
+      ),
       buildBody: Stack(
         children: [_buildCategoryContent(), _buildFloatingAddButton()],
       ),
@@ -30,8 +33,8 @@ class CategoryPage extends GetView<CategoryController> {
   Widget _buildCategoryContent() {
     return RefreshIndicator(
       color: ColorName.orange,
-      backgroundColor: const Color(0xFF1E1E1E),
-      onRefresh: () => controller.getListCategory(),
+      backgroundColor: Theme.of(Get.context!).colorScheme.surface,
+      onRefresh: () => controller.fetchFirstPage(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
@@ -50,28 +53,76 @@ class CategoryPage extends GetView<CategoryController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(child: CustomSearchField(hintText: 'Tim kiem danh muc')),
+        Expanded(
+          child: CustomSearchField(
+            hintText: 'search_category'.tr,
+            controller: controller.searchController,
+            showSortButton: false,
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildCategoryList() {
-    return Obx(
-      () => ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: controller.listCategory.length,
-        itemBuilder: (context, index) {
-          final item = controller.listCategory[index];
-          final card = _buildCategoryCard(item);
+    return Obx(() {
+      if (controller.isLoading.value) {
+        return const LoadingStateWidget();
+      }
 
-          if (index == controller.listCategory.length - 1) {
-            return Column(children: [card, const SizedBox(height: 60)]);
-          }
+      if (controller.errorMessage.value.isNotEmpty &&
+          controller.listCategory.isEmpty) {
+        return ErrorStateWidget(
+          message: controller.errorMessage.value,
+          onRetry: () => controller.fetchFirstPage(),
+        );
+      }
 
-          return card;
-        },
-      ),
-    );
+      final displayList = controller.searchCategoryText.value.trim().isEmpty
+          ? controller.listCategory
+          : controller.filteredCategory;
+
+      if (displayList.isEmpty) {
+        return EmptyStateWidget(
+          icon: Icons.folder_open_outlined,
+          title: 'no_categories_found'.tr,
+          subtitle: 'try_adding_category'.tr,
+        );
+      }
+
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: controller.scrollController,
+              scrollDirection: Axis.vertical,
+              itemCount: displayList.length,
+              itemBuilder: (context, index) {
+                final item = displayList[index];
+                final card = RepaintBoundary(child: _buildCategoryCard(item));
+
+                if (index == displayList.length - 1) {
+                  return Column(children: [card, const SizedBox(height: 60)]);
+                }
+                return card;
+              },
+              separatorBuilder: (context, index) => const SizedBox(height: 8),
+            ),
+          ),
+          Obx(
+            () => controller.searchCategoryText.value.trim().isNotEmpty
+                ? const SizedBox.shrink()
+                : controller.isLoadingMore.value
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildCategoryCard(CategoryEntity item) {
@@ -80,166 +131,25 @@ class CategoryPage extends GetView<CategoryController> {
       iconColor: ColorName.orange.withValues(alpha: 0.2),
       category: item,
       numberCount: 20,
-      categoryStatus: 'tang truong',
-      onEdit: () => editAction(item),
-      onDelete: () => deleteAction(item),
+      categoryStatus: 'growing'.tr,
+      onEdit: () => controller.showEditDialog(item),
+      onDelete: () => controller.showDeleteDialog(item),
     );
   }
 
-  void deleteAction(CategoryEntity item) {
-    Get.showCustomDialog(
-      content: _buildDeleteDialogContent(),
-      footer: _buildDeleteDialogFooter(item),
-      title: '',
-    );
-  }
-
-  Widget _buildDeleteDialogContent() {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Ban co chac chan muon xoa danh muc nay?',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDeleteDialogFooter(CategoryEntity item) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        _buildDialogButton(title: 'Huy', onTap: () => Get.back()),
-        const SizedBox(width: 12),
-        _buildDialogButton(
-          title: 'Xac nhan',
-          onTap: () {
-            Get.back();
-            controller.deleteCategory(item.id);
-          },
-        ),
-      ],
-    );
-  }
-
-  void editAction(CategoryEntity item) {
-    Get.showCustomDialog(
-      content: _buildCategoryNameInput(
-        controller: controller.updateController,
-        onChanged: (value) => controller.updateCategoryText.value = value,
-      ),
-      title: 'Cap nhat danh muc',
-      footer: _buildDialogButton(
-        title: 'Luu',
-        verticalPadding: 4,
-        onTap: () {
-          Get.back();
-          controller.updateCategory(item.id);
-        },
-      ),
-    );
-  }
-
-  Positioned _buildFloatingAddButton() {
-    return Positioned(
-      bottom: 100,
-      right: 20,
-      child: SelectedWidget(
-        onTap: addAction,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: ColorName.orange,
-            shape: BoxShape.circle,
-            border: Border.all(color: ColorName.orange),
-          ),
-          child: Assets.icons.whiteAdd.svg(),
-        ),
-      ),
-    );
-  }
-
-  void addAction() {
-    Get.showCustomDialog(
-      content: _buildCategoryNameInput(
-        controller: controller.addController,
-        onChanged: (value) => controller.addCategoryText.value = value,
-      ),
-      title: 'Them danh muc',
-      footer: _buildDialogButton(
-        title: 'Luu',
-        verticalPadding: 4,
-        onTap: () {
-          Get.back();
-          controller.addCategory();
-        },
-      ),
-    );
-  }
-
-  Widget _buildCategoryNameInput({
-    required TextEditingController controller,
-    required ValueChanged<String> onChanged,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Ten danh muc',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextInputFields(
-          isShowClearButton: true,
-          textStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-          filledColor: Colors.white,
-          onChanged: onChanged,
-          controller: controller,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDialogButton({
-    required String title,
-    required VoidCallback onTap,
-    double verticalPadding = 8,
-  }) {
-    return SelectedWidget(
-      onTap: onTap,
+  Widget _buildFloatingAddButton() {
+    return DraggableFloatingButton(
+      initialOffset: const Offset(20, 100),
       child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: verticalPadding,
-        ),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.2),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.4),
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(8),
+          color: ColorName.orange,
+          shape: BoxShape.circle,
+          border: Border.all(color: ColorName.orange),
         ),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: Colors.white,
-          ),
+        child: SelectedWidget(
+          onTap: () => controller.showAddDialog(),
+          child: Assets.icons.whiteAdd.svg(width: 20),
         ),
       ),
     );

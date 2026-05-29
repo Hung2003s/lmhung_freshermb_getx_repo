@@ -10,17 +10,18 @@ class AuthUseCase {
   AuthUseCase(this.repository);
 
   Future<AuthToken> call(LoginParams params) async {
-    final result =  await repository.login(params);
+    final result = await repository.login(params);
     return result.fold(
-        (fail)=>throw Exception(fail.message),
-        (token)=>token
+      (fail) => throw Exception(fail.message),
+      (token) => token,
     );
   }
+
   Future<AuthToken> register(RegisterParams params) async {
-    final result =  await repository.register(params);
+    final result = await repository.register(params);
     return result.fold(
-            (fail)=>throw Exception(fail.message),
-            (token)=>token
+      (fail) => throw Exception(fail.message),
+      (token) => token,
     );
   }
 }

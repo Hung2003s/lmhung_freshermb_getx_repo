@@ -4,7 +4,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/categor
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
 
-import '../../../../gen/colors.gen.dart';
+import '../../../../core/utils/app_toast.dart';
 import '../../data/model/product_model.dart';
 import '../../domain/product_use_case/product_use_case.dart';
 
@@ -58,7 +58,7 @@ class ProductInfoController extends GetxController {
     final price = double.tryParse(priceText);
     final stock = int.tryParse(stockText);
 
-    nameError.value = name.isEmpty ? 'Ten bat buoc' : null;
+    nameError.value = name.isEmpty ? 'name_required'.tr : null;
     skuError.value = _validateSku(sku);
     priceError.value = _validatePrice(priceText, price);
     stockError.value = _validateStock(stockText, stock);
@@ -73,7 +73,7 @@ class ProductInfoController extends GetxController {
 
   String? _validateSku(String sku) {
     if (sku.isEmpty) {
-      return 'Ma bat buoc';
+      return 'code_required'.tr;
     }
 
     if (!Get.isRegistered<ProductController>()) {
@@ -87,18 +87,18 @@ class ProductInfoController extends GetxController {
           product.id != initialProduct?.id,
     );
 
-    return isDuplicated ? 'Ma san pham da ton tai' : null;
+    return isDuplicated ? 'code_exists'.tr : null;
   }
 
   String? _validatePrice(String priceText, double? price) {
     if (priceText.isEmpty) {
-      return 'Gia bat buoc';
+      return 'price_required'.tr;
     }
     if (price == null) {
-      return 'Gia khong hop le';
+      return 'price_invalid'.tr;
     }
     if (price <= 0) {
-      return 'Gia phai lon hon 0';
+      return 'price_positive'.tr;
     }
     return null;
   }
@@ -108,10 +108,10 @@ class ProductInfoController extends GetxController {
       return null;
     }
     if (stock == null) {
-      return 'Ton kho khong hop le';
+      return 'stock_invalid'.tr;
     }
     if (stock < 0) {
-      return 'Ton kho phai lon hon hoac bang 0';
+      return 'stock_non_negative'.tr;
     }
     return null;
   }
@@ -119,7 +119,7 @@ class ProductInfoController extends GetxController {
   String? _validateCategory() {
     final categoryId = selectedCategoryId.value;
     if (categoryId == null) {
-      return 'Danh muc bat buoc';
+      return 'category_required'.tr;
     }
 
     if (!Get.isRegistered<CategoryController>()) {
@@ -130,7 +130,7 @@ class ProductInfoController extends GetxController {
       (category) => category.id == categoryId,
     );
 
-    return isCategoryExists ? null : 'Danh muc khong hop le';
+    return isCategoryExists ? null : 'category_invalid'.tr;
   }
 
   void clearValidationErrors() {
@@ -150,7 +150,16 @@ class ProductInfoController extends GetxController {
 
   void _checkPageModeAndFillData() {
     if (initialProduct != null) {
-      // 🟢 Nếu có sản phẩm truyền sang: Mặc định vào chế độ XEM CHI TIẾT
+      // Kiểm tra nếu là product giả được tạo để quét mã vạch (id = 0, name rỗng)
+      // thì chuyển sang chế độ tạo mới với code đã được điền sẵn
+      if (initialProduct!.id == 0 && initialProduct!.name.isEmpty) {
+        pageMode.value = ProductPageMode.create;
+        skuController.text = initialProduct!.code ?? '';
+        selectedCategoryId.value = null;
+        return;
+      }
+
+      // 🟢 Nếu có sản phẩm thật truyền sang: Mặc định vào chế độ XEM CHI TIẾT
       pageMode.value = ProductPageMode.view;
 
       // Đổ dữ liệu cũ vào các ô Input
@@ -227,22 +236,10 @@ class ProductInfoController extends GetxController {
       final productId = await _useCase.addProduct(param);
       // Pop trước rồi mới hiện snackbar để snackbar không bị nuốt theo route
       Get.back(result: productId);
-      Get.snackbar(
-        'Thêm thành công',
-        '',
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.greenLight.withValues(alpha: 0.9),
-      );
+      AppToast.showSuccess(title: 'add_success'.tr);
     } catch (e) {
       errorMessage.value = e.toString();
-      Get.snackbar(
-        'Thêm thất bại',
-        errorMessage.value,
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.error.withValues(alpha: 0.9),
-      );
+      AppToast.showError(title: 'add_failed'.tr, message: errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -257,32 +254,17 @@ class ProductInfoController extends GetxController {
       isLoading.value = true;
       final result = await _useCase.updateProduct(params, initialProduct!.id);
       if (!result) {
-        Get.snackbar(
-          'Cap nhat that bai',
-          '',
-          snackPosition: SnackPosition.TOP,
-          colorText: Colors.white,
-          backgroundColor: ColorName.error.withValues(alpha: 0.9),
-        );
+        AppToast.showError(title: 'update_failed'.tr, message: '');
         return;
       }
 
       Get.back(result: true);
-      Get.snackbar(
-        'Cập nhật thành công',
-        '',
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.greenLight.withValues(alpha: 0.9),
-      );
+      AppToast.showSuccess(title: 'update_success'.tr);
     } catch (e) {
       errorMessage.value = e.toString();
-      Get.snackbar(
-        'Cập nhật thất bại',
-        errorMessage.value,
-        snackPosition: SnackPosition.TOP,
-        colorText: Colors.white,
-        backgroundColor: ColorName.error.withValues(alpha: 0.9),
+      AppToast.showError(
+        title: 'update_failed'.tr,
+        message: errorMessage.value,
       );
     } finally {
       isLoading.value = false;

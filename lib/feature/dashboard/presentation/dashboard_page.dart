@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/widget/navigation_bar.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_page.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_page.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/setting/presentation/setting_page.dart';
 
-import '../../../core/common_widget/navigation_bar/custom_app_bar.dart';
 import '../../category/presentation/category_page.dart';
 
 class DashboardPage extends GetView<DashboardController> {
@@ -14,25 +13,30 @@ class DashboardPage extends GetView<DashboardController> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _pages = [
-      const  HomePage(),
+    final List<Widget> pages = [
+      const HomePage(),
       const CategoryPage(),
-       Container(),
+      Container(),
       const ProductPage(),
-       Container(),
+      const SettingPage(),
     ];
 
     return Scaffold(
-      backgroundColor: Colors.black, // Nền đen sâu cho hợp bộ giao diện
-
-
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          Obx(() =>
-              IndexedStack(
-                index: controller.currentTabIndex.value,
-                children: _pages,
-              )),
+          Obx(
+            () => IndexedStack(
+              index: controller.currentTabIndex.value,
+              children: [
+                _buildLazyTab(0, pages[0]),
+                _buildLazyTab(1, pages[1]),
+                _buildLazyTab(2, pages[2]),
+                _buildLazyTab(3, pages[3]),
+                _buildLazyTab(4, pages[4]),
+              ],
+            ),
+          ),
           const Align(
             alignment: Alignment.bottomCenter,
             child: CustomFloatingNavBar(),
@@ -40,5 +44,12 @@ class DashboardPage extends GetView<DashboardController> {
         ],
       ),
     );
+  }
+  Widget _buildLazyTab(int index, Widget view) {
+    // Check: Nếu tab này đã được đánh dấu HOẶC đang là tab được chọn
+    if (controller.initializedTabs[index] == true) {
+      return view;
+    }
+    return const SizedBox.shrink();
   }
 }

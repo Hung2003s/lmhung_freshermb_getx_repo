@@ -30,8 +30,8 @@ abstract class CategoryModel with _$CategoryModel {
     @JsonKey(name: 'id') required int id,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'status') required int status,
-    @JsonKey(name: 'create_at')  String? createdAt,
-    @JsonKey(name: 'update_at')  String? updatedAt,
+    @JsonKey(name: 'create_at') String? createdAt,
+    @JsonKey(name: 'update_at') String? updatedAt,
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>

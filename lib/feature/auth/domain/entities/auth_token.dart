@@ -4,7 +4,5 @@ part 'auth_token.freezed.dart';
 
 @freezed
 abstract class AuthToken with _$AuthToken {
-  const factory AuthToken({
-    required String accessToken,
-  }) = _AuthToken;
+  const factory AuthToken({required String accessToken}) = _AuthToken;
 }

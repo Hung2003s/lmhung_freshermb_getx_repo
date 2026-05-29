@@ -9,4 +9,22 @@ class Constants {
 
   static final taxNumberRule = RegExp(r'^([0-9]{10}-[0-9]{3}|[0-9]{12})$');
   static const accessTokenKey = 'ACCESS_TOKEN_KEY';
+  static const tokenExpiryKey = 'TOKEN_EXPIRY_KEY';
+
+  static const themeModeKey = 'THEME_MODE_KEY';
+  static const languageCodeKey = 'LANGUAGE_CODE_KEY';
+
+  // Giới hạn số lần đăng nhập sai (client-side)
+  static const loginAttemptCountKey = 'LOGIN_ATTEMPT_COUNT_KEY';
+  static const loginLockoutTimeKey = 'LOGIN_LOCKOUT_TIME_KEY';
+  static const int maxLoginAttempts = 5;
+  static const int lockoutDurationSeconds = 30;
+
+  // Xác thực sinh học
+  static const biometricUsernameKey = 'BIOMETRIC_USERNAME_KEY';
+  static const biometricPasswordKey = 'BIOMETRIC_PASSWORD_KEY';
+  static const biometricEnabledKey = 'BIOMETRIC_ENABLED_KEY';
+
+  // Token trạng thái sinh trắc học (dùng để phát hiện thay đổi - did_change_authlocal)
+  static const biometricTokenKey = 'BIOMETRIC_TOKEN_KEY';
 }
