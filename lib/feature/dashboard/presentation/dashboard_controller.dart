@@ -8,12 +8,11 @@ class DashboardController extends GetxController {
   // Quản lý tab đang được chọn (mặc định là tab 0)
   var currentTabIndex = 0.obs;
 
-
   // final PageController pageController = PageController();
   final hideNavBar = false.obs;
   //mang danh dau tab nao da duoc kich hoat lan dau hay chua:
 
-  final  initializedTabs = <bool>[true, false, false, false, false].obs;
+  final initializedTabs = <bool>[true, false, false, false, false].obs;
   void changeTab(int index) {
     // Nếu bấm lại vào tab đang chọn -> refresh (cuộn lên đầu)
     if (currentTabIndex.value == index) {
@@ -29,14 +28,14 @@ class DashboardController extends GetxController {
     currentTabIndex.value = index;
     // pageController.jumpToPage(index);
   }
+
   //Logic trở vể trạng thái trước khi chuyển tab của tab cũ
   void _handleDoubleTap(int index) {
     switch (index) {
       case (0):
       case (1):
-      //Kiểm tra xem Controller có còn hay không
+        //Kiểm tra xem Controller có còn hay không
         if (Get.isRegistered<CategoryController>()) {
-
           final categoryControl = Get.find<CategoryController>();
           // Ví dụ: Cuộn lên đầu và refresh
           if (categoryControl.scrollController.hasClients) {
@@ -47,12 +46,11 @@ class DashboardController extends GetxController {
               curve: Curves.easeOut,
             );
           }
-          categoryControl.getListCategory();
+          categoryControl.fetchFirstPage();
         }
         break;
       case (2):
         if (Get.isRegistered<ProductController>()) {
-
           final productControl = Get.find<ProductController>();
           // Ví dụ: Cuộn lên đầu và refresh
           if (productControl.scrollController.hasClients) {

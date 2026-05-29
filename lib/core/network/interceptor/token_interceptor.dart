@@ -10,16 +10,7 @@ import '../../../navigation/routes.dart';
 import '../../storage/secure_storage/token/token_manager.dart';
 
 class TokenInterceptor extends Interceptor {
-
   TokenInterceptor();
-
-  @override
-  void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
-    return super.onRequest(options, handler);
-  }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
@@ -33,7 +24,8 @@ class TokenInterceptor extends Interceptor {
     }
     AppToast.showError(
       title: 'session_expired'.tr,
-        message: 'pls_login_again'.tr);
+      message: 'pls_login_again'.tr,
+    );
     await Get.find<TokenManager>().clearToken();
     Get.offAllNamed(Routes.login);
   }

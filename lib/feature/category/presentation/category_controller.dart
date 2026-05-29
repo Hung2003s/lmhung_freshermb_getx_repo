@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/string_utils.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/category_add_models/category_add_model.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/update_category_model/update_category_model.dart';
@@ -9,17 +10,29 @@ import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/cate
 import '../../../core/utils/app_toast.dart';
 import '../domain/usecases/category_usecase.dart';
 
-class CategoryController extends GetxController {
+class CategoryController extends GetxController
+    with
+        PaginationMixin<CategoryEntity>,
+        OptimisticDeleteMixin<CategoryEntity, int>,
+        DialogButtonMixin {
   final CategoryUseCase _useCase;
 
   CategoryController(this._useCase);
 
-  final RxBool isLoading = false.obs;
-  final RxBool isLoadingMore = false.obs;
-  final RxString errorMessage = ''.obs;
-  final RxInt page = 1.obs;
-  final RxInt limit = 20.obs;
-  bool hasMore = true;
+  @override
+  RxList<CategoryEntity> get items => listCategory;
+
+  @override
+  Future<bool> deleteItemById(int id) async {
+    final result = await _useCase.delete(id);
+    return result.data;
+  }
+
+  @override
+  int getIdFromItem(CategoryEntity item) => item.id;
+
+  final RxList<CategoryEntity> listCategory = <CategoryEntity>[].obs;
+  final RxList<CategoryEntity> filteredCategory = <CategoryEntity>[].obs;
 
   final RxString addCategoryText = ''.obs;
   final RxString updateCategoryText = ''.obs;
@@ -28,59 +41,24 @@ class CategoryController extends GetxController {
   final TextEditingController searchController = TextEditingController();
   final TextEditingController updateController = TextEditingController();
 
-  final ScrollController scrollController = ScrollController();
-
-  final RxList<CategoryEntity> listCategory = <CategoryEntity>[].obs;
-  final RxList<CategoryEntity> filteredCategory = <CategoryEntity>[].obs;
-
   @override
   void onInit() {
-    getListCategory();
-    searchController.addListener(_onSearchChanged);
-    scrollController.addListener(_onScroll);
     super.onInit();
+    fetchFirstPage();
+    searchController.addListener(_onSearchChanged);
   }
 
   @override
   void onClose() {
     searchController.removeListener(_onSearchChanged);
     searchController.dispose();
-    scrollController.removeListener(_onScroll);
-    scrollController.dispose();
+    updateController.dispose();
+    addController.dispose();
     super.onClose();
   }
 
-  void _onSearchChanged() {
-    searchLocal(searchController.text);
-  }
-
-  void _onScroll() {
-    if (!hasMore || isLoadingMore.value) return;
-    if (scrollController.position.maxScrollExtent <= 0) return;
-    if (scrollController.position.pixels >=
-        scrollController.position.maxScrollExtent - 200) {
-      loadMore();
-    }
-  }
-
-  void _syncFiltered() {
-    searchLocal(searchCategoryText.value);
-  }
-
-  void searchLocal(String query) {
-    searchCategoryText.value = query;
-    if (query.trim().isEmpty) {
-      filteredCategory.assignAll(listCategory);
-    } else {
-      filteredCategory.assignAll(
-        listCategory.where(
-          (item) => StringUtils.containsIgnoreAccents(item.name, query.trim()),
-        ),
-      );
-    }
-  }
-
-  Future<void> getListCategory() async {
+  @override
+  Future<void> fetchFirstPage() async {
     try {
       isLoading.value = true;
       page.value = 1;
@@ -95,6 +73,7 @@ class CategoryController extends GetxController {
     }
   }
 
+  @override
   Future<void> loadMore() async {
     if (isLoadingMore.value || !hasMore) return;
     try {
@@ -115,30 +94,42 @@ class CategoryController extends GetxController {
         } else {
           listCategory.addAll(newItems);
           _syncFiltered();
-          if (result.length < limit.value) {
-            hasMore = false;
-          }
+          if (result.length < limit.value) hasMore = false;
         }
       }
     } catch (e) {
-      if (page.value > 1) {
-        page.value -= 1;
-      }
+      if (page.value > 1) page.value -= 1;
       errorMessage.value = e.toString();
     } finally {
       isLoadingMore.value = false;
     }
   }
 
+  void _onSearchChanged() => searchLocal(searchController.text);
+
+  void _syncFiltered() => searchLocal(searchCategoryText.value);
+
+  void searchLocal(String query) {
+    searchCategoryText.value = query;
+    if (query.trim().isEmpty) {
+      filteredCategory.assignAll(listCategory);
+    } else {
+      filteredCategory.assignAll(
+        listCategory.where(
+          (item) => StringUtils.containsIgnoreAccents(item.name, query.trim()),
+        ),
+      );
+    }
+  }
+
   Future<void> addCategory() async {
     try {
       final name = addCategoryText.value.trim();
-      final param = CategoryAddParams(name: name);
-      await _useCase.add(param);
+      await _useCase.add(CategoryAddParams(name: name));
       AppToast.showSuccess(title: 'add_success'.tr);
       addCategoryText.value = '';
       addController.clear();
-      getListCategory();
+      fetchFirstPage();
     } catch (e) {
       errorMessage.value = e.toString();
       AppToast.showError(title: 'add_failed'.tr, message: errorMessage.value);
@@ -154,11 +145,10 @@ class CategoryController extends GetxController {
       if (index == -1) return;
       optimisticIndex = index;
       originalCategory = listCategory[index];
-      final newCategory = originalCategory.copyWith(name: name);
-      listCategory[index] = newCategory;
+      listCategory[index] = originalCategory.copyWith(name: name);
       listCategory.refresh();
-      final param = UpdateCategoryParam(name: name);
-      final result = await _useCase.update(param, id);
+
+      final result = await _useCase.update(UpdateCategoryParam(name: name), id);
       if (result.data) {
         AppToast.showSuccess(title: 'update_success'.tr);
       } else {
@@ -181,79 +171,13 @@ class CategoryController extends GetxController {
     }
   }
 
-  Future<void> deleteCategory(int id) async {
-    int? optimisticIndex;
-    CategoryEntity? originalCategory;
-    try {
-      final index = listCategory.indexWhere((category) => category.id == id);
-      if (index == -1) return;
-      optimisticIndex = index;
-      originalCategory = listCategory[index];
-      listCategory.removeAt(index);
-      listCategory.refresh();
-      final result = await _useCase.delete(id);
-      if (result.data) {
-        AppToast.showSuccess(title: 'delete_success'.tr);
-      } else {
-        listCategory.insert(index, originalCategory);
-        listCategory.refresh();
-        AppToast.showError(title: 'delete_failed'.tr, message: '');
-      }
-    } catch (e) {
-      if (optimisticIndex != null && originalCategory != null) {
-        listCategory.insert(optimisticIndex, originalCategory);
-        listCategory.refresh();
-      }
-      errorMessage.value = e.toString();
-      AppToast.showError(
-        title: 'delete_failed'.tr,
-        message: errorMessage.value,
-      );
-    }
-  }
-
-  // ──────────────── Dialog Actions (moved from category_page.dart) ────────────────
+  /// Gọi OptimisticDeleteMixin.deleteItem, nhưng với tên rõ nghĩa hơn
+  Future<void> deleteCategory(int id) => deleteItem(id);
 
   void showDeleteDialog(CategoryEntity item) {
-    final theme = Theme.of(Get.context!);
-    Get.showCustomDialog(
-      content: _buildDeleteContent(theme),
-      footer: _buildDeleteFooter(theme, item),
-      title: '',
-    );
-  }
-
-  Widget _buildDeleteContent(ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'delete_category_confirm'.tr,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDeleteFooter(ThemeData theme, CategoryEntity item) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        _dialogButton(theme, title: 'cancel'.tr, onTap: () => Get.back()),
-        const SizedBox(width: 12),
-        _dialogButton(
-          theme,
-          title: 'confirm'.tr,
-          onTap: () {
-            Get.back();
-            deleteCategory(item.id);
-          },
-        ),
-      ],
+    showDeleteConfirmDialog(
+      contentKey: 'delete_category_confirm',
+      onConfirm: () => deleteCategory(item.id),
     );
   }
 
@@ -266,7 +190,7 @@ class CategoryController extends GetxController {
         onChanged: (value) => updateCategoryText.value = value,
       ),
       title: 'update_category'.tr,
-      footer: _dialogButton(
+      footer: dialogButton(
         theme,
         title: 'save'.tr,
         verticalPadding: 4,
@@ -287,7 +211,7 @@ class CategoryController extends GetxController {
         onChanged: (value) => addCategoryText.value = value,
       ),
       title: 'add_category'.tr,
-      footer: _dialogButton(
+      footer: dialogButton(
         theme,
         title: 'save'.tr,
         verticalPadding: 4,
@@ -327,39 +251,6 @@ class CategoryController extends GetxController {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _dialogButton(
-    ThemeData theme, {
-    required String title,
-    required VoidCallback onTap,
-    double verticalPadding = 8,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: verticalPadding,
-        ),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withValues(alpha: 0.2),
-          border: Border.all(
-            color: theme.colorScheme.primary.withValues(alpha: 0.4),
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-      ),
     );
   }
 }

@@ -95,7 +95,7 @@ class _DraggableFloatingButtonState extends State<DraggableFloatingButton> {
           final EdgeInsets padding = MediaQuery.of(context).padding;
 
           // Giới hạn Y tối đa (Cách top 100px)
-          final double maxBottom = screenSize.height - 120 - _widgetSize.height;
+          final double maxBottom = screenSize.height - 150 - _widgetSize.height;
           // Giới hạn Y tối thiểu (Sát mép dưới màn hình)
           final double minBottom = padding.bottom + 80;
           setState(() {

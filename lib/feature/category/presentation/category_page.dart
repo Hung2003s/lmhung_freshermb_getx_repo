@@ -34,7 +34,7 @@ class CategoryPage extends GetView<CategoryController> {
     return RefreshIndicator(
       color: ColorName.orange,
       backgroundColor: Theme.of(Get.context!).colorScheme.surface,
-      onRefresh: () => controller.getListCategory(),
+      onRefresh: () => controller.fetchFirstPage(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
@@ -74,7 +74,7 @@ class CategoryPage extends GetView<CategoryController> {
           controller.listCategory.isEmpty) {
         return ErrorStateWidget(
           message: controller.errorMessage.value,
-          onRetry: () => controller.getListCategory(),
+          onRetry: () => controller.fetchFirstPage(),
         );
       }
 
@@ -140,15 +140,15 @@ class CategoryPage extends GetView<CategoryController> {
   Widget _buildFloatingAddButton() {
     return DraggableFloatingButton(
       initialOffset: const Offset(20, 100),
-      child: SelectedWidget(
-        onTap: () => controller.showAddDialog(),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: ColorName.orange,
-            shape: BoxShape.circle,
-            border: Border.all(color: ColorName.orange),
-          ),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: ColorName.orange,
+          shape: BoxShape.circle,
+          border: Border.all(color: ColorName.orange),
+        ),
+        child: SelectedWidget(
+          onTap: () => controller.showAddDialog(),
           child: Assets.icons.whiteAdd.svg(width: 20),
         ),
       ),

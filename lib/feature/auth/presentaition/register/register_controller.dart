@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/shake_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validator.dart';
+import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
 
 import '../../../../core/utils/app_toast.dart';
@@ -31,6 +32,7 @@ class RegisterController extends GetxController {
   /// Chỉ hiển thị error text nếu đã submit ít nhất 1 lần
   String? get displayedUserNameError =>
       hasSubmittedOnce.value ? userNameError.value : null;
+
   String? get displayedPasswordError =>
       hasSubmittedOnce.value ? passwordError.value : null;
 
@@ -90,7 +92,7 @@ class RegisterController extends GetxController {
     passwordError.value = FormValidator.validatePassword(passwordText.value);
   }
 
-  /// Returns true if all fields are valid (no error messages).
+  /// Là true nếu tất cả các trường đều hợp lệ (không có lỗi)
   bool get isFormValid {
     _validateUserName();
     _validatePassword();
@@ -130,6 +132,10 @@ class RegisterController extends GetxController {
 
       final response = await _loginUseCase.register(request);
       if (response.accessToken.isNotEmpty) {
+        // Đồng bộ token vào TokenManager để lưu cả access token và thời gian hết hạn
+        final tokenManager = Get.find<TokenManager>();
+        await tokenManager.saveToken(response.accessToken);
+
         Get.offAllNamed(Routes.dashboard);
         AppToast.showSuccess(title: 'register_success'.tr);
       }

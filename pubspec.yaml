@@ -21,7 +21,7 @@ dependencies:
   flutter_slidable: ^4.0.3
   get_storage: ^2.1.1
   flutter_secure_storage: ^8.0.0
-  barcode_scanner_plugin: ^0.1.4
+  barcode_scanner_plugin: ^0.2.2
   local_auth: ^3.0.1
   did_change_authlocal: ^1.0.0
 

@@ -7,6 +7,7 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validat
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
+import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
 import '../../../../core/common_widget/animation/shake_widget.dart';
@@ -55,6 +56,7 @@ class LoginController extends GetxController {
   /// Chỉ hiển thị error text nếu đã submit ít nhất 1 lần
   String? get displayedUserNameError =>
       hasSubmittedOnce.value ? userNameError.value : null;
+
   String? get displayedPasswordError =>
       hasSubmittedOnce.value ? passwordError.value : null;
 
@@ -247,25 +249,10 @@ class LoginController extends GetxController {
       if (response.accessToken.isNotEmpty) {
         TextInput.finishAutofillContext(shouldSave: true);
         _resetLoginAttempts(); // Reset attempts on successful login
-        await _saveBiometricCredentials(
-          username,
-          password,
-        ); // Lưu thông tin xác thực sinh học
-
-        // Lưu token sinh trắc học để dùng cho lần kiểm tra sau
-        await _saveBiometricToken();
-
-        // Xác nhận thay đổi sinh trắc học nếu có yêu cầu chờ
-        if (_pendingBiometricChangeAck.value) {
-          await _didChangeAuthLocal.acknowledgeChange();
-          _pendingBiometricChangeAck.value = false;
-          AppToast.showSuccess(title: 'biometric_changed_acknowledged'.tr);
-        }
-
-        Get.offAllNamed(Routes.dashboard);
-        AppToast.showSuccess(
-          title: 'login_success'.tr,
-          message: errorMessage.value,
+        await _handleLoginSuccess(
+          response.accessToken,
+          username: username,
+          password: password,
         );
       }
     } catch (e) {
@@ -292,6 +279,36 @@ class LoginController extends GetxController {
     }
   }
 
+  /// Xử lý logic chung sau khi login thành công (dùng cho cả login password và biometric)
+  Future<void> _handleLoginSuccess(
+    String accessToken, {
+    String? username,
+    String? password,
+  }) async {
+    //  Đồng bộ token vào TokenManager để lưu cả access token và thời gian hết hạn
+    final tokenManager = Get.find<TokenManager>();
+    await tokenManager.saveToken(accessToken);
+
+    // Lưu thông tin xác thực sinh học
+    if (username != null && password != null) {
+      await _saveBiometricCredentials(username, password);
+    }
+
+    // Lưu token sinh trắc học để dùng cho lần kiểm tra sau
+    await _saveBiometricToken();
+
+    // Xác nhận thay đổi sinh trắc học nếu có yêu cầu chờ
+    if (_pendingBiometricChangeAck.value) {
+      await _didChangeAuthLocal.acknowledgeChange();
+      _pendingBiometricChangeAck.value = false;
+      AppToast.showSuccess(title: 'biometric_changed_acknowledged'.tr);
+    }
+
+    // Chuyển đến dashboard
+    Get.offAllNamed(Routes.dashboard);
+    AppToast.showSuccess(title: 'login_success'.tr);
+  }
+
   /// Lưu thông tin đăng nhập và dữ liệu sinh học sau khi đăng nhập
   Future<void> _saveBiometricCredentials(
     String username,
@@ -303,9 +320,6 @@ class LoginController extends GetxController {
   }
 
   /// Lưu token sinh trắc học để dùng cho lần kiểm tra thay đổi sau này.
-  ///
-  /// Token này cần được lưu cùng lúc lưu credential sinh trắc học
-  /// để so sánh ở các lần kiểm tra sau (bắt buộc cho iOS).
   Future<void> _saveBiometricToken() async {
     try {
       final token = await _didChangeAuthLocal.getCurrentToken();
@@ -315,27 +329,22 @@ class LoginController extends GetxController {
     }
   }
 
-  /// Đăng nhập bằng sinh trắc học với quy trình bảo mật:
-  ///
-  /// Bước 1: Kiểm tra thay đổi (did_change_authlocal)
-  /// Bước 2: Nếu thay đổi → chặn, yêu cầu mật khẩu → acknowledgeChange()
-  ///         Nếu không thay đổi → Bước 3
-  /// Bước 3: Xác thực người dùng (local_auth)
+  /// Đăng nhập bằng sinh trắc học
   Future<bool> loginWithBiometric() async {
     if (!isBiometricAvailable.value || !isBiometricEnabled.value) {
       return false;
     }
 
     try {
-      // ── Bước 1: Kiểm tra thay đổi sinh trắc học ──
+      // Kiểm tra thay đổi sinh trắc học
       final savedToken = _storage.read<String>(Constants.biometricTokenKey);
       final status = await _didChangeAuthLocal.checkBiometricChanged(
         savedToken: savedToken,
       );
 
-      // ── Bước 2: Xử lý rẽ nhánh ──
+      // Xử lý rẽ nhánh
       if (status == AuthLocalStatus.changed) {
-        // Trường hợp A: Phát hiện thay đổi → chặn đăng nhập sinh trắc học
+        //Phát hiện thay đổi → chặn đăng nhập sinh trắc học
         _pendingBiometricChangeAck.value = true;
         AppToast.showError(
           title: 'biometric_login_failed'.tr,
@@ -353,9 +362,8 @@ class LoginController extends GetxController {
         return false;
       }
 
-      // Trường hợp B: Không có thay đổi → an toàn, tiếp tục Bước 3
-
-      // ── Bước 3: Xác thực người dùng qua local_auth ──
+      // Không có thay đổi → an toàn
+      // Xác thực người dùng qua local_auth ──
       final authenticated = await _biometricAuth.authenticate(
         reason: 'biometric_login_reason'.tr,
       );
@@ -384,10 +392,7 @@ class LoginController extends GetxController {
         final response = await _loginUseCase(request);
         if (response.accessToken.isNotEmpty) {
           _resetLoginAttempts();
-          // Cập nhật token mới sau khi đăng nhập thành công
-          await _saveBiometricToken();
-          Get.offAllNamed(Routes.dashboard);
-          AppToast.showSuccess(title: 'login_success'.tr);
+          await _handleLoginSuccess(response.accessToken);
           return true;
         }
       } catch (e) {
