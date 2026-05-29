@@ -94,6 +94,13 @@ class Vi extends Translations {
       'login_locked':
           'Tài khoản đã bị khóa tạm thời. Vui lòng thử lại sau @s giây.',
       'login_attempts_left': 'Còn @s lần đăng nhập trước khi bị khóa.',
+      // Auth Validation
+      'username_required': 'Vui lòng nhập tài khoản',
+      'username_min_length': 'Tài khoản phải có ít nhất 3 ký tự',
+      'username_max_length': 'Tài khoản không được quá 50 ký tự',
+      'password_required': 'Vui lòng nhập mật khẩu',
+      'password_min_length': 'Mật khẩu phải có ít nhất 6 ký tự',
+      'password_max_length': 'Mật khẩu không được quá 100 ký tự',
       'login_locked_button': 'Đã khóa',
       'no_products_in_category': 'Không tìm thấy sản phẩm nào của danh mục này',
       'error_title': 'Lỗi',
@@ -163,6 +170,10 @@ class Vi extends Translations {
       'biometric_disabled': 'Đã tắt đăng nhập sinh trắc học',
       'biometric_enabled_desc': 'Đăng nhập bằng vân tay/khuôn mặt',
       'biometric_disabled_desc': 'Không sử dụng đăng nhập sinh trắc học',
+      'biometric_changed_warning':
+          'Phát hiện dữ liệu sinh trắc học trên thiết bị đã thay đổi. Để bảo mật, vui lòng đăng nhập bằng mật khẩu.',
+      'biometric_changed_acknowledged':
+          'Đã xác nhận trạng thái sinh trắc học mới. Bạn có thể sử dụng đăng nhập sinh trắc học.',
       'security': 'Bảo mật',
       'enable': 'Bật',
       'disable': 'Tắt',

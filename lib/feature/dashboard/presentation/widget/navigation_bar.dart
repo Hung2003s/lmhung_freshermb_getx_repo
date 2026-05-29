@@ -84,6 +84,7 @@ class CustomFloatingNavBar extends GetView<DashboardController> {
       );
     });
   }
+
   Widget _buildCenterSearchItem({required int index}) {
     final theme = Theme.of(Get.context!);
     final isDark = theme.brightness == Brightness.dark;

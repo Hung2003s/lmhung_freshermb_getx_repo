@@ -58,30 +58,36 @@ class RegisterPage extends GetView<RegisterController> {
         const SizedBox(height: 8),
         Text('register_title'.tr, style: context.textTheme.titleSmall),
         const SizedBox(height: 24),
-        InputField(
-          isShowClearButton: true,
-          controller: controller.userNameController,
-          onChanged: (value) {
-            controller.userNameText.value = value;
-          },
-          hint: 'username'.tr,
-          title: 'username'.tr,
-          // errorText: controller.showError ? state.userNameError : null,
+        Obx(
+          () => InputField(
+            shakeKey: controller.userNameShakeKey.value,
+            isShowClearButton: true,
+            controller: controller.userNameController,
+            onChanged: (value) {
+              controller.userNameText.value = value;
+            },
+            hint: 'username'.tr,
+            title: 'username'.tr,
+            errorText: controller.displayedUserNameError,
+          ),
         ),
         const SizedBox(height: 4),
-        InputField(
-          isPassword: true,
-          controller: controller.passwordController,
-          onChanged: (value) {
-            controller.passwordText.value = value;
-          },
-          hint: 'password'.tr,
-          title: 'password'.tr,
-          textInputAction: TextInputAction.done,
-          // errorText: state.showError ? state.passwordError : null,
-          onSubmitted: (value) {
-            controller.register();
-          },
+        Obx(
+          () => InputField(
+            shakeKey: controller.passwordShakeKey.value,
+            isPassword: true,
+            controller: controller.passwordController,
+            onChanged: (value) {
+              controller.passwordText.value = value;
+            },
+            hint: 'password'.tr,
+            title: 'password'.tr,
+            errorText: controller.displayedPasswordError,
+            textInputAction: TextInputAction.done,
+            onSubmitted: (value) {
+              controller.register();
+            },
+          ),
         ),
       ],
     );

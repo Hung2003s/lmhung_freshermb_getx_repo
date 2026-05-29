@@ -24,4 +24,7 @@ class Constants {
   static const biometricUsernameKey = 'BIOMETRIC_USERNAME_KEY';
   static const biometricPasswordKey = 'BIOMETRIC_PASSWORD_KEY';
   static const biometricEnabledKey = 'BIOMETRIC_ENABLED_KEY';
+
+  // Token trạng thái sinh trắc học (dùng để phát hiện thay đổi - did_change_authlocal)
+  static const biometricTokenKey = 'BIOMETRIC_TOKEN_KEY';
 }

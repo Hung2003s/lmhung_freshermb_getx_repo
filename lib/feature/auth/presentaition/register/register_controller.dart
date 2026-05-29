@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/shake_widget.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validator.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
 
 import '../../../../core/utils/app_toast.dart';
@@ -19,6 +21,22 @@ class RegisterController extends GetxController {
   final TextEditingController userNameController = TextEditingController();
   late FocusNode userNameFocus;
 
+  // Biến flag: chỉ hiển thị validation error sau lần submit đầu tiên
+  final RxBool hasSubmittedOnce = false.obs;
+
+  // Reactive validation errors (luôn được cập nhật, nhưng chỉ hiển thị khi hasSubmittedOnce=true)
+  final Rx<String?> userNameError = Rx<String?>(null);
+  final Rx<String?> passwordError = Rx<String?>(null);
+
+  /// Chỉ hiển thị error text nếu đã submit ít nhất 1 lần
+  String? get displayedUserNameError =>
+      hasSubmittedOnce.value ? userNameError.value : null;
+  String? get displayedPasswordError =>
+      hasSubmittedOnce.value ? passwordError.value : null;
+
+  final userNameShakeKey = GlobalKey<ShakeWidgetState>().obs;
+  final passwordShakeKey = GlobalKey<ShakeWidgetState>().obs;
+
   //Biển state ô nhập mật khẩu
   final passwordText = ''.obs;
   final TextEditingController passwordController = TextEditingController();
@@ -31,6 +49,10 @@ class RegisterController extends GetxController {
     userNameController.addListener(() {
       userNameText.value = userNameController.text;
     });
+    passwordController.addListener(() {
+      passwordText.value = passwordController.text;
+    });
+    _setupValidationListeners();
     super.onInit();
   }
 
@@ -55,14 +77,49 @@ class RegisterController extends GetxController {
     super.onClose();
   }
 
+  void _setupValidationListeners() {
+    ever(userNameText, (_) => _validateUserName());
+    ever(passwordText, (_) => _validatePassword());
+  }
+
+  void _validateUserName() {
+    userNameError.value = FormValidator.validateUsername(userNameText.value);
+  }
+
+  void _validatePassword() {
+    passwordError.value = FormValidator.validatePassword(passwordText.value);
+  }
+
+  /// Returns true if all fields are valid (no error messages).
+  bool get isFormValid {
+    _validateUserName();
+    _validatePassword();
+    return userNameError.value == null && passwordError.value == null;
+  }
+
   Future<void> register() async {
+    // Đánh dấu đã submit → bắt đầu hiển thị validation error realtime
+    if (!hasSubmittedOnce.value) {
+      hasSubmittedOnce.value = true;
+    }
+    // Validate lại ngay lập tức
+    _validateUserName();
+    _validatePassword();
+
     String username = userNameText.value.trim();
     String password = passwordText.value.trim();
-    if (username.isEmpty || password.isEmpty) {
+    if (!isFormValid) {
       AppToast.showError(
         message: 'invalid_credentials'.tr,
         title: 'register_failed'.tr,
       );
+      // Chỉ shake đúng ô input bị lỗi
+      if (userNameError.value != null) {
+        userNameShakeKey.value.currentState?.shake();
+      }
+      if (passwordError.value != null) {
+        passwordShakeKey.value.currentState?.shake();
+      }
       return;
     }
     try {
@@ -72,7 +129,7 @@ class RegisterController extends GetxController {
       final request = RegisterParams(userName: username, password: password);
 
       final response = await _loginUseCase.register(request);
-      if (response.accessToken.isNotEmpty && response.accessToken != null) {
+      if (response.accessToken.isNotEmpty) {
         Get.offAllNamed(Routes.dashboard);
         AppToast.showSuccess(title: 'register_success'.tr);
       }

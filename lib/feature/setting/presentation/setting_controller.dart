@@ -1,8 +1,10 @@
+import 'package:did_change_authlocal/did_change_authlocal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
+import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
 import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
 import '../../../core/storage/secure_storage/token/token_manager.dart';
@@ -11,6 +13,8 @@ import '../../../core/utils/app_toast.dart';
 class SettingController extends GetxController {
   final GetStorage _storage = Get.find<GetStorage>();
   final BiometricAuthService _biometricAuth = BiometricAuthService();
+  final DidChangeAuthLocalService _didChangeAuthLocal =
+      DidChangeAuthLocalService();
 
   // Theme mode
   final Rx<ThemeMode> themeMode = ThemeMode.system.obs;
@@ -107,7 +111,12 @@ class SettingController extends GetxController {
 
   String get currentLanguageCode => currentLocale.value.languageCode;
 
-  /// Bật xác thực sinh trắc học
+  /// Bật xác thực sinh trắc học với quy trình bảo mật:
+  ///
+  /// Bước 1: Kiểm tra thay đổi (did_change_authlocal)
+  /// Bước 2: Nếu thay đổi → chặn, yêu cầu xác thực lại
+  ///         Nếu không thay đổi → Bước 3
+  /// Bước 3: Xác thực người dùng (local_auth) để bật tính năng
   Future<void> enableBiometric() async {
     try {
       // Kiểm tra xem đã có credentials được lưu từ màn login chưa
@@ -127,7 +136,33 @@ class SettingController extends GetxController {
         return;
       }
 
-      // Xác thực vân tay để bật
+      // ── Bước 1: Kiểm tra thay đổi sinh trắc học ──
+      final savedToken = _storage.read<String>(Constants.biometricTokenKey);
+      final status = await _didChangeAuthLocal.checkBiometricChanged(
+        savedToken: savedToken,
+      );
+
+      // ── Bước 2: Xử lý rẽ nhánh ──
+      if (status == AuthLocalStatus.changed) {
+        // Trường hợp A: Phát hiện thay đổi → chặn
+        AppToast.showError(
+          title: 'biometric_enable_failed'.tr,
+          message: 'biometric_changed_warning'.tr,
+        );
+        return;
+      }
+
+      if (status == AuthLocalStatus.invalid) {
+        AppToast.showError(
+          title: 'biometric_enable_failed'.tr,
+          message: 'biometric_error'.tr,
+        );
+        return;
+      }
+
+      // Trường hợp B: Không có thay đổi → an toàn, tiếp tục Bước 3
+
+      // ── Bước 3: Xác thực vân tay để bật ──
       final authenticated = await _biometricAuth.authenticate(
         reason: 'biometric_save_reason'.tr,
       );
@@ -137,9 +172,22 @@ class SettingController extends GetxController {
 
       // Lưu flag riêng biệt thay vì dựa vào credentials
       await _storage.write(Constants.biometricEnabledKey, true);
+
+      // Lưu token mới để dùng cho lần kiểm tra sau
+      await _saveBiometricToken();
+
       isBiometricEnabled.value = true;
       AppToast.showSuccess(title: 'biometric_enabled'.tr);
-    } finally {
+    } finally {}
+  }
+
+  /// Lưu token sinh trắc học để dùng cho lần kiểm tra thay đổi sau này.
+  Future<void> _saveBiometricToken() async {
+    try {
+      final token = await _didChangeAuthLocal.getCurrentToken();
+      await _storage.write(Constants.biometricTokenKey, token);
+    } catch (_) {
+      // Lưu token thất bại, không critical
     }
   }
 

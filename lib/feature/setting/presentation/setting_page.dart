@@ -214,7 +214,7 @@ class SettingPage extends GetView<SettingController> {
     required VoidCallback onTap,
   }) {
     final theme = Theme.of(context);
-    return InkWell(
+    return SelectedWidget(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Padding(
@@ -327,7 +327,7 @@ class SettingPage extends GetView<SettingController> {
     required VoidCallback onTap,
   }) {
     final theme = Theme.of(context);
-    return InkWell(
+    return SelectedWidget(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Padding(

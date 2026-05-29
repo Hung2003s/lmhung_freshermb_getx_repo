@@ -81,30 +81,38 @@ class LoginPage extends GetView<LoginController> {
         AutofillGroup(
           child: Column(
             children: [
-              InputField(
-                isShowClearButton: true,
-                controller: controller.userNameController,
-                onChanged: (value) {
-                  controller.userNameText.value = value;
-                },
-                hint: 'username'.tr,
-                title: 'username'.tr,
-                autoFillHint: const [AutofillHints.username],
+              Obx(
+                () => InputField(
+                  shakeKey: controller.userNameShakeKey.value,
+                  isShowClearButton: true,
+                  controller: controller.userNameController,
+                  onChanged: (value) {
+                    controller.userNameText.value = value;
+                  },
+                  hint: 'username'.tr,
+                  title: 'username'.tr,
+                  errorText: controller.displayedUserNameError,
+                  autoFillHint: const [AutofillHints.username],
+                ),
               ),
               SizedBox(height: 4 * scale),
-              InputField(
-                isPassword: true,
-                controller: controller.passwordController,
-                onChanged: (value) {
-                  controller.passwordText.value = value;
-                },
-                hint: 'password'.tr,
-                title: 'password'.tr,
-                textInputAction: TextInputAction.done,
-                autoFillHint: const [AutofillHints.password],
-                onSubmitted: (value) {
-                  controller.login();
-                },
+              Obx(
+                () => InputField(
+                  shakeKey: controller.passwordShakeKey.value,
+                  isPassword: true,
+                  controller: controller.passwordController,
+                  onChanged: (value) {
+                    controller.passwordText.value = value;
+                  },
+                  hint: 'password'.tr,
+                  title: 'password'.tr,
+                  errorText: controller.displayedPasswordError,
+                  textInputAction: TextInputAction.done,
+                  autoFillHint: const [AutofillHints.password],
+                  onSubmitted: (value) {
+                    controller.login();
+                  },
+                ),
               ),
             ],
           ),

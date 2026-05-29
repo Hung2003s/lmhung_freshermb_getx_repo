@@ -95,6 +95,13 @@ class En extends Translations {
       'login_locked':
           'Account is temporarily locked. Please try again in @s seconds.',
       'login_attempts_left': '@s attempts remaining before lockout.',
+      // Auth Validation
+      'username_required': 'Username is required',
+      'username_min_length': 'Username must be at least 3 characters',
+      'username_max_length': 'Username must not exceed 50 characters',
+      'password_required': 'Password is required',
+      'password_min_length': 'Password must be at least 6 characters',
+      'password_max_length': 'Password must not exceed 100 characters',
       'login_locked_button': 'Locked',
       'no_products_in_category': 'No products found for this category',
       'error_title': 'Error',
@@ -164,6 +171,10 @@ class En extends Translations {
       'biometric_disabled': 'Biometric login disabled',
       'biometric_enabled_desc': 'Login with fingerprint/face',
       'biometric_disabled_desc': 'Not using biometric login',
+      'biometric_changed_warning':
+          'Biometric data on this device has changed. For security, please login with your password.',
+      'biometric_changed_acknowledged':
+          'New biometric status confirmed. You can now use biometric login.',
       'security': 'Security',
       'enable': 'Enable',
       'disable': 'Disable',
