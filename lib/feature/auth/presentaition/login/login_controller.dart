@@ -12,7 +12,7 @@ import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
 import '../../../../core/common_widget/animation/shake_widget.dart';
 import '../../../../core/utils/app_toast.dart';
-import '../../data/models/login_model/login_model.dart';
+import '../../domain/params/login_params.dart';
 import '../../domain/usecases/auth_usecase.dart';
 
 class LoginController extends GetxController {

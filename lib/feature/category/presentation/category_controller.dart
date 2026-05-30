@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/string_utils.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/category_add_models/category_add_model.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/update_category_model/update_category_model.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 
 import '../../../core/utils/app_toast.dart';
+import '../domain/params/add_category_params.dart';
+import '../domain/params/update_category_params.dart';
 import '../domain/usecases/category_usecase.dart';
 
 class CategoryController extends GetxController
@@ -25,7 +25,7 @@ class CategoryController extends GetxController
   @override
   Future<bool> deleteItemById(int id) async {
     final result = await _useCase.delete(id);
-    return result.data;
+    return result;
   }
 
   @override
@@ -125,7 +125,7 @@ class CategoryController extends GetxController
   Future<void> addCategory() async {
     try {
       final name = addCategoryText.value.trim();
-      await _useCase.add(CategoryAddParams(name: name));
+      await _useCase.add(AddCategoryParams(name: name));
       AppToast.showSuccess(title: 'add_success'.tr);
       addCategoryText.value = '';
       addController.clear();
@@ -148,8 +148,11 @@ class CategoryController extends GetxController
       listCategory[index] = originalCategory.copyWith(name: name);
       listCategory.refresh();
 
-      final result = await _useCase.update(UpdateCategoryParam(name: name), id);
-      if (result.data) {
+      final result = await _useCase.update(
+        UpdateCategoryParams(name: name),
+        id,
+      );
+      if (result) {
         AppToast.showSuccess(title: 'update_success'.tr);
       } else {
         listCategory[index] = originalCategory;

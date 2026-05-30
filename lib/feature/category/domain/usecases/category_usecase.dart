@@ -1,8 +1,6 @@
-import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/category_delete_model/category_delete_model.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/update_category_model/update_category_model.dart';
-
-import '../../data/models/category_add_models/category_add_model.dart';
 import '../entities/categories_entity.dart';
+import '../params/add_category_params.dart';
+import '../params/update_category_params.dart';
 import '../repositories/categories_repository.dart';
 
 class CategoryUseCase {
@@ -18,7 +16,7 @@ class CategoryUseCase {
     );
   }
 
-  Future<CategoryAddRes> add(CategoryAddParams params) async {
+  Future<int> add(AddCategoryParams params) async {
     final result = await repository.addCategories(params);
     return result.fold(
       (failure) => throw Exception(failure.message),
@@ -26,7 +24,7 @@ class CategoryUseCase {
     );
   }
 
-  Future<UpdateCategoryRes> update(UpdateCategoryParam params, int id) async {
+  Future<bool> update(UpdateCategoryParams params, int id) async {
     final result = await repository.updateCategories(params, id);
     return result.fold(
       (failure) => throw Exception(failure.message),
@@ -34,7 +32,7 @@ class CategoryUseCase {
     );
   }
 
-  Future<DeleteCategoryRes> delete(int id) async {
+  Future<bool> delete(int id) async {
     final result = await repository.deleteCategories(id);
     return result.fold(
       (failure) => throw Exception(failure.message),

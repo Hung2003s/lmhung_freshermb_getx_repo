@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../../data/models/login_model/login_model.dart';
-import '../../domain/entities/auth_token.dart';
+import '../entities/auth_token.dart';
+import '../params/login_params.dart';
+import '../params/register_params.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, AuthToken>> login(LoginParams params);

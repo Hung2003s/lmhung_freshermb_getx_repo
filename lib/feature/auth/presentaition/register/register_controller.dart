@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/shake_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validator.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
 
 import '../../../../core/utils/app_toast.dart';
 import '../../../../navigation/routes.dart';
+import '../../domain/params/register_params.dart';
 import '../../domain/usecases/auth_usecase.dart';
 
 class RegisterController extends GetxController {
