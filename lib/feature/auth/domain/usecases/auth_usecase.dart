@@ -1,7 +1,6 @@
-import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
-
-import '../../data/models/login_model/login_model.dart';
 import '../entities/auth_token.dart';
+import '../params/login_params.dart';
+import '../params/register_params.dart';
 import '../repositories/auth_repository.dart';
 
 class AuthUseCase {

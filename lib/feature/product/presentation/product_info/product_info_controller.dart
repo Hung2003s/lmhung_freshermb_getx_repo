@@ -5,7 +5,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
 
 import '../../../../core/utils/app_toast.dart';
-import '../../data/model/product_model.dart';
+import '../../domain/params/product_params.dart';
 import '../../domain/product_use_case/product_use_case.dart';
 
 enum ProductPageMode { view, edit, create }

@@ -1,13 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lmhung_freshermb_getx_repo/core/network/data/data_state.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/auth/data/models/register_model/register_model.dart';
 import '../../../../core/network/error/failures.dart';
 import '../../domain/entities/auth_token.dart';
+import '../../domain/params/login_params.dart';
+import '../../domain/params/register_params.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/local/auth_local_data_source.dart';
 import '../datasources/remote/auth_remote_data_source.dart';
-import '../models/login_model/login_model.dart';
+import '../models/login_model/login_model.dart' as login_data;
+import '../models/register_model/register_model.dart' as register_data;
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -20,7 +22,11 @@ class AuthRepositoryImpl implements AuthRepository {
   String? _cachedToken;
   @override
   Future<Either<Failure, AuthToken>> login(LoginParams params) async {
-    final result = await remoteDataSource.login(params);
+    final dataParams = login_data.LoginParams(
+      userName: params.userName,
+      password: params.password,
+    );
+    final result = await remoteDataSource.login(dataParams);
     if (result is DataSuccess) {
       final authToken = result.data?.map(
         (model) => AuthToken(accessToken: model.data.accessToken),
@@ -63,7 +69,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, AuthToken>> register(RegisterParams params) async {
-    final result = await remoteDataSource.register(params);
+    final dataParams = register_data.RegisterParams(
+      userName: params.userName,
+      password: params.password,
+    );
+    final result = await remoteDataSource.register(dataParams);
     if (result is DataSuccess) {
       final authToken = result.data?.map(
         (model) => AuthToken(accessToken: model.data.accessToken),

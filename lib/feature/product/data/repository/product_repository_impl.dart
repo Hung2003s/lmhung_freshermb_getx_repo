@@ -3,9 +3,10 @@ import 'package:lmhung_freshermb_getx_repo/core/network/error/failures.dart';
 
 import '../../../../core/network/data/data_state.dart';
 import '../../domain/entity/product_entity.dart';
+import '../../domain/params/product_params.dart';
 import '../../domain/repository/product_repository.dart';
 import '../datasources/remote/product_remote_data_source.dart';
-import '../model/product_model.dart';
+import '../model/product_model.dart' as data;
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;
@@ -40,7 +41,16 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure, int>> addProduct(ProductInfoParam params) async {
-    final result = await remoteDataSource.addProduct(params: params);
+    final dataParams = data.ProductInfoParam(
+      name: params.name,
+      code: params.code,
+      price: params.price,
+      stock: params.stock,
+      category: params.category,
+      description: params.description,
+      image: params.image,
+    );
+    final result = await remoteDataSource.addProduct(params: dataParams);
     if (result is DataSuccess) {
       return Right(result.data!.data);
     } else {
@@ -75,7 +85,19 @@ class ProductRepositoryImpl implements ProductRepository {
     ProductInfoParam params,
     int id,
   ) async {
-    final result = await remoteDataSource.updateProduct(params: params, id: id);
+    final dataParams = data.ProductInfoParam(
+      name: params.name,
+      code: params.code,
+      price: params.price,
+      stock: params.stock,
+      category: params.category,
+      description: params.description,
+      image: params.image,
+    );
+    final result = await remoteDataSource.updateProduct(
+      params: dataParams,
+      id: id,
+    );
     if (result is DataSuccess) {
       return Right(result.data!.data);
     } else {

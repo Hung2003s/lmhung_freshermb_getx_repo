@@ -1,13 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:lmhung_freshermb_getx_repo/core/network/data/data_state.dart';
 import 'package:lmhung_freshermb_getx_repo/core/network/error/failures.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/category_add_models/category_add_model.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/category_delete_model/category_delete_model.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/data/models/update_category_model/update_category_model.dart';
 
 import '../../domain/entities/categories_entity.dart';
+import '../../domain/params/add_category_params.dart';
+import '../../domain/params/update_category_params.dart';
 import '../../domain/repositories/categories_repository.dart';
 import '../datasources/remote/category_remote_data.dart';
+import '../models/category_add_models/category_add_model.dart' as add_data;
+import '../models/update_category_model/update_category_model.dart'
+    as update_data;
 
 class CategoryRepositoryImpl implements CategoriesRepository {
   final CategoryRemoteData remoteDataSource;
@@ -38,16 +40,13 @@ class CategoryRepositoryImpl implements CategoriesRepository {
   }
 
   @override
-  Future<Either<Failure, CategoryAddRes>> addCategories(
-    CategoryAddParams params,
-  ) async {
-    final result = await remoteDataSource.addCategories(params);
+  Future<Either<Failure, int>> addCategories(AddCategoryParams params) async {
+    final dataParams = add_data.CategoryAddParams(name: params.name);
+    final result = await remoteDataSource.addCategories(dataParams);
     if (result is DataSuccess) {
-      return Right(result.data!);
+      return Right(result.data!.data);
     } else {
       final responseError = result.error;
-
-      // Dịch ResponseError từ API thành ServerFailure
       return Left(
         Failure.serverFailure(
           message: responseError?.message ?? 'Lỗi không xác định',
@@ -58,13 +57,14 @@ class CategoryRepositoryImpl implements CategoriesRepository {
   }
 
   @override
-  Future<Either<Failure, UpdateCategoryRes>> updateCategories(
-    UpdateCategoryParam params,
+  Future<Either<Failure, bool>> updateCategories(
+    UpdateCategoryParams params,
     int id,
   ) async {
-    final result = await remoteDataSource.updateCategories(params, id);
+    final dataParams = update_data.UpdateCategoryParam(name: params.name);
+    final result = await remoteDataSource.updateCategories(dataParams, id);
     if (result is DataSuccess) {
-      return Right(result.data!);
+      return Right(result.data!.data);
     } else {
       final responseError = result.error;
       return Left(
@@ -77,10 +77,10 @@ class CategoryRepositoryImpl implements CategoriesRepository {
   }
 
   @override
-  Future<Either<Failure, DeleteCategoryRes>> deleteCategories(int id) async {
+  Future<Either<Failure, bool>> deleteCategories(int id) async {
     final result = await remoteDataSource.deleteCategories(id);
     if (result is DataSuccess) {
-      return Right(result.data!);
+      return Right(result.data!.data);
     } else {
       final responseError = result.error;
       return Left(

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../../data/model/product_model.dart';
 import '../entity/product_entity.dart';
+import '../params/product_params.dart';
 
 abstract class ProductRepository {
   Future<Either<Failure, List<ProductEntity>>> getListProductById({
