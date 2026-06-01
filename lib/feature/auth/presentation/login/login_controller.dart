@@ -8,6 +8,7 @@ import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
+import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage_service.dart';
 
 import '../../../../core/common_widget/animation/shake_widget.dart';
 import '../../../../core/navigation/routes.dart';
@@ -109,10 +110,10 @@ class LoginController extends GetxController {
     isBiometricAvailable.value = available;
     if (available) {
       biometricTypeName.value = await _biometricAuth.getBiometricDisplayName();
-      final savedUsername = _storage.read<String>(
+      final savedUsername = await SecureStorageService.readData(
         Constants.biometricUsernameKey,
       );
-      final savedPassword = _storage.read<String>(
+      final savedPassword = await SecureStorageService.readData(
         Constants.biometricPasswordKey,
       );
       // Only consider if both username and password are real credentials
@@ -313,21 +314,27 @@ class LoginController extends GetxController {
     AppToast.showSuccess(title: 'login_success'.tr);
   }
 
-  /// Lưu thông tin đăng nhập và dữ liệu sinh học sau khi đăng nhập
+  /// Lưu thông tin đăng nhập và dữ liệu sinh học sau khi đăng nhập (dùng SecureStorage)
   Future<void> _saveBiometricCredentials(
     String username,
     String password,
   ) async {
-    await _storage.write(Constants.biometricUsernameKey, username);
-    await _storage.write(Constants.biometricPasswordKey, password);
+    await SecureStorageService.writeData(
+      Constants.biometricUsernameKey,
+      username,
+    );
+    await SecureStorageService.writeData(
+      Constants.biometricPasswordKey,
+      password,
+    );
     isBiometricEnabled.value = true;
   }
 
-  /// Lưu token sinh trắc học để dùng cho lần kiểm tra thay đổi sau này.
+  /// Lưu token sinh trắc học để dùng cho lần kiểm tra thay đổi sau này (dùng SecureStorage).
   Future<void> _saveBiometricToken() async {
     try {
       final token = await _didChangeAuthLocal.getCurrentToken();
-      await _storage.write(Constants.biometricTokenKey, token);
+      await SecureStorageService.writeData(Constants.biometricTokenKey, token);
     } catch (_) {
       // Lưu token thất bại, không critical
     }
@@ -341,7 +348,9 @@ class LoginController extends GetxController {
 
     try {
       // Kiểm tra thay đổi sinh trắc học
-      final savedToken = _storage.read<String>(Constants.biometricTokenKey);
+      final savedToken = await SecureStorageService.readData(
+        Constants.biometricTokenKey,
+      );
       final status = await _didChangeAuthLocal.checkBiometricChanged(
         savedToken: savedToken,
       );
@@ -373,11 +382,13 @@ class LoginController extends GetxController {
       );
       if (!authenticated) return false;
 
-      // Lấy thông tin xác thực từ vân tay đã lưu
+      // Lấy thông tin xác thực từ vân tay đã lưu (dùng SecureStorage)
       final savedUsername =
-          _storage.read<String>(Constants.biometricUsernameKey) ?? '';
+          await SecureStorageService.readData(Constants.biometricUsernameKey) ??
+          '';
       final savedPassword =
-          _storage.read<String>(Constants.biometricPasswordKey) ?? '';
+          await SecureStorageService.readData(Constants.biometricPasswordKey) ??
+          '';
 
       if (savedUsername.isEmpty || savedPassword.isEmpty) {
         isBiometricEnabled.value = false;
