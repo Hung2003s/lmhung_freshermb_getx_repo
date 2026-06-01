@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
+
+import '../../../../core/gen/colors.gen.dart';
 
 class ProductCard extends StatelessWidget {
   final Widget icon;

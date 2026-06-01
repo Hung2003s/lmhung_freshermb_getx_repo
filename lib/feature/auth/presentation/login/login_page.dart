@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/custom_app_bar.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 import '../../../../core/common_widget/base_view/base_view.dart';
 import '../../../../core/common_widget/button/selected_widget.dart';
-import '../../../../gen/assets.gen.dart';
+import '../../../../core/gen/assets.gen.dart';
+import '../../../../core/gen/colors.gen.dart';
 import '../widget/feature_button.dart';
 import '../widget/input_field.dart';
 import 'login_controller.dart';

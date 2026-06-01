@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../gen/assets.gen.dart';
-import '../../../gen/colors.gen.dart';
+import '../../gen/assets.gen.dart';
+import '../../gen/colors.gen.dart';
 import '../../text_style/app_text_style.dart';
 
 class TextInputFields extends StatefulWidget {

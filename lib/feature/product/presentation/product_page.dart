@@ -6,14 +6,13 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_searc
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/product_card.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
-
 import '../../../core/common_widget/base_view/base_view.dart';
-import '../../../gen/assets.gen.dart';
-import '../../../navigation/routes.dart';
+import '../../../core/gen/assets.gen.dart';
+import '../../../core/gen/colors.gen.dart';
+import '../../../core/navigation/routes.dart';
 
 class ProductPage extends GetView<ProductController> {
   const ProductPage({super.key});
@@ -24,7 +23,7 @@ class ProductPage extends GetView<ProductController> {
     return BaseView(
       backgroundColor: theme.scaffoldBackgroundColor,
       buildBody: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
         child: RefreshIndicator(
           onRefresh: () async {
             controller.fetchListProduct(isLoadMore: false);

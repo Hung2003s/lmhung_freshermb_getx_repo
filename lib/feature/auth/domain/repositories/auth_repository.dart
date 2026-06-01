@@ -8,10 +8,4 @@ import '../params/register_params.dart';
 abstract class AuthRepository {
   Future<Either<Failure, AuthToken>> login(LoginParams params);
   Future<Either<Failure, AuthToken>> register(RegisterParams params);
-
-  Future<void> saveToken(String token);
-
-  Future<String?> getToken();
-
-  Future<void> logout();
 }

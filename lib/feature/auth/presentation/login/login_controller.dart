@@ -8,9 +8,9 @@ import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
-import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
 import '../../../../core/common_widget/animation/shake_widget.dart';
+import '../../../../core/navigation/routes.dart';
 import '../../../../core/utils/app_toast.dart';
 import '../../domain/params/login_params.dart';
 import '../../domain/usecases/auth_usecase.dart';
@@ -245,7 +245,11 @@ class LoginController extends GetxController {
 
       final request = LoginParams(userName: username, password: password);
 
-      final response = await _loginUseCase(request);
+      final result = await _loginUseCase(request);
+      final response = result.fold(
+        (failure) => throw Exception(failure.message),
+        (token) => token,
+      );
       if (response.accessToken.isNotEmpty) {
         TextInput.finishAutofillContext(shouldSave: true);
         _resetLoginAttempts(); // Reset attempts on successful login
@@ -389,7 +393,11 @@ class LoginController extends GetxController {
           userName: savedUsername,
           password: savedPassword,
         );
-        final response = await _loginUseCase(request);
+        final result = await _loginUseCase(request);
+        final response = result.fold(
+          (failure) => throw Exception(failure.message),
+          (token) => token,
+        );
         if (response.accessToken.isNotEmpty) {
           _resetLoginAttempts();
           await _handleLoginSuccess(response.accessToken);

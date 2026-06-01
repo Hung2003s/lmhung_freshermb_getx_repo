@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../gen/colors.gen.dart';
+
+import '../gen/colors.gen.dart';
 
 class AppToast {
   static void _show({

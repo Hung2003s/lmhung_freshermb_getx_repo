@@ -9,11 +9,12 @@ import '../../../../../core/network/error/remote_exception_handle.dart';
 import '../../models/category_response/category_model.dart';
 import 'category_remote_data.dart';
 
-class CategoryRemoteDataImpl with RemoteExceptionHandler implements CategoryRemoteData {
+class CategoryRemoteDataSourceImpl
+    with RemoteExceptionHandler
+    implements CategoryRemoteDataSource {
   final DioClient _dioClient;
 
-  CategoryRemoteDataImpl(this._dioClient);
-
+  CategoryRemoteDataSourceImpl(this._dioClient);
 
   ///Lấy danh sâch danh mục
   @override
@@ -33,6 +34,7 @@ class CategoryRemoteDataImpl with RemoteExceptionHandler implements CategoryRemo
       return handleNetworkException<CategoryResponse>(e);
     }
   }
+
   /// Thêm danh mục
   @override
   Future<DataState<CategoryAddRes>> addCategories(

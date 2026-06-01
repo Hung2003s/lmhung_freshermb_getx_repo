@@ -3,9 +3,10 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_
 
 import '../../data/datasources/remote/product_remote_data_source.dart';
 import '../../data/datasources/remote/product_remote_data_source_impl.dart';
-import '../../data/repository/product_repository_impl.dart';
-import '../../domain/product_use_case/product_use_case.dart';
-import '../../domain/repository/product_repository.dart';
+import '../../data/repositories/product_repository_impl.dart';
+import '../../domain/repositories/product_repository.dart';
+import '../../domain/usecases/add_product_use_case.dart';
+import '../../domain/usecases/update_product_use_case.dart';
 
 class ProductInfoBinding extends Bindings {
   @override
@@ -22,10 +23,13 @@ class ProductInfoBinding extends Bindings {
       ),
     );
 
-    // 3. Inject UseCase
-    Get.lazyPut(() => ProductUseCase(Get.find()));
+    // 3. Inject UseCases
+    Get.lazyPut(() => AddProductUseCase(Get.find()));
+    Get.lazyPut(() => UpdateProductUseCase(Get.find()));
 
     // 4. Inject Controller cho tầng Presentation dùng
-    Get.lazyPut<ProductInfoController>(() => ProductInfoController(Get.find()));
+    Get.lazyPut<ProductInfoController>(
+      () => ProductInfoController(Get.find(), Get.find()),
+    );
   }
 }

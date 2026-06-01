@@ -1,6 +1,6 @@
-import '../entity/product_entity.dart';
+import '../entities/product_entity.dart';
 import '../params/product_params.dart';
-import '../repository/product_repository.dart';
+import '../repositories/product_repository.dart';
 
 class ProductUseCase {
   final ProductRepository repository;

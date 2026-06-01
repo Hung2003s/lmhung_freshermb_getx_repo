@@ -16,4 +16,16 @@ class ProductInfoParam {
     this.description,
     this.image,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'code': code,
+      if (price != null) 'price': price,
+      if (stock != null) 'stock': stock,
+      if (category != null) 'category_id': category,
+      if (description != null) 'description': description,
+      if (image != null) 'image': image,
+    };
+  }
 }

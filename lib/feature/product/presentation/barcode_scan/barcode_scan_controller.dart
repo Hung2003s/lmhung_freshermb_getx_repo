@@ -4,9 +4,10 @@ import 'package:barcode_scanner_plugin/barcode_scanner_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/app_toast.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
+
+import '../../../../core/navigation/routes.dart';
 
 class BarcodeScanController extends GetxController {
   final BarcodeScannerPlugin _scannerPlugin = BarcodeScannerPlugin();

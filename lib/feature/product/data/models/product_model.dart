@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../category/data/models/category_response/category_model.dart';
-import '../../domain/entity/product_entity.dart';
+import '../../domain/entities/product_entity.dart';
 
 part 'product_model.freezed.dart';
 
@@ -80,22 +80,6 @@ abstract class Paging with _$Paging {
 }
 
 @freezed
-abstract class ProductInfoParam with _$ProductInfoParam {
-  const factory ProductInfoParam({
-    @JsonKey(name: 'name') required String name,
-    @JsonKey(name: 'code') required String code,
-    @JsonKey(name: 'price') double? price,
-    @JsonKey(name: 'stock') int? stock,
-    @JsonKey(name: 'category_id') int? category,
-    @JsonKey(name: 'description') String? description,
-    @JsonKey(name: 'image') String? image,
-  }) = _ProductInfoParam;
-
-  factory ProductInfoParam.fromJson(Map<String, dynamic> json) =>
-      _$ProductInfoParamFromJson(json);
-}
-
-@freezed
 abstract class UpdateProductRes with _$UpdateProductRes {
   const factory UpdateProductRes({@JsonKey(name: 'data') required bool data}) =
       _UpdateProductRes;
@@ -120,4 +104,22 @@ abstract class AddProductRes with _$AddProductRes {
 
   factory AddProductRes.fromJson(Map<String, dynamic> json) =>
       _$AddProductResFromJson(json);
+}
+
+// Data-layer DTO for JSON serialization.
+// Domain ProductInfoParam (domain/params/product_params.dart) is used by use cases and controllers.
+@freezed
+abstract class ProductInfoDto with _$ProductInfoDto {
+  const factory ProductInfoDto({
+    @JsonKey(name: 'name') required String name,
+    @JsonKey(name: 'code') required String code,
+    @JsonKey(name: 'price') double? price,
+    @JsonKey(name: 'stock') int? stock,
+    @JsonKey(name: 'category_id') int? category,
+    @JsonKey(name: 'description') String? description,
+    @JsonKey(name: 'image') String? image,
+  }) = _ProductInfoDto;
+
+  factory ProductInfoDto.fromJson(Map<String, dynamic> json) =>
+      _$ProductInfoDtoFromJson(json);
 }

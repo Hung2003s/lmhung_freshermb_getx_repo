@@ -40,7 +40,7 @@ dev_dependencies:
 
 
 flutter_gen:
-  output: lib/gen/
+  output: lib/core/gen/
   integrations:
     flutter_svg: true
     image: true

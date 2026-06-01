@@ -5,25 +5,34 @@ import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
 import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/domain/product_use_case/product_use_case.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/usecases/get_products_use_case.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/usecases/delete_product_use_case.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_sort_card.dart';
-import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
+
+import '../../../core/navigation/routes.dart';
 
 class ProductController extends GetxController
     with
         PaginationMixin<ProductEntity>,
         OptimisticDeleteMixin<ProductEntity, int>,
         DialogButtonMixin {
-  final ProductUseCase _useCase;
+  final GetProductsUseCase _getProductsUseCase;
+  final DeleteProductUseCase _deleteProductUseCase;
 
-  ProductController(this._useCase);
+  ProductController(this._getProductsUseCase, this._deleteProductUseCase);
 
   @override
   RxList<ProductEntity> get items => listProduct;
 
   @override
-  Future<bool> deleteItemById(int id) async => _useCase.deleteProduct(id);
+  Future<bool> deleteItemById(int id) async {
+    final result = await _deleteProductUseCase(id);
+    return result.fold(
+      (failure) => throw Exception(failure.message),
+      (data) => data,
+    );
+  }
 
   @override
   int getIdFromItem(ProductEntity item) => item.id;
@@ -54,17 +63,21 @@ class ProductController extends GetxController
       isLoading.value = true;
       page.value = 1;
       hasMore = true;
-      final result = await _useCase(
+      final result = await _getProductsUseCase(
         keyword: productSearchText.value,
         categoryId: selectedCategoryId.value,
         page: page.value,
         limit: limit.value,
       );
-      if (result.isEmpty) {
+      final products = result.fold(
+        (failure) => throw Exception(failure.message),
+        (list) => list,
+      );
+      if (products.isEmpty) {
         listProduct.assignAll([]);
         errorMessage.value = "no_products_in_category".tr;
       } else {
-        listProduct.assignAll(result);
+        listProduct.assignAll(products);
       }
     } catch (e) {
       errorMessage.value = e.toString();
@@ -79,18 +92,22 @@ class ProductController extends GetxController
     try {
       isLoadingMore.value = true;
       page.value += 1;
-      final result = await _useCase(
+      final result = await _getProductsUseCase(
         keyword: productSearchText.value,
         categoryId: selectedCategoryId.value,
         page: page.value,
         limit: limit.value,
       );
-      if (result.isEmpty) {
+      final products = result.fold(
+        (failure) => throw Exception(failure.message),
+        (list) => list,
+      );
+      if (products.isEmpty) {
         page.value -= 1;
         hasMore = false;
       } else {
-        listProduct.addAll(result);
-        if (result.length < limit.value) hasMore = false;
+        listProduct.addAll(products);
+        if (products.length < limit.value) hasMore = false;
       }
     } catch (e) {
       if (page.value > 1) page.value -= 1;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
+
+import '../../gen/colors.gen.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   final IconData icon;

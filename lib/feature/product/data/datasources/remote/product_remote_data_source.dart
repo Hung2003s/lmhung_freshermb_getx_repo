@@ -1,20 +1,22 @@
 import '../../../../../core/network/data/data_state.dart';
-import '../../model/product_model.dart';
+import '../../models/product_model.dart' as product_model;
 
 abstract class ProductRemoteDataSource {
-  Future<DataState<ProductResponse>> getListProductById({
+  Future<DataState<product_model.ProductResponse>> getListProductById({
     String? keyword,
     int? categoryId,
     required int page,
     required int limit,
   });
 
-  Future<DataState<AddProductRes>> addProduct({
-    required ProductInfoParam params,
+  Future<DataState<product_model.AddProductRes>> addProduct({
+    required product_model.ProductInfoDto params,
   });
-  Future<DataState<UpdateProductRes>> updateProduct({
-    required ProductInfoParam params,
+  Future<DataState<product_model.UpdateProductRes>> updateProduct({
+    required product_model.ProductInfoDto params,
     required int id,
   });
-  Future<DataState<DeleteProductRes>> deleteProduct({required int id});
+  Future<DataState<product_model.DeleteProductRes>> deleteProduct({
+    required int id,
+  });
 }

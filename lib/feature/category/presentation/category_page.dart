@@ -7,11 +7,10 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/widget/category_card.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
-
 import '../../../core/common_widget/base_view/base_view.dart';
 import '../../../core/common_widget/navigation_bar/profile_app_bar.dart';
-import '../../../gen/assets.gen.dart';
+import '../../../core/gen/assets.gen.dart';
+import '../../../core/gen/colors.gen.dart';
 
 class CategoryPage extends GetView<CategoryController> {
   const CategoryPage({super.key});
@@ -36,7 +35,7 @@ class CategoryPage extends GetView<CategoryController> {
       backgroundColor: Theme.of(Get.context!).colorScheme.surface,
       onRefresh: () => controller.fetchFirstPage(),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.only(left: 16, top:  12, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

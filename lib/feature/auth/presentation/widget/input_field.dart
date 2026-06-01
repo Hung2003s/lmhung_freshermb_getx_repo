@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/shake_widget.dart';
 
 import '../../../../../core/common_widget/input/text_input_field.dart';
-import '../../../../gen/colors.gen.dart';
+import '../../../../core/gen/colors.gen.dart';
 
 class InputField extends StatelessWidget {
   final TextEditingController controller;

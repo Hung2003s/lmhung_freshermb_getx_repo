@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+import 'package:lmhung_freshermb_getx_repo/core/network/error/failures.dart';
+import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
 import '../entities/auth_token.dart';
 import '../params/login_params.dart';
 import '../params/register_params.dart';
@@ -8,29 +11,21 @@ class AuthUseCase {
 
   AuthUseCase(this.repository);
 
-  Future<AuthToken> call(LoginParams params) async {
-    final result = await repository.login(params);
-    return result.fold(
-      (fail) => throw Exception(fail.message),
-      (token) => token,
-    );
+  Future<Either<Failure, AuthToken>> call(LoginParams params) async {
+    return repository.login(params);
   }
 
-  Future<AuthToken> register(RegisterParams params) async {
-    final result = await repository.register(params);
-    return result.fold(
-      (fail) => throw Exception(fail.message),
-      (token) => token,
-    );
+  Future<Either<Failure, AuthToken>> register(RegisterParams params) async {
+    return repository.register(params);
   }
 }
 
 class CheckAuthStatusUseCase {
-  final AuthRepository repository;
-  CheckAuthStatusUseCase(this.repository);
+  final TokenManager tokenManager;
+  CheckAuthStatusUseCase(this.tokenManager);
 
   Future<bool> call() async {
-    final token = await repository.getToken();
+    final token = await tokenManager.getToken();
     return token != null && token.isNotEmpty;
   }
 }

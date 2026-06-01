@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
+
+import '../gen/colors.gen.dart';
 
 class AppTheme {
   // Tránh khởi tạo instance của class này

@@ -4,28 +4,42 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.da
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/string_utils.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/category/domain/usecases/get_categories_use_case.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/category/domain/usecases/add_category_use_case.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/category/domain/usecases/update_category_use_case.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/category/domain/usecases/delete_category_use_case.dart';
 
 import '../../../core/utils/app_toast.dart';
 import '../domain/params/add_category_params.dart';
 import '../domain/params/update_category_params.dart';
-import '../domain/usecases/category_usecase.dart';
 
 class CategoryController extends GetxController
     with
         PaginationMixin<CategoryEntity>,
         OptimisticDeleteMixin<CategoryEntity, int>,
         DialogButtonMixin {
-  final CategoryUseCase _useCase;
+  final GetCategoriesUseCase _getCategoriesUseCase;
+  final AddCategoryUseCase _addCategoryUseCase;
+  final UpdateCategoryUseCase _updateCategoryUseCase;
+  final DeleteCategoryUseCase _deleteCategoryUseCase;
 
-  CategoryController(this._useCase);
+  CategoryController(
+    this._getCategoriesUseCase,
+    this._addCategoryUseCase,
+    this._updateCategoryUseCase,
+    this._deleteCategoryUseCase,
+  );
 
   @override
   RxList<CategoryEntity> get items => listCategory;
 
   @override
   Future<bool> deleteItemById(int id) async {
-    final result = await _useCase.delete(id);
-    return result;
+    final result = await _deleteCategoryUseCase(id);
+    return result.fold(
+      (failure) => throw Exception(failure.message),
+      (data) => data,
+    );
   }
 
   @override
@@ -63,8 +77,15 @@ class CategoryController extends GetxController
       isLoading.value = true;
       page.value = 1;
       hasMore = true;
-      final result = await _useCase(page: page.value, limit: limit.value);
-      listCategory.assignAll(result);
+      final result = await _getCategoriesUseCase(
+        page: page.value,
+        limit: limit.value,
+      );
+      final categories = result.fold(
+        (failure) => throw Exception(failure.message),
+        (list) => list,
+      );
+      listCategory.assignAll(categories);
       _syncFiltered();
     } catch (e) {
       errorMessage.value = e.toString();
@@ -79,13 +100,20 @@ class CategoryController extends GetxController
     try {
       isLoadingMore.value = true;
       page.value += 1;
-      final result = await _useCase(page: page.value, limit: limit.value);
-      if (result.isEmpty) {
+      final result = await _getCategoriesUseCase(
+        page: page.value,
+        limit: limit.value,
+      );
+      final categories = result.fold(
+        (failure) => throw Exception(failure.message),
+        (list) => list,
+      );
+      if (categories.isEmpty) {
         page.value -= 1;
         hasMore = false;
       } else {
         final existingIds = listCategory.map((e) => e.id).toSet();
-        final newItems = result
+        final newItems = categories
             .where((item) => !existingIds.contains(item.id))
             .toList();
         if (newItems.isEmpty) {
@@ -94,7 +122,7 @@ class CategoryController extends GetxController
         } else {
           listCategory.addAll(newItems);
           _syncFiltered();
-          if (result.length < limit.value) hasMore = false;
+          if (categories.length < limit.value) hasMore = false;
         }
       }
     } catch (e) {
@@ -116,7 +144,7 @@ class CategoryController extends GetxController
     } else {
       filteredCategory.assignAll(
         listCategory.where(
-              (item) => StringUtils.containsIgnoreAccents(item.name, query.trim()),
+          (item) => StringUtils.containsIgnoreAccents(item.name, query.trim()),
         ),
       );
     }
@@ -125,7 +153,8 @@ class CategoryController extends GetxController
   Future<void> addCategory() async {
     try {
       final name = addCategoryText.value.trim();
-      await _useCase.add(AddCategoryParams(name: name));
+      final result = await _addCategoryUseCase(AddCategoryParams(name: name));
+      result.fold((failure) => throw Exception(failure.message), (id) => id);
       AppToast.showSuccess(title: 'add_success'.tr);
       addCategoryText.value = '';
       addController.clear();
@@ -148,11 +177,15 @@ class CategoryController extends GetxController
       listCategory[index] = originalCategory.copyWith(name: name);
       listCategory.refresh();
 
-      final result = await _useCase.update(
+      final result = await _updateCategoryUseCase(
         UpdateCategoryParams(name: name),
         id,
       );
-      if (result) {
+      final success = result.fold(
+        (failure) => throw Exception(failure.message),
+        (data) => data,
+      );
+      if (success) {
         AppToast.showSuccess(title: 'update_success'.tr);
       } else {
         listCategory[index] = originalCategory;

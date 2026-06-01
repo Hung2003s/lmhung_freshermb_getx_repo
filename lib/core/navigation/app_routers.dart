@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/auth/presentaition/login/login_binding.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/auth/presentaition/register/register_binding.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/auth/presentaition/register/register_page.dart';
+import 'package:lmhung_freshermb_getx_repo/core/navigation/routes.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/auth/presentation/login/login_binding.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/auth/presentation/register/register_binding.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/auth/presentation/register/register_page.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_page.dart';
@@ -15,11 +16,11 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_info/product_info_page.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/splash/splash_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/splash/splash_page.dart';
-import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
-import '../feature/auth/presentaition/login/login_page.dart';
-import '../feature/category/presentation/category_page.dart';
-import '../feature/product/presentation/product_page.dart';
+import '../../feature/auth/presentation/login/login_page.dart';
+import '../../feature/category/presentation/category_page.dart';
+import '../../feature/product/presentation/product_page.dart';
+
 
 class AppRouters {
   AppRouters._();

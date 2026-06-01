@@ -3,10 +3,9 @@ import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/loading/bouncing_loading_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/splash/splash_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
-import '../../gen/assets.gen.dart';
-
+import '../../core/gen/assets.gen.dart';
+import '../../core/gen/colors.gen.dart';
 class SplashPage extends GetView<SplashController> {
   const SplashPage({super.key});
 

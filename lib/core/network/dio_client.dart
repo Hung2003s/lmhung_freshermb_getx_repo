@@ -5,11 +5,6 @@ import 'interceptor/curl_log_interceptor.dart';
 import 'interceptor/header_interceptor.dart';
 
 class DioClient {
-  DioClient._privateConstructor();
-  static final DioClient _instance = DioClient._privateConstructor();
-  static DioClient get instance => _instance;
-
-  //Cau hinh dio
   late final Dio _dio;
   Dio get dio => _dio;
 
@@ -25,7 +20,11 @@ class DioClient {
       },
     );
     _dio = Dio(options);
-    _dio.interceptors.addAll([HeaderInterceptor(),  TokenInterceptor(), CurlLogInterceptor(),]);
+    _dio.interceptors.addAll([
+      HeaderInterceptor(),
+      TokenInterceptor(),
+      CurlLogInterceptor(),
+    ]);
   }
 
   Future<Response> get(

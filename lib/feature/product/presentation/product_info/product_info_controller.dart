@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
 
 import '../../../../core/utils/app_toast.dart';
 import '../../domain/params/product_params.dart';
-import '../../domain/product_use_case/product_use_case.dart';
+import '../../domain/usecases/add_product_use_case.dart';
+import '../../domain/usecases/update_product_use_case.dart';
 
 enum ProductPageMode { view, edit, create }
 
 class ProductInfoController extends GetxController {
-  final ProductUseCase _useCase;
+  final AddProductUseCase _addProductUseCase;
+  final UpdateProductUseCase _updateProductUseCase;
 
-  ProductInfoController(this._useCase);
+  ProductInfoController(this._addProductUseCase, this._updateProductUseCase);
 
   // Nhận thực thể sản phẩm truyền sang (nếu có) từ arguments của GetX
   final ProductEntity? initialProduct = Get.arguments as ProductEntity?;
@@ -231,9 +233,12 @@ class ProductInfoController extends GetxController {
 
   Future<void> addProduct(ProductInfoParam param) async {
     try {
-      // UseCase trả về Future<int> (id) khi thành công, throw khi thất bại
       isLoading.value = true;
-      final productId = await _useCase.addProduct(param);
+      final result = await _addProductUseCase(param);
+      final productId = result.fold(
+        (failure) => throw Exception(failure.message),
+        (id) => id,
+      );
       // Pop trước rồi mới hiện snackbar để snackbar không bị nuốt theo route
       Get.back(result: productId);
       AppToast.showSuccess(title: 'add_success'.tr);
@@ -252,8 +257,12 @@ class ProductInfoController extends GetxController {
       }
 
       isLoading.value = true;
-      final result = await _useCase.updateProduct(params, initialProduct!.id);
-      if (!result) {
+      final result = await _updateProductUseCase(params, initialProduct!.id);
+      final success = result.fold(
+        (failure) => throw Exception(failure.message),
+        (data) => data,
+      );
+      if (!success) {
         AppToast.showError(title: 'update_failed'.tr, message: '');
         return;
       }

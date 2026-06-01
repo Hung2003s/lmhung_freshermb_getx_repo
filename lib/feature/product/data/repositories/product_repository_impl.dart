@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:lmhung_freshermb_getx_repo/core/network/error/failures.dart';
 
 import '../../../../core/network/data/data_state.dart';
-import '../../domain/entity/product_entity.dart';
+import '../../domain/entities/product_entity.dart';
 import '../../domain/params/product_params.dart';
-import '../../domain/repository/product_repository.dart';
+import '../../domain/repositories/product_repository.dart';
 import '../datasources/remote/product_remote_data_source.dart';
-import '../model/product_model.dart' as data;
+import '../models/product_model.dart' as data;
 
 class ProductRepositoryImpl implements ProductRepository {
   final ProductRemoteDataSource remoteDataSource;
@@ -41,7 +41,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<Either<Failure, int>> addProduct(ProductInfoParam params) async {
-    final dataParams = data.ProductInfoParam(
+    final dataParams = data.ProductInfoDto(
       name: params.name,
       code: params.code,
       price: params.price,
@@ -85,7 +85,7 @@ class ProductRepositoryImpl implements ProductRepository {
     ProductInfoParam params,
     int id,
   ) async {
-    final dataParams = data.ProductInfoParam(
+    final dataParams = data.ProductInfoDto(
       name: params.name,
       code: params.code,
       price: params.price,

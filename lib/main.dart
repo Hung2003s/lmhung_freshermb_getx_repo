@@ -5,9 +5,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/core/localization/app_translations.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/app_theme.dart';
-import 'di/app_binding.dart';
-import 'navigation/app_routers.dart';
-import 'navigation/routes.dart';
+
+import 'core/di/app_binding.dart';
+import 'core/navigation/app_routers.dart';
+import 'core/navigation/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

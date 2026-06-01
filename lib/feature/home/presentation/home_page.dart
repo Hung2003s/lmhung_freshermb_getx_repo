@@ -5,10 +5,11 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/pro
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/fast_feature_card.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/info_card.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
-import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
-import '../../../gen/assets.gen.dart';
+import '../../../core/gen/assets.gen.dart';
+import '../../../core/gen/colors.gen.dart';
+import '../../../core/navigation/routes.dart';
+
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});

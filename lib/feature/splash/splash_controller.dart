@@ -4,8 +4,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/setting/presentation/setting_controller.dart';
 
+import '../../core/navigation/routes.dart';
 import '../../core/storage/secure_storage/token/token_manager.dart';
-import '../../navigation/routes.dart';
 
 class SplashController extends GetxController {
   @override
@@ -15,7 +15,7 @@ class SplashController extends GetxController {
   }
 
   Future<void> _initApp() async {
-    // Load cài đặ đã lưu (theme & language)
+    // Load cài đặt đã lưu (theme & language)
     await Future.microtask(() => _loadSavedSettings());
 
     // Đợi TokenManager khởi tạo và đọc token từ storage

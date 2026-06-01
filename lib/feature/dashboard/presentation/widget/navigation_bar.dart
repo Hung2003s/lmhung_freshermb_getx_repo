@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../gen/colors.gen.dart';
+import '../../../../core/gen/colors.gen.dart';
 import '../dashboard_controller.dart';
 
 class CustomFloatingNavBar extends GetView<DashboardController> {

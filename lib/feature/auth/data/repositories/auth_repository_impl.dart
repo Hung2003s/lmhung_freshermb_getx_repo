@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lmhung_freshermb_getx_repo/core/network/data/data_state.dart';
 import '../../../../core/network/error/failures.dart';
+import '../../../../core/storage/secure_storage/token/token_manager.dart';
 import '../../domain/entities/auth_token.dart';
 import '../../domain/params/login_params.dart';
 import '../../domain/params/register_params.dart';
@@ -14,12 +15,14 @@ import '../models/register_model/register_model.dart' as register_data;
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final AuthLocalDataSource localDataSource;
+  final TokenManager tokenManager;
 
   AuthRepositoryImpl({
     required this.remoteDataSource,
     required this.localDataSource,
+    required this.tokenManager,
   });
-  String? _cachedToken;
+
   @override
   Future<Either<Failure, AuthToken>> login(LoginParams params) async {
     final dataParams = login_data.LoginParams(
@@ -31,10 +34,12 @@ class AuthRepositoryImpl implements AuthRepository {
       final authToken = result.data?.map(
         (model) => AuthToken(accessToken: model.data.accessToken),
       );
-      _cachedToken = result.data?.data.accessToken;
-      await localDataSource.saveToken(_cachedToken!);
+      final token = result.data?.data.accessToken;
+      if (token != null) {
+        await tokenManager.saveToken(token);
+      }
       if (kDebugMode) {
-        print("LoginRepositoryImpl saving token:: $_cachedToken");
+        print("LoginRepositoryImpl saving token:: $token");
       }
       return Right(authToken!);
     } else {
@@ -49,25 +54,6 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<String?> getToken() async {
-    if (_cachedToken != null) return _cachedToken;
-    _cachedToken = await localDataSource.getToken();
-    return _cachedToken;
-  }
-
-  @override
-  Future<void> logout() async {
-    _cachedToken = null;
-    await localDataSource.clearToken();
-  }
-
-  @override
-  Future<void> saveToken(String token) async {
-    _cachedToken = token;
-    await localDataSource.saveToken(token);
-  }
-
-  @override
   Future<Either<Failure, AuthToken>> register(RegisterParams params) async {
     final dataParams = register_data.RegisterParams(
       userName: params.userName,
@@ -78,10 +64,12 @@ class AuthRepositoryImpl implements AuthRepository {
       final authToken = result.data?.map(
         (model) => AuthToken(accessToken: model.data.accessToken),
       );
-      _cachedToken = result.data?.data.accessToken;
-      await localDataSource.saveToken(_cachedToken!);
+      final token = result.data?.data.accessToken;
+      if (token != null) {
+        await tokenManager.saveToken(token);
+      }
       if (kDebugMode) {
-        print("LoginRepositoryImpl saving token:: $_cachedToken");
+        print("LoginRepositoryImpl saving token:: $token");
       }
       return Right(authToken!);
     } else {

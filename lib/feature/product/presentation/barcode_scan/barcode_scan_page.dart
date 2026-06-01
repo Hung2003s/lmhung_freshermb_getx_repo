@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entity/product_entity.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/barcode_scan/barcode_scan_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/product_card.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/assets.gen.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
-import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
+
+import '../../../../core/gen/assets.gen.dart';
+import '../../../../core/gen/colors.gen.dart';
+import '../../../../core/navigation/routes.dart';
+
 
 class BarcodeScanPage extends GetView<BarcodeScanController> {
   const BarcodeScanPage({super.key});

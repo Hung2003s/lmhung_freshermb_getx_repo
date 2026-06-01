@@ -6,7 +6,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/app_toast.dart';
 
-import '../../../navigation/routes.dart';
+import '../../navigation/routes.dart';
 import '../../storage/secure_storage/token/token_manager.dart';
 
 class TokenInterceptor extends Interceptor {

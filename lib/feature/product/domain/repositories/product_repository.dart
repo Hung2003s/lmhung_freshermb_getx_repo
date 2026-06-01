@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/error/failures.dart';
-import '../entity/product_entity.dart';
+import '../entities/product_entity.dart';
 import '../params/product_params.dart';
 
 abstract class ProductRepository {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
+import '../../../../core/gen/colors.gen.dart';
 import '../../../category/presentation/category_controller.dart';
 import '../widget/input_infor.dart';
 import 'product_info_controller.dart';

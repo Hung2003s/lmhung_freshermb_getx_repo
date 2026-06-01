@@ -3,9 +3,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
-import 'package:lmhung_freshermb_getx_repo/gen/colors.gen.dart';
 
-import '../../../gen/assets.gen.dart';
+import '../../../core/gen/assets.gen.dart';
+import '../../../core/gen/colors.gen.dart';
 
 class CategoryCard extends StatelessWidget {
   final Widget icon;

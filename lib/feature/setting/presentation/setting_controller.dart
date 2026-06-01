@@ -5,8 +5,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
-import 'package:lmhung_freshermb_getx_repo/navigation/routes.dart';
 
+import '../../../core/navigation/routes.dart';
 import '../../../core/storage/secure_storage/token/token_manager.dart';
 import '../../../core/utils/app_toast.dart';
 

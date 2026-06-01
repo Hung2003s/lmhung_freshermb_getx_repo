@@ -4,8 +4,8 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/shake_wi
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validator.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
 
+import '../../../../core/navigation/routes.dart';
 import '../../../../core/utils/app_toast.dart';
-import '../../../../navigation/routes.dart';
 import '../../domain/params/register_params.dart';
 import '../../domain/usecases/auth_usecase.dart';
 
@@ -130,7 +130,11 @@ class RegisterController extends GetxController {
 
       final request = RegisterParams(userName: username, password: password);
 
-      final response = await _loginUseCase.register(request);
+      final result = await _loginUseCase.register(request);
+      final response = result.fold(
+        (failure) => throw Exception(failure.message),
+        (token) => token,
+      );
       if (response.accessToken.isNotEmpty) {
         // Đồng bộ token vào TokenManager để lưu cả access token và thời gian hết hạn
         final tokenManager = Get.find<TokenManager>();

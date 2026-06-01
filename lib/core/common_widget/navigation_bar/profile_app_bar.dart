@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../gen/colors.gen.dart'; // Import file màu hệ thống của bạn
+import '../../gen/colors.gen.dart'; // Import file màu hệ thống của bạn
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String username;
@@ -43,13 +43,6 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
             decoration: BoxDecoration(
               color: theme.colorScheme.primary,
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                ),
-              ],
             ),
             child: Icon(
               Icons.person_rounded,

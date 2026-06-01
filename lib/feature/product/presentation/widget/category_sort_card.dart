@@ -3,7 +3,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 
-import '../../../../gen/colors.gen.dart';
+import '../../../../core/gen/colors.gen.dart';
+
 
 class CategorySortCard extends StatelessWidget {
   final String title;

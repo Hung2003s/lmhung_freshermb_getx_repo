@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/context_extensions.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
-import '../../../../gen/assets.gen.dart';
-import '../../../../gen/colors.gen.dart';
+import '../../../../core/gen/assets.gen.dart';
+import '../../../../core/gen/colors.gen.dart';
+
 
 class InfoCard extends StatelessWidget {
   final Widget icon;

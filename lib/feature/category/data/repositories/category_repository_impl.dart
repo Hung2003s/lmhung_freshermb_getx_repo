@@ -12,7 +12,7 @@ import '../models/update_category_model/update_category_model.dart'
     as update_data;
 
 class CategoryRepositoryImpl implements CategoriesRepository {
-  final CategoryRemoteData remoteDataSource;
+  final CategoryRemoteDataSource remoteDataSource;
 
   CategoryRepositoryImpl({required this.remoteDataSource});
 
