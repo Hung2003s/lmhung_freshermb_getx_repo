@@ -12,6 +12,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/category/domain/usecases/dele
 import '../../../core/utils/app_toast.dart';
 import '../domain/params/add_category_params.dart';
 import '../domain/params/update_category_params.dart';
+import 'widget/category_dialogs.dart';
 
 class CategoryController extends GetxController
     with
@@ -217,76 +218,13 @@ class CategoryController extends GetxController
     );
   }
 
+  /// Hiển thị dialog edit (UI tách ra widget riêng)
   void showEditDialog(CategoryEntity item) {
-    final theme = Theme.of(Get.context!);
-    Get.showCustomDialog(
-      content: _buildCategoryNameInput(
-        theme: theme,
-        controller: updateController,
-        onChanged: (value) => updateCategoryText.value = value,
-      ),
-      title: 'update_category'.tr,
-      footer: dialogButton(
-        theme,
-        title: 'save'.tr,
-        verticalPadding: 4,
-        onTap: () {
-          Get.back();
-          updateCategory(item.id);
-        },
-      ),
-    );
+    showEditCategoryDialog(this, item);
   }
 
+  /// Hiển thị dialog add (UI tách ra widget riêng)
   void showAddDialog() {
-    final theme = Theme.of(Get.context!);
-    Get.showCustomDialog(
-      content: _buildCategoryNameInput(
-        theme: theme,
-        controller: addController,
-        onChanged: (value) => addCategoryText.value = value,
-      ),
-      title: 'add_category'.tr,
-      footer: dialogButton(
-        theme,
-        title: 'save'.tr,
-        verticalPadding: 4,
-        onTap: () {
-          Get.back();
-          addCategory();
-        },
-      ),
-    );
-  }
-
-  Widget _buildCategoryNameInput({
-    required ThemeData theme,
-    required TextEditingController controller,
-    required ValueChanged<String> onChanged,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'category_name'.tr,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          onChanged: onChanged,
-          decoration: InputDecoration(
-            hintText: 'category_name'.tr,
-            filled: true,
-            fillColor: theme.colorScheme.surface,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
-      ],
-    );
+    showAddCategoryDialog(this);
   }
 }
