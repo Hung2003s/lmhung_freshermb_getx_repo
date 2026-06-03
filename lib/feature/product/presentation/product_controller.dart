@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
 import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
@@ -8,7 +8,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/categor
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/usecases/get_products_use_case.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/usecases/delete_product_use_case.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_sort_card.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_bottom_sheet.dart';
 
 import '../../../core/navigation/routes.dart';
 
@@ -171,119 +171,9 @@ class ProductController extends GetxController
     if (result != null) fetchFirstPage();
   }
 
+  /// Hiển thị bottom sheet chọn category (UI tách ra widget riêng)
   void showCategoryBottomSheet() {
-    final categoryController = Get.find<CategoryController>();
-    final theme = Theme.of(Get.context!);
-    Get.bottomSheet(
-      Container(
-        constraints: BoxConstraints(maxHeight: Get.height * 0.65),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.surface,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildSheetHandle(theme),
-              _buildSheetHeader(theme),
-              Divider(
-                height: 1,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.12),
-              ),
-              _buildCategoryList(theme, categoryController),
-            ],
-          ),
-        ),
-      ),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
-  }
-
-  Widget _buildSheetHandle(ThemeData theme) => Container(
-    width: 40,
-    height: 4,
-    margin: const EdgeInsets.symmetric(vertical: 12),
-    decoration: BoxDecoration(
-      color: theme.colorScheme.onSurface.withValues(alpha: 0.25),
-      borderRadius: BorderRadius.circular(2),
-    ),
-  );
-
-  Widget _buildSheetHeader(ThemeData theme) => Padding(
-    padding: const EdgeInsets.fromLTRB(16, 0, 8, 8),
-    child: Row(
-      children: [
-        Expanded(
-          child: Text(
-            'select_category'.tr,
-            style: TextStyle(
-              color: theme.colorScheme.onSurface,
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-        IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(Icons.close_rounded, color: theme.colorScheme.onSurface),
-        ),
-      ],
-    ),
-  );
-
-  Widget _buildCategoryList(
-    ThemeData theme,
-    CategoryController categoryController,
-  ) {
-    return Flexible(
-      child: Obx(
-        () => ListView.separated(
-          shrinkWrap: true,
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          itemCount: categoryController.listCategory.length + 1,
-          separatorBuilder: (context, index) => Divider(
-            height: 1,
-            indent: 16,
-            endIndent: 16,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.08),
-          ),
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return RepaintBoundary(
-                child: CategorySortCard(
-                  title: 'all'.tr,
-                  isSelected: currentFilterIndex.value == 0,
-                  onTap: () => _selectAllCategories(),
-                ),
-              );
-            }
-            final item = categoryController.listCategory[index - 1];
-            return RepaintBoundary(
-              child: CategorySortCard(
-                title: item.name,
-                isSelected: currentFilterIndex.value == index,
-                onTap: () => _selectCategory(index: index, categoryId: item.id),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  void _selectAllCategories() {
-    currentFilterIndex.value = 0;
-    onSelectedFilter(0);
-    Get.back();
-  }
-
-  void _selectCategory({required int index, required int categoryId}) {
-    currentFilterIndex.value = index;
-    onSelectedFilter(categoryId);
-    Get.back();
+    showCategoryFilterBottomSheet(productController: this);
   }
 
   String selectedCategoryTitle(CategoryController categoryController) {

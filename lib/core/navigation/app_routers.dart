@@ -6,7 +6,8 @@ import 'package:lmhung_freshermb_getx_repo/feature/auth/presentation/register/re
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_page.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_bindings.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_bindings.dart'
+    as home;
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_page.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/barcode_scan/barcode_scan_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/barcode_scan/barcode_scan_page.dart';
@@ -19,7 +20,6 @@ import 'package:lmhung_freshermb_getx_repo/feature/splash/splash_page.dart';
 import '../../feature/auth/presentation/login/login_page.dart';
 import '../../feature/category/presentation/category_page.dart';
 import '../../feature/product/presentation/product_page.dart';
-
 
 class AppRouters {
   AppRouters._();
@@ -47,7 +47,7 @@ class AppRouters {
         DashboardBinding(),
         CategoryBinding(),
         ProductBinding(),
-        HomeBindings(),
+        home.HomeBinding(),
       ],
     ),
     GetPage(
@@ -58,7 +58,7 @@ class AppRouters {
     GetPage(
       name: Routes.home,
       page: () => const HomePage(),
-      binding: HomeBindings(),
+      binding: home.HomeBinding(),
     ),
     GetPage(
       name: Routes.products,
