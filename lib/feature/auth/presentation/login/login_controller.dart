@@ -280,10 +280,7 @@ class LoginController extends GetxController {
                 's': attemptsLeft.toString(),
               })
             : errorMessage.value;
-        AppToast.showError(
-          title: LocaleKeys.loginFailed.tr,
-          message: subtitle,
-        );
+        AppToast.showError(title: LocaleKeys.loginFailed.tr, message: subtitle);
       }
     } finally {
       isLoading.value = false;

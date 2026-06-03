@@ -28,7 +28,8 @@ class _SineCurve extends Curve {
   }
 }
 
-class ShakeWidgetState extends State<ShakeWidget> with SingleTickerProviderStateMixin {
+class ShakeWidgetState extends State<ShakeWidget>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -54,7 +55,9 @@ class ShakeWidgetState extends State<ShakeWidget> with SingleTickerProviderState
       animation: _controller,
       child: widget.child,
       builder: (context, child) {
-        final sinValue = const _SineCurve(count: 3).transform(_controller.value);
+        final sinValue = const _SineCurve(
+          count: 3,
+        ).transform(_controller.value);
         return Transform.translate(
           // Dịch chuyển widget theo trục X dựa trên sóng sin và deltaX
           offset: Offset(sinValue * widget.deltaX, 0),

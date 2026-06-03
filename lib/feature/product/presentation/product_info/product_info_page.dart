@@ -16,14 +16,15 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     final theme = Theme.of(context);
     return Obx(() {
       final mode = controller.pageMode.value;
-      final isReadOnly = mode == ProductPageMode.view;
-
       return BaseView(
         resizeToAvoidBottomInset: true,
         backgroundColor: theme.scaffoldBackgroundColor,
         extendBodyBehindAppBar: false,
         buildAppBar: _buildAppBar(mode),
-        buildBody: _buildFormBody(mode: mode, isReadOnly: isReadOnly),
+        buildBody: _buildFormBody(
+          mode: mode,
+          isReadOnly: mode == ProductPageMode.view,
+        ),
       );
     });
   }
@@ -111,9 +112,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
             ),
             const SizedBox(height: 8),
             Text(
-              isReadOnly
-                  ? LocaleKeys.productImage.tr
-                  : LocaleKeys.addImage.tr,
+              isReadOnly ? LocaleKeys.productImage.tr : LocaleKeys.addImage.tr,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,

@@ -18,10 +18,14 @@ mixin RemoteExceptionHandler {
       // Bắt các trường hợp lỗi kết nối, timeout
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
-        return DataFailed(ResponseError(message: 'Kết nối mạng quá hạn (Timeout)'));
+        return DataFailed(
+          ResponseError(message: 'Kết nối mạng quá hạn (Timeout)'),
+        );
       }
 
-      return DataFailed(ResponseError(message: 'Mất kết nối mạng hoặc lỗi server'));
+      return DataFailed(
+        ResponseError(message: 'Mất kết nối mạng hoặc lỗi server'),
+      );
     }
 
     // Nếu dính các lỗi logic code khác (Null pointer, Cast type sai...) thì throw ra để debug

@@ -99,10 +99,7 @@ class BarcodeScanController extends GetxController {
       }
     } catch (e) {
       debugPrint('Camera scan error: $e');
-      AppToast.showError(
-        title: LocaleKeys.scanError.tr,
-        message: e.toString(),
-      );
+      AppToast.showError(title: LocaleKeys.scanError.tr, message: e.toString());
     } finally {
       isScanning.value = false;
     }

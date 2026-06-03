@@ -55,10 +55,7 @@ class RegisterPage extends GetView<RegisterController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(
-          LocaleKeys.welcomeBack.tr,
-          style: context.textTheme.headlineSmall,
-        ),
+        Text(LocaleKeys.welcomeBack.tr, style: context.textTheme.headlineSmall),
         const SizedBox(height: 8),
         Text(LocaleKeys.registerTitle.tr, style: context.textTheme.titleSmall),
         const SizedBox(height: 24),

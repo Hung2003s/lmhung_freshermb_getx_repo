@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../gen/colors.gen.dart';
 
-
 class AppTextStyle {
   AppTextStyle._();
 

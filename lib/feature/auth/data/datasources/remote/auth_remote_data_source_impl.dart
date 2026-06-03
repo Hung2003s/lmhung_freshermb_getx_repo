@@ -6,7 +6,9 @@ import '../../../../../core/network/error/remote_exception_handle.dart';
 import '../../models/login_model/login_model.dart';
 import 'auth_remote_data_source.dart';
 
-class AuthRemoteDataSourceImpl with RemoteExceptionHandler implements AuthRemoteDataSource  {
+class AuthRemoteDataSourceImpl
+    with RemoteExceptionHandler
+    implements AuthRemoteDataSource {
   final DioClient _dioClient;
 
   AuthRemoteDataSourceImpl(this._dioClient);

@@ -6,6 +6,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/splash/splash_controller.dart
 
 import '../../core/gen/assets.gen.dart';
 import '../../core/gen/colors.gen.dart';
+
 class SplashPage extends GetView<SplashController> {
   const SplashPage({super.key});
 

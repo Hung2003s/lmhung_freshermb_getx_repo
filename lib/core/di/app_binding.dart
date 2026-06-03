@@ -6,7 +6,6 @@ import 'package:lmhung_freshermb_getx_repo/feature/setting/presentation/setting_
 import '../storage/secure_storage/token/token_manager.dart';
 import '../storage/secure_storage_service.dart';
 
-
 /// Nơi đăng ký các service được sử dụng trong suốt quá trình chạy ứng dụng
 
 class AppBinding extends Bindings {

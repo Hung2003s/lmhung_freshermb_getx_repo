@@ -54,6 +54,7 @@ class ProductController extends GetxController
 
   @override
   void onClose() {
+    debounce?.cancel();
     searchController.dispose();
     super.onClose();
   }

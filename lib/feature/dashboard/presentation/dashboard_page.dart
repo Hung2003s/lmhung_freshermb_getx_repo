@@ -45,6 +45,7 @@ class DashboardPage extends GetView<DashboardController> {
       ),
     );
   }
+
   Widget _buildLazyTab(int index, Widget view) {
     // Check: Nếu tab này đã được đánh dấu HOẶC đang là tab được chọn
     if (controller.initializedTabs[index] == true) {

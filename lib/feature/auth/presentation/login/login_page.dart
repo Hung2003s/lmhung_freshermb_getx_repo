@@ -75,10 +75,7 @@ class LoginPage extends GetView<LoginController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text(
-          LocaleKeys.welcomeBack.tr,
-          style: context.textTheme.headlineSmall,
-        ),
+        Text(LocaleKeys.welcomeBack.tr, style: context.textTheme.headlineSmall),
         SizedBox(height: 8 * scale),
         Text(
           LocaleKeys.loginDescription.tr,

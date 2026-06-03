@@ -5,7 +5,6 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_wi
 
 import '../../../../core/gen/colors.gen.dart';
 
-
 class CategorySortCard extends StatelessWidget {
   final String title;
   final bool isSelected;
