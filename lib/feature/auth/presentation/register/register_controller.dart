@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/shake_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validator.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
 
 import '../../../../core/navigation/routes.dart';
@@ -112,8 +113,8 @@ class RegisterController extends GetxController {
     String password = passwordText.value.trim();
     if (!isFormValid) {
       AppToast.showError(
-        message: 'invalid_credentials'.tr,
-        title: 'register_failed'.tr,
+        message: LocaleKeys.invalidCredentials.tr,
+        title: LocaleKeys.registerFailed.tr,
       );
       // Chỉ shake đúng ô input bị lỗi
       if (userNameError.value != null) {
@@ -141,13 +142,13 @@ class RegisterController extends GetxController {
         await tokenManager.saveToken(response.accessToken);
 
         Get.offAllNamed(Routes.dashboard);
-        AppToast.showSuccess(title: 'register_success'.tr);
+        AppToast.showSuccess(title: LocaleKeys.registerSuccess.tr);
       }
     } catch (e) {
       errorMessage.value = e.toString();
       AppToast.showError(
         message: errorMessage.value,
-        title: 'register_failed'.tr,
+        title: LocaleKeys.registerFailed.tr,
       );
     } finally {
       isLoading.value = false;

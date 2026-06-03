@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../gen/colors.gen.dart';
+import '../../localization/locale_keys.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   final IconData icon;
@@ -101,7 +101,7 @@ class ErrorStateWidget extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded, size: 20),
-                label: Text('retry'.tr),
+                label: Text(LocaleKeys.retry.tr),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorName.orange,
                   foregroundColor: Colors.white,

@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
 import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/usecases/get_products_use_case.dart';
@@ -75,7 +76,7 @@ class ProductController extends GetxController
       );
       if (products.isEmpty) {
         listProduct.assignAll([]);
-        errorMessage.value = "no_products_in_category".tr;
+        errorMessage.value = LocaleKeys.noProductsInCategory.tr;
       } else {
         listProduct.assignAll(products);
       }
@@ -161,7 +162,7 @@ class ProductController extends GetxController
   /// Xoá sản phẩm với optimistic update
   void deleteProductAction(ProductEntity item) {
     showDeleteConfirmDialog(
-      contentKey: 'delete_product_confirm',
+      contentKey: LocaleKeys.deleteProductConfirm,
       onConfirm: () => deleteItem(item.id),
     );
   }
@@ -178,10 +179,10 @@ class ProductController extends GetxController
 
   String selectedCategoryTitle(CategoryController categoryController) {
     final i = currentFilterIndex.value;
-    if (i == 0) return 'all_categories'.tr;
+    if (i == 0) return LocaleKeys.allCategories.tr;
     final idx = i - 1;
     if (idx < 0 || idx >= categoryController.listCategory.length) {
-      return 'all_categories'.tr;
+      return LocaleKeys.allCategories.tr;
     }
     return categoryController.listCategory[idx].name;
   }

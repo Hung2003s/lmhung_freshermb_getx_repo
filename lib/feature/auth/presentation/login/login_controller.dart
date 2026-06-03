@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validator.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
@@ -136,7 +137,7 @@ class LoginController extends GetxController {
         isLocked.value = true;
         final remainingMinutes =
             lockoutTime.difference(DateTime.now()).inMinutes + 1;
-        lockoutMessage.value = 'login_locked'.trParams({
+        lockoutMessage.value = LocaleKeys.loginLocked.trParams({
           's': remainingMinutes.toString(),
         });
         loginAttemptCount.value = Constants.maxLoginAttempts;
@@ -179,7 +180,7 @@ class LoginController extends GetxController {
       );
 
       final remainingSeconds = Constants.lockoutDurationSeconds;
-      lockoutMessage.value = 'login_locked'.trParams({
+      lockoutMessage.value = LocaleKeys.loginLocked.trParams({
         's': remainingSeconds.toString(),
       });
     }
@@ -218,7 +219,7 @@ class LoginController extends GetxController {
     // Kiểm tra nếu bị lock
     if (isLocked.value) {
       AppToast.showError(
-        title: 'login_locked_button'.tr,
+        title: LocaleKeys.loginLockedButton.tr,
         message: lockoutMessage.value,
       );
       return;
@@ -228,8 +229,8 @@ class LoginController extends GetxController {
     String password = passwordText.value.trim();
     if (!isFormValid) {
       AppToast.showError(
-        title: 'login_failed'.tr,
-        message: 'invalid_credentials'.tr,
+        title: LocaleKeys.loginFailed.tr,
+        message: LocaleKeys.invalidCredentials.tr,
       );
       // Chỉ shake đúng ô input bị lỗi
       if (userNameError.value != null) {
@@ -268,16 +269,21 @@ class LoginController extends GetxController {
 
       if (isLocked.value) {
         AppToast.showError(
-          title: 'login_locked_button'.tr,
+          title: LocaleKeys.loginLockedButton.tr,
           message: lockoutMessage.value,
         );
       } else {
         final attemptsLeft =
             Constants.maxLoginAttempts - loginAttemptCount.value;
         final subtitle = attemptsLeft > 0
-            ? 'login_attempts_left'.trParams({'s': attemptsLeft.toString()})
+            ? LocaleKeys.loginAttemptsLeft.trParams({
+                's': attemptsLeft.toString(),
+              })
             : errorMessage.value;
-        AppToast.showError(title: 'login_failed'.tr, message: subtitle);
+        AppToast.showError(
+          title: LocaleKeys.loginFailed.tr,
+          message: subtitle,
+        );
       }
     } finally {
       isLoading.value = false;
@@ -306,12 +312,12 @@ class LoginController extends GetxController {
     if (_pendingBiometricChangeAck.value) {
       await _didChangeAuthLocal.acknowledgeChange();
       _pendingBiometricChangeAck.value = false;
-      AppToast.showSuccess(title: 'biometric_changed_acknowledged'.tr);
+      AppToast.showSuccess(title: LocaleKeys.biometricChangedAcknowledged.tr);
     }
 
     // Chuyển đến dashboard
     Get.offAllNamed(Routes.dashboard);
-    AppToast.showSuccess(title: 'login_success'.tr);
+    AppToast.showSuccess(title: LocaleKeys.loginSuccess.tr);
   }
 
   /// Lưu thông tin đăng nhập và dữ liệu sinh học sau khi đăng nhập (dùng SecureStorage)
@@ -360,8 +366,8 @@ class LoginController extends GetxController {
         //Phát hiện thay đổi → chặn đăng nhập sinh trắc học
         _pendingBiometricChangeAck.value = true;
         AppToast.showError(
-          title: 'biometric_login_failed'.tr,
-          message: 'biometric_changed_warning'.tr,
+          title: LocaleKeys.biometricLoginFailed.tr,
+          message: LocaleKeys.biometricChangedWarning.tr,
         );
         return false;
       }
@@ -369,8 +375,8 @@ class LoginController extends GetxController {
       if (status == AuthLocalStatus.invalid) {
         // Sinh trắc học không khả dụng / lỗi
         AppToast.showError(
-          title: 'biometric_login_failed'.tr,
-          message: 'biometric_error'.tr,
+          title: LocaleKeys.biometricLoginFailed.tr,
+          message: LocaleKeys.biometricError.tr,
         );
         return false;
       }
@@ -378,7 +384,7 @@ class LoginController extends GetxController {
       // Không có thay đổi → an toàn
       // Xác thực người dùng qua local_auth ──
       final authenticated = await _biometricAuth.authenticate(
-        reason: 'biometric_login_reason'.tr,
+        reason: LocaleKeys.biometricLoginReason.tr,
       );
       if (!authenticated) return false;
 
@@ -417,17 +423,17 @@ class LoginController extends GetxController {
       } catch (e) {
         errorMessage.value = e.toString();
         AppToast.showError(
-          title: 'login_failed'.tr,
-          message: 'biometric_login_failed_credentials'.tr,
+          title: LocaleKeys.loginFailed.tr,
+          message: LocaleKeys.biometricLoginFailedCredentials.tr,
         );
       } finally {
         isLoading.value = false;
       }
       return false;
     } on BiometricException catch (e) {
-      if (e.message != 'biometric_canceled'.tr) {
+      if (e.message != LocaleKeys.biometricCanceled.tr) {
         AppToast.showError(
-          title: 'biometric_login_failed'.tr,
+          title: LocaleKeys.biometricLoginFailed.tr,
           message: e.message,
         );
       }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/barcode_scan/barcode_scan_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/product_card.dart';
@@ -8,7 +9,6 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/p
 import '../../../../core/gen/assets.gen.dart';
 import '../../../../core/gen/colors.gen.dart';
 import '../../../../core/navigation/routes.dart';
-
 
 class BarcodeScanPage extends GetView<BarcodeScanController> {
   const BarcodeScanPage({super.key});
@@ -38,7 +38,7 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
     return AppBar(
       backgroundColor: theme.scaffoldBackgroundColor,
       title: Text(
-        'barcode_scan'.tr,
+        LocaleKeys.barcodeScan.tr,
         style: TextStyle(color: theme.colorScheme.onSurface),
       ),
       leading: IconButton(
@@ -48,14 +48,14 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
       actions: [
         IconButton(
           icon: const Icon(Icons.qr_code_scanner, color: ColorName.blueLight),
-          tooltip: 'scan_with_camera'.tr,
+          tooltip: LocaleKeys.scanWithCamera.tr,
           onPressed: () => controller.startCameraScan(),
         ),
         Obx(
           () => controller.selectedProducts.isNotEmpty
               ? IconButton(
                   icon: const Icon(Icons.delete_sweep, color: ColorName.error),
-                  tooltip: 'clear_all'.tr,
+                  tooltip: LocaleKeys.clearAll.tr,
                   onPressed: () => controller.clearAll(),
                 )
               : const SizedBox.shrink(),
@@ -98,7 +98,7 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'scanning_status'.tr,
+                  LocaleKeys.scanningStatus.tr,
                   style: TextStyle(
                     color: theme.colorScheme.onSurface,
                     fontSize: 16,
@@ -108,7 +108,7 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
                 const SizedBox(height: 4),
                 Obx(
                   () => Text(
-                    'scanned_count'.trParams({
+                    LocaleKeys.scannedCount.trParams({
                       'count': controller.selectedProducts.length.toString(),
                     }),
                     style: TextStyle(
@@ -127,7 +127,7 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              'scanning'.tr,
+              LocaleKeys.scanning.tr,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 12,
@@ -163,7 +163,7 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'last_scanned'.trParams({
+                      LocaleKeys.lastScanned.trParams({
                         'code': controller.lastScannedCode.value,
                       }),
                       style: TextStyle(
@@ -194,7 +194,7 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
               ),
               const SizedBox(height: 16),
               Text(
-                'scan_barcode_to_start'.tr,
+                LocaleKeys.scanBarcodeToStart.tr,
                 style: TextStyle(
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
                   fontSize: 16,
@@ -222,7 +222,7 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
       icon: Assets.icons.whiteFolder.svg(width: 16),
       iconColor: ColorName.blueLight,
       productEntity: item,
-      categoryStatus: 'in_stock'.tr,
+      categoryStatus: LocaleKeys.inStock.tr,
       onTap: () => _onProductTap(item),
       onDelete: () => controller.removeProduct(item.id),
     );

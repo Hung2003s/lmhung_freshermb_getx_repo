@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 
 import '../../../../core/gen/colors.gen.dart';
 import '../../../category/presentation/category_controller.dart';
@@ -55,9 +56,9 @@ class ProductInfoPage extends GetView<ProductInfoController> {
   }
 
   String _pageTitle(ProductPageMode mode) {
-    if (mode == ProductPageMode.create) return 'add_new_product'.tr;
-    if (mode == ProductPageMode.edit) return 'edit_product'.tr;
-    return 'product_details'.tr;
+    if (mode == ProductPageMode.create) return LocaleKeys.addNewProduct.tr;
+    if (mode == ProductPageMode.edit) return LocaleKeys.editProduct.tr;
+    return LocaleKeys.productDetails.tr;
   }
 
   Widget _buildFormBody({
@@ -110,7 +111,9 @@ class ProductInfoPage extends GetView<ProductInfoController> {
             ),
             const SizedBox(height: 8),
             Text(
-              isReadOnly ? 'product_image'.tr : 'add_image'.tr,
+              isReadOnly
+                  ? LocaleKeys.productImage.tr
+                  : LocaleKeys.addImage.tr,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -129,8 +132,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.nameController,
       enable: isReadOnly,
-      hint: 'enter_product_name'.tr,
-      title: 'product_name'.tr,
+      hint: LocaleKeys.enterProductName.tr,
+      title: LocaleKeys.productName.tr,
       errorText: controller.hasSubmitted.value
           ? controller.nameError.value
           : null,
@@ -144,7 +147,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'product_category'.tr,
+          LocaleKeys.productCategory.tr,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -171,8 +174,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.skuController,
       enable: isReadOnly,
-      hint: 'sku_example'.tr,
-      title: 'sku_code'.tr,
+      hint: LocaleKeys.skuExample.tr,
+      title: LocaleKeys.skuCode.tr,
       errorText: controller.hasSubmitted.value
           ? controller.skuError.value
           : null,
@@ -184,8 +187,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.priceController,
       enable: isReadOnly,
-      hint: 'price_hint'.tr,
-      title: 'selling_price'.tr,
+      hint: LocaleKeys.priceHint.tr,
+      title: LocaleKeys.sellingPrice.tr,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       errorText: controller.hasSubmitted.value
           ? controller.priceError.value
@@ -198,8 +201,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.stockController,
       enable: isReadOnly,
-      hint: 'stock_example'.tr,
-      title: 'quantity'.tr,
+      hint: LocaleKeys.stockExample.tr,
+      title: LocaleKeys.quantity.tr,
       keyboardType: TextInputType.number,
       errorText: controller.hasSubmitted.value
           ? controller.stockError.value
@@ -212,8 +215,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
     return InputInfor(
       controller: controller.descController,
       enable: isReadOnly,
-      hint: 'product_description_hint'.tr,
-      title: 'description'.tr,
+      hint: LocaleKeys.productDescriptionHint.tr,
+      title: LocaleKeys.description.tr,
       maxLine: 5,
       onChanged: (String value) => controller.onFormChanged(),
     );
@@ -233,8 +236,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         onPressed: () => controller.saveProduct(),
         child: Text(
           mode == ProductPageMode.create
-              ? 'create_new_product'.tr
-              : 'save_changes'.tr,
+              ? LocaleKeys.createNewProduct.tr
+              : LocaleKeys.saveChanges.tr,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -262,7 +265,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
         dropdownColor: theme.colorScheme.surface,
         icon: Icon(Icons.arrow_drop_down, color: theme.colorScheme.primary),
         hint: Text(
-          'select_category'.tr,
+          LocaleKeys.selectCategory.tr,
           style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 14),
         ),
         style: TextStyle(

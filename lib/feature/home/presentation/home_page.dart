@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/profile_app_bar.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/fast_feature_card.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/info_card.dart';
@@ -9,7 +10,6 @@ import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/widget/info
 import '../../../core/gen/assets.gen.dart';
 import '../../../core/gen/colors.gen.dart';
 import '../../../core/navigation/routes.dart';
-
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -76,8 +76,11 @@ class HomePage extends GetView<HomeController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('warehouse_overview'.tr, style: context.textTheme.titleLarge),
-        Text('updated_at'.tr, style: context.textTheme.bodyMedium),
+        Text(
+          LocaleKeys.warehouseOverview.tr,
+          style: context.textTheme.titleLarge,
+        ),
+        Text(LocaleKeys.updatedAt.tr, style: context.textTheme.bodyMedium),
       ],
     );
   }
@@ -92,7 +95,7 @@ class HomePage extends GetView<HomeController> {
           children: [
             //title
             Text(
-              'quick_actions'.tr,
+              LocaleKeys.quickActions.tr,
               style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -123,7 +126,7 @@ class HomePage extends GetView<HomeController> {
       filledColor: ColorName.orange,
       borderColor: ColorName.orange,
       icon: Assets.icons.whiteAdd.svg(),
-      title: 'add_product'.tr,
+      title: LocaleKeys.addProduct.tr,
       textColor: Colors.white,
       onTap: () {
         Get.toNamed(Routes.productsInfo);
@@ -141,7 +144,7 @@ class HomePage extends GetView<HomeController> {
         Get.context!,
       ).colorScheme.surface.withValues(alpha: 0.2),
       icon: Assets.icons.whiteFolder.svg(),
-      title: 'add_category'.tr,
+      title: LocaleKeys.addCategory.tr,
       textColor: Colors.white,
       onTap: () => controller.fastAddCategoryMethod(),
     );

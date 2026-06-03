@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../localization/locale_keys.dart';
 import '../dialog/dialog_x.dart';
 import '../../utils/app_toast.dart';
 
@@ -15,8 +16,8 @@ mixin OptimisticDeleteMixin<T, ID> on GetxController {
   /// Lấy ID từ item
   ID getIdFromItem(T item);
 
-  String get successMessage => 'delete_success'.tr;
-  String get failMessage => 'delete_failed'.tr;
+  String get successMessage => LocaleKeys.deleteSuccess.tr;
+  String get failMessage => LocaleKeys.deleteFailed.tr;
 
   /// Xoá item
   Future<void> deleteItem(ID id) async {
@@ -129,7 +130,7 @@ mixin DialogButtonMixin on GetxController {
 
   /// Dialog xác nhận xoá — dùng chung cho cả category & product
   void showDeleteConfirmDialog({
-    required String contentKey,
+    required LocaleKeys contentKey,
     required VoidCallback onConfirm,
   }) {
     final theme = Theme.of(Get.context!);
@@ -150,11 +151,15 @@ mixin DialogButtonMixin on GetxController {
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          dialogButton(theme, title: 'cancel'.tr, onTap: () => Get.back()),
+          dialogButton(
+            theme,
+            title: LocaleKeys.cancel.tr,
+            onTap: () => Get.back(),
+          ),
           const SizedBox(width: 12),
           dialogButton(
             theme,
-            title: 'confirm'.tr,
+            title: LocaleKeys.confirm.tr,
             onTap: () {
               Get.back();
               onConfirm();

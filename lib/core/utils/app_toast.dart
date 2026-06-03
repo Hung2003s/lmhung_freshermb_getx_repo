@@ -29,7 +29,6 @@ class AppToast {
       forwardAnimationCurve: Curves.easeOutBack,
     );
   }
-
   /// Toast Báo lỗi (Màu Đỏ)
   static void showError({String title = 'Lỗi', required String message}) {
     _show(
@@ -40,7 +39,6 @@ class AppToast {
       icon: Icons.error_outline,
     );
   }
-
   /// Toast Thành công (Màu Xanh)
   static void showSuccess({String title = 'Thành công', String? message}) {
     _show(

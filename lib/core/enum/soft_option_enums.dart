@@ -1,3 +1,5 @@
+import '../localization/locale_keys.dart';
+
 enum SortOption {
   nameAsc, // Tên A -> Z
   nameDesc, // Tên Z -> A
@@ -6,20 +8,22 @@ enum SortOption {
   stockDesc, // Tồn kho Cao -> Thấp
   stockAsc; // Tồn kho Thấp -> Cao
 
-  String get title {
+  LocaleKeys get localeKey {
     switch (this) {
       case nameAsc:
-        return 'Tên: A -> Z';
+        return LocaleKeys.sortNameAsc;
       case nameDesc:
-        return 'Tên: Z -> A';
+        return LocaleKeys.sortNameDesc;
       case priceDesc:
-        return 'Giá: Cao -> Thấp';
+        return LocaleKeys.sortPriceDesc;
       case priceAsc:
-        return 'Giá: Thấp -> Cao';
+        return LocaleKeys.sortPriceAsc;
       case stockAsc:
-        return 'Số lượng: Thấp -> Cao';
+        return LocaleKeys.sortStockAsc;
       case stockDesc:
-        return 'Số lượng: Cao -> Thấp';
+        return LocaleKeys.sortStockDesc;
     }
   }
+
+  String get title => localeKey.tr;
 }

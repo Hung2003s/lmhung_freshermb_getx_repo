@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../gen/colors.gen.dart'; // Import file màu hệ thống của bạn
+import '../../gen/colors.gen.dart';
+import '../../localization/locale_keys.dart';
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String username;
@@ -22,9 +22,9 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
   String _getGreeting() {
     if (greetingText != null) return greetingText!;
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'greeting_morning'.tr;
-    if (hour < 18) return 'greeting_afternoon'.tr;
-    return 'greeting_evening'.tr;
+    if (hour < 12) return LocaleKeys.greetingMorning.tr;
+    if (hour < 18) return LocaleKeys.greetingAfternoon.tr;
+    return LocaleKeys.greetingEvening.tr;
   }
 
   @override

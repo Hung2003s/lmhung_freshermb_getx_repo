@@ -4,6 +4,7 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/draggabble_
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_widget.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/widget/category_card.dart';
@@ -20,8 +21,8 @@ class CategoryPage extends GetView<CategoryController> {
     return BaseView(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       buildAppBar: ProfileAppBar(
-        greetingText: 'manage'.tr,
-        username: 'category'.tr,
+        greetingText: LocaleKeys.manage.tr,
+        username: LocaleKeys.category.tr,
       ),
       buildBody: Stack(
         children: [_buildCategoryContent(), _buildFloatingAddButton()],
@@ -35,7 +36,7 @@ class CategoryPage extends GetView<CategoryController> {
       backgroundColor: Theme.of(Get.context!).colorScheme.surface,
       onRefresh: () => controller.fetchFirstPage(),
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, top:  12, right: 16),
+        padding: const EdgeInsets.only(left: 16, top: 12, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -54,7 +55,7 @@ class CategoryPage extends GetView<CategoryController> {
       children: [
         Expanded(
           child: CustomSearchField(
-            hintText: 'search_category'.tr,
+            hintText: LocaleKeys.searchCategory.tr,
             controller: controller.searchController,
             showSortButton: false,
           ),
@@ -84,8 +85,8 @@ class CategoryPage extends GetView<CategoryController> {
       if (displayList.isEmpty) {
         return EmptyStateWidget(
           icon: Icons.folder_open_outlined,
-          title: 'no_categories_found'.tr,
-          subtitle: 'try_adding_category'.tr,
+          title: LocaleKeys.noCategoriesFound.tr,
+          subtitle: LocaleKeys.tryAddingCategory.tr,
         );
       }
 
@@ -130,7 +131,7 @@ class CategoryPage extends GetView<CategoryController> {
       iconColor: ColorName.orange.withValues(alpha: 0.2),
       category: item,
       numberCount: 20,
-      categoryStatus: 'growing'.tr,
+      categoryStatus: LocaleKeys.growing.tr,
       onEdit: () => controller.showEditDialog(item),
       onDelete: () => controller.showDeleteDialog(item),
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/context_extensions.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import '../../../../core/gen/assets.gen.dart';
 import '../../../../core/gen/colors.gen.dart';
-
+import '../../../../core/localization/locale_keys.dart';
 
 class InfoCard extends StatelessWidget {
   final Widget icon;
@@ -83,7 +83,7 @@ class InfoCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('total_products'.tr, style: context.textTheme.titleSmall),
+        Text(LocaleKeys.totalProducts.tr, style: context.textTheme.titleSmall),
         const SizedBox(height: 2),
         Text('1200', style: context.textTheme.headlineSmall),
       ],
@@ -107,7 +107,7 @@ class InfoCard extends StatelessWidget {
           Assets.icons.growUp.svg(),
           const SizedBox(width: 2),
           Text(
-            'growing_percent'.tr,
+            LocaleKeys.growingPercent.tr,
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,

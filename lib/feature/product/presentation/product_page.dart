@@ -5,6 +5,7 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_wi
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/enum/soft_option_enums.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
@@ -57,7 +58,7 @@ class ProductPage extends GetView<ProductController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'products'.tr,
+          LocaleKeys.products.tr,
           style: TextStyle(
             color: theme.colorScheme.onSurface,
             fontSize: 32,
@@ -149,8 +150,8 @@ class ProductPage extends GetView<ProductController> {
           if (controller.listProduct.isEmpty && !controller.isLoading.value) {
             return EmptyStateWidget(
               icon: Icons.inventory_2_outlined,
-              title: 'no_products_found'.tr,
-              subtitle: 'try_adding_product'.tr,
+              title: LocaleKeys.noProductsFound.tr,
+              subtitle: LocaleKeys.tryAddingProduct.tr,
             );
           }
           return const SizedBox.shrink();
@@ -165,7 +166,7 @@ class ProductPage extends GetView<ProductController> {
         icon: Assets.icons.whiteFolder.svg(width: 16),
         iconColor: ColorName.blueLight,
         productEntity: item,
-        categoryStatus: 'in_stock'.tr,
+        categoryStatus: LocaleKeys.inStock.tr,
         onTap: () => controller.navigateToInfo(item),
         onDelete: () => controller.deleteProductAction(item),
       ),
@@ -227,7 +228,7 @@ class ProductPage extends GetView<ProductController> {
                   ),
                 ),
                 child: PopupMenuButton<SortOption>(
-                  tooltip: 'sort_filter'.tr,
+                  tooltip: LocaleKeys.sortFilter.tr,
                   color: theme.colorScheme.surface,
                   onSelected: (SortOption result) {
                     controller.currentSort.value = result;
@@ -372,7 +373,7 @@ class ProductPage extends GetView<ProductController> {
       children: [
         Obx(
           () => Text(
-            'showing_products'.trParams({
+            LocaleKeys.showingProducts.trParams({
               's': controller.listProduct.length.toString(),
             }),
             style: TextStyle(
@@ -387,7 +388,7 @@ class ProductPage extends GetView<ProductController> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Text(
-              'newest'.tr,
+              LocaleKeys.newest.tr,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lmhung_freshermb_getx_repo/core/constants/constants.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
 
@@ -130,8 +131,8 @@ class SettingController extends GetxController {
 
       if (!isRealCredentials) {
         AppToast.showError(
-          title: 'biometric_enable_failed'.tr,
-          message: 'biometric_enable_from_login'.tr,
+          title: LocaleKeys.biometricEnableFailed.tr,
+          message: LocaleKeys.biometricEnableFromLogin.tr,
         );
         return;
       }
@@ -146,16 +147,16 @@ class SettingController extends GetxController {
       if (status == AuthLocalStatus.changed) {
         // Trường hợp A: Phát hiện thay đổi → chặn
         AppToast.showError(
-          title: 'biometric_enable_failed'.tr,
-          message: 'biometric_changed_warning'.tr,
+          title: LocaleKeys.biometricEnableFailed.tr,
+          message: LocaleKeys.biometricChangedWarning.tr,
         );
         return;
       }
 
       if (status == AuthLocalStatus.invalid) {
         AppToast.showError(
-          title: 'biometric_enable_failed'.tr,
-          message: 'biometric_error'.tr,
+          title: LocaleKeys.biometricEnableFailed.tr,
+          message: LocaleKeys.biometricError.tr,
         );
         return;
       }
@@ -164,7 +165,7 @@ class SettingController extends GetxController {
 
       // ── Bước 3: Xác thực vân tay để bật ──
       final authenticated = await _biometricAuth.authenticate(
-        reason: 'biometric_save_reason'.tr,
+        reason: LocaleKeys.biometricSaveReason.tr,
       );
       if (!authenticated) {
         return; // User cancel hoặc lỗi, không cần thông báo
@@ -177,7 +178,7 @@ class SettingController extends GetxController {
       await _saveBiometricToken();
 
       isBiometricEnabled.value = true;
-      AppToast.showSuccess(title: 'biometric_enabled'.tr);
+      AppToast.showSuccess(title: LocaleKeys.biometricEnabled.tr);
     } finally {}
   }
 
@@ -195,7 +196,7 @@ class SettingController extends GetxController {
   Future<void> disableBiometric() async {
     await _storage.remove(Constants.biometricEnabledKey);
     isBiometricEnabled.value = false;
-    AppToast.showSuccess(title: 'biometric_disabled'.tr);
+    AppToast.showSuccess(title: LocaleKeys.biometricDisabled.tr);
   }
 
   /// Toggle biometric on/off
@@ -212,7 +213,10 @@ class SettingController extends GetxController {
       await Get.find<TokenManager>().clearToken();
       Get.offAllNamed(Routes.login);
     } catch (e) {
-      AppToast.showError(title: 'error_title'.tr, message: 'logout_failed'.tr);
+      AppToast.showError(
+        title: LocaleKeys.errorTitle.tr,
+        message: LocaleKeys.logoutFailed.tr,
+      );
     }
   }
 }

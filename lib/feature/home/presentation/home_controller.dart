@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 
 class HomeController extends GetxController {
@@ -15,7 +16,7 @@ class HomeController extends GetxController {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'category_name'.tr,
+            LocaleKeys.categoryName.tr,
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
@@ -26,10 +27,12 @@ class HomeController extends GetxController {
           TextField(
             controller: categoryController.addController,
             decoration: InputDecoration(
-              hintText: 'category_name'.tr,
+              hintText: LocaleKeys.categoryName.tr,
               filled: true,
               fillColor: theme.colorScheme.surface,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             onChanged: (value) {
               categoryController.addCategoryText.value = value;
@@ -37,7 +40,7 @@ class HomeController extends GetxController {
           ),
         ],
       ),
-      title: 'add_category'.tr,
+      title: LocaleKeys.addCategory.tr,
       footer: GestureDetector(
         onTap: () {
           Get.back();
@@ -46,7 +49,7 @@ class HomeController extends GetxController {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child: Text(
-            'save'.tr,
+            LocaleKeys.save.tr,
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 14,
@@ -57,5 +60,4 @@ class HomeController extends GetxController {
       ),
     );
   }
-
 }

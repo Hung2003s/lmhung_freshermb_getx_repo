@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_sort_card.dart';
@@ -74,7 +75,7 @@ class _CategorySheetHeader extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              'select_category'.tr,
+              LocaleKeys.selectCategory.tr,
               style: TextStyle(
                 color: theme.colorScheme.onSurface,
                 fontSize: 18,
@@ -121,7 +122,7 @@ class _CategorySheetList extends StatelessWidget {
             if (index == 0) {
               return RepaintBoundary(
                 child: CategorySortCard(
-                  title: 'all'.tr,
+                  title: LocaleKeys.all.tr,
                   isSelected: productController.currentFilterIndex.value == 0,
                   onTap: () {
                     productController.currentFilterIndex.value = 0;

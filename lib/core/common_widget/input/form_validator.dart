@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import '../../localization/locale_keys.dart';
 
 /// Reusable form validation utilities for common input fields.
 /// These validators are designed to be used at the base widget layer.
@@ -10,13 +10,13 @@ class FormValidator {
   static String? validateUsername(String? value) {
     final text = value?.trim() ?? '';
     if (text.isEmpty) {
-      return 'username_required'.tr;
+      return LocaleKeys.usernameRequired.tr;
     }
     if (text.length < 3) {
-      return 'username_min_length'.tr;
+      return LocaleKeys.usernameMinLength.tr;
     }
     if (text.length > 50) {
-      return 'username_max_length'.tr;
+      return LocaleKeys.usernameMaxLength.tr;
     }
     return null;
   }
@@ -26,25 +26,14 @@ class FormValidator {
   static String? validatePassword(String? value) {
     final text = value?.trim() ?? '';
     if (text.isEmpty) {
-      return 'password_required'.tr;
+      return LocaleKeys.passwordRequired.tr;
     }
     if (text.length < 6) {
-      return 'password_min_length'.tr;
+      return LocaleKeys.passwordMinLength.tr;
     }
     if (text.length > 100) {
-      return 'password_max_length'.tr;
+      return LocaleKeys.passwordMaxLength.tr;
     }
-    // Check for at least 1 uppercase, 1 lowercase, 1 digit
-    // (optional strictness – uncomment if needed)
-    // if (!RegExp(r'(?=.*[A-Z])').hasMatch(text)) {
-    //   return 'password_uppercase'.tr;
-    // }
-    // if (!RegExp(r'(?=.*[a-z])').hasMatch(text)) {
-    //   return 'password_lowercase'.tr;
-    // }
-    // if (!RegExp(r'(?=.*\d)').hasMatch(text)) {
-    //   return 'password_digit'.tr;
-    // }
     return null;
   }
 }

@@ -52,10 +52,10 @@ flutter_gen:
       - assets/colors/colors.xml
 
 flutter:
-    uses-material-design: true
-    assets:
-      - assets/images/
-      - assets/icons/
-      - assets/colors/
-      - .env
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/colors/
+    - .env
 
