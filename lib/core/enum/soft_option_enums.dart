@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import '../localization/locale_keys.dart';
 
 enum SortOption {
