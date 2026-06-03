@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 
 import '../../../../core/gen/colors.gen.dart';
@@ -50,7 +51,7 @@ class ProductCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "delete".tr,
+                  LocaleKeys.delete.tr,
                   style: TextStyle(
                     color: theme.colorScheme.error,
                     fontSize: 16,
@@ -103,7 +104,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${"sku_code".tr}: ${productEntity.code}',
+                      '${LocaleKeys.skuCode.tr}: ${productEntity.code}',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -118,12 +119,12 @@ class ProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         statusCard(
-                          title: "in_stock".tr,
+                          title: LocaleKeys.inStock.tr,
                           color: ColorName.greenLight,
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'products_count'.trParams({
+                          LocaleKeys.productsCount.trParams({
                             's': productEntity.stock.toString(),
                           }),
                           style: TextStyle(
@@ -172,7 +173,7 @@ class ProductCard extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          'in_stock'.tr,
+          LocaleKeys.inStock.tr,
           style: TextStyle(
             color: color,
             fontSize: 12,

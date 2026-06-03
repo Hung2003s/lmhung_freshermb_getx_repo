@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:barcode_scanner_plugin/barcode_scanner_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/app_toast.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
@@ -56,10 +57,15 @@ class BarcodeScanController extends GetxController {
       if (!alreadySelected) {
         selectedProducts.add(existingProduct);
         AppToast.showSuccess(
-          title: 'added_product'.trParams({'name': existingProduct.name}),
+          title: LocaleKeys.addedProduct.trParams({
+            'name': existingProduct.name,
+          }),
         );
       } else {
-        AppToast.showInfo(title: 'product_already_selected'.tr, message: '');
+        AppToast.showInfo(
+          title: LocaleKeys.productAlreadySelected.tr,
+          message: '',
+        );
       }
     } else {
       // Nếu là mã vạch mới -> chuyển sang màn thêm sản phẩm với mã vạch đã điền sẵn
@@ -93,7 +99,10 @@ class BarcodeScanController extends GetxController {
       }
     } catch (e) {
       debugPrint('Camera scan error: $e');
-      AppToast.showError(title: 'scan_error'.tr, message: e.toString());
+      AppToast.showError(
+        title: LocaleKeys.scanError.tr,
+        message: e.toString(),
+      );
     } finally {
       isScanning.value = false;
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/custom_app_bar.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import '../../../../core/common_widget/base_view/base_view.dart';
 import '../../../../core/common_widget/button/selected_widget.dart';
 import '../../../../core/gen/assets.gen.dart';
@@ -74,9 +75,15 @@ class LoginPage extends GetView<LoginController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text('welcome_back'.tr, style: context.textTheme.headlineSmall),
+        Text(
+          LocaleKeys.welcomeBack.tr,
+          style: context.textTheme.headlineSmall,
+        ),
         SizedBox(height: 8 * scale),
-        Text('login_description'.tr, style: context.textTheme.titleSmall),
+        Text(
+          LocaleKeys.loginDescription.tr,
+          style: context.textTheme.titleSmall,
+        ),
         SizedBox(height: 24 * scale),
         AutofillGroup(
           child: Column(
@@ -89,8 +96,8 @@ class LoginPage extends GetView<LoginController> {
                   onChanged: (value) {
                     controller.userNameText.value = value;
                   },
-                  hint: 'username'.tr,
-                  title: 'username'.tr,
+                  hint: LocaleKeys.username.tr,
+                  title: LocaleKeys.username.tr,
                   errorText: controller.displayedUserNameError,
                   autoFillHint: const [AutofillHints.username],
                 ),
@@ -104,8 +111,8 @@ class LoginPage extends GetView<LoginController> {
                   onChanged: (value) {
                     controller.passwordText.value = value;
                   },
-                  hint: 'password'.tr,
-                  title: 'password'.tr,
+                  hint: LocaleKeys.password.tr,
+                  title: LocaleKeys.password.tr,
                   errorText: controller.displayedPasswordError,
                   textInputAction: TextInputAction.done,
                   autoFillHint: const [AutofillHints.password],
@@ -123,7 +130,7 @@ class LoginPage extends GetView<LoginController> {
           child: SelectedWidget(
             onTap: () {},
             child: Text(
-              'forgot_password'.tr,
+              LocaleKeys.forgotPassword.tr,
               style: TextStyle(
                 fontSize: 14,
                 color: ColorName.orange,
@@ -163,8 +170,8 @@ class LoginPage extends GetView<LoginController> {
                 child: !controller.isLoading.value
                     ? Text(
                         controller.isLocked.value
-                            ? 'login_locked_button'.tr
-                            : 'login'.tr,
+                            ? LocaleKeys.loginLockedButton.tr
+                            : LocaleKeys.login.tr,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -207,9 +214,9 @@ class LoginPage extends GetView<LoginController> {
               text: TextSpan(
                 style: context.textTheme.labelLarge,
                 children: [
-                  TextSpan(text: "no_account".tr),
+                  TextSpan(text: LocaleKeys.noAccount.tr),
                   TextSpan(
-                    text: "register".tr,
+                    text: LocaleKeys.register.tr,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -241,7 +248,7 @@ class LoginPage extends GetView<LoginController> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Text(
-                            'or_login_with'.tr,
+                            LocaleKeys.orLoginWith.tr,
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 14,
@@ -269,12 +276,12 @@ class LoginPage extends GetView<LoginController> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FeatureButton(
-                title: 'help'.tr,
+                title: LocaleKeys.help.tr,
                 icons: Assets.icons.headphone.svg(width: 20),
               ),
               SizedBox(width: screenWidth * 0.04),
               FeatureButton(
-                title: 'group'.tr,
+                title: LocaleKeys.group.tr,
                 icons: Assets.icons.icon.svg(width: 20),
               ),
             ],
@@ -292,9 +299,9 @@ class LoginPage extends GetView<LoginController> {
                 decoration: TextDecoration.underline,
               ),
               children: [
-                TextSpan(text: "need_help".tr),
+                TextSpan(text: LocaleKeys.needHelp.tr),
                 TextSpan(
-                  text: "contact_support".tr,
+                  text: LocaleKeys.contactSupport.tr,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -334,7 +341,7 @@ class LoginPage extends GetView<LoginController> {
             const Icon(Icons.fingerprint, size: 24, color: ColorName.orange),
             const SizedBox(width: 12),
             Text(
-              'biometric_login'.trParams({
+              LocaleKeys.biometricLogin.trParams({
                 's': controller.biometricTypeName.value,
               }),
               style: const TextStyle(

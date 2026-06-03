@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/setting/presentation/setting_controller.dart';
 
 import '../../../core/common_widget/button/selected_widget.dart';
@@ -18,7 +19,7 @@ class SettingPage extends GetView<SettingController> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'settings_title'.tr,
+          LocaleKeys.settingsTitle.tr,
           style: TextStyle(
             color: theme.colorScheme.onSurface,
             fontSize: 28,
@@ -35,11 +36,11 @@ class SettingPage extends GetView<SettingController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionTitle('theme'.tr, context),
+              _buildSectionTitle(LocaleKeys.theme.tr, context),
               const SizedBox(height: 8),
               _buildThemeSelector(context),
               const SizedBox(height: 24),
-              _buildSectionTitle('language'.tr, context),
+              _buildSectionTitle(LocaleKeys.language.tr, context),
               const SizedBox(height: 8),
               _buildLanguageSelector(context),
               const SizedBox(height: 24),
@@ -48,7 +49,7 @@ class SettingPage extends GetView<SettingController> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionTitle('security'.tr, context),
+                          _buildSectionTitle(LocaleKeys.security.tr, context),
                           const SizedBox(height: 8),
                           _buildBiometricToggle(context),
                           const SizedBox(height: 24),
@@ -86,7 +87,7 @@ class SettingPage extends GetView<SettingController> {
           const Icon(Icons.logout_rounded, size: 20),
           const SizedBox(width: 8),
           Text(
-            'logout'.tr,
+            LocaleKeys.logout.tr,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -110,7 +111,7 @@ class SettingPage extends GetView<SettingController> {
             Icon(Icons.logout_rounded, size: 48, color: ColorName.error),
             const SizedBox(height: 16),
             Text(
-              'logout_confirm'.tr,
+              LocaleKeys.logoutConfirm.tr,
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -124,7 +125,7 @@ class SettingPage extends GetView<SettingController> {
       cancel: TextButton(
         onPressed: () => Get.back(),
         child: Text(
-          'cancel'.tr,
+          LocaleKeys.cancel.tr,
           style: TextStyle(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             fontSize: 16,
@@ -137,7 +138,7 @@ class SettingPage extends GetView<SettingController> {
           controller.logout();
         },
         child: Text(
-          'logout'.tr,
+          LocaleKeys.logout.tr,
           style: TextStyle(
             color: ColorName.error,
             fontSize: 16,
@@ -176,8 +177,8 @@ class SettingPage extends GetView<SettingController> {
             _buildThemeOption(
               context: context,
               icon: Icons.brightness_auto_rounded,
-              title: 'system_mode'.tr,
-              subtitle: 'system_mode_desc'.tr,
+              title: LocaleKeys.systemMode.tr,
+              subtitle: LocaleKeys.systemModeDesc.tr,
               isSelected: controller.isSystemMode,
               onTap: () => controller.setThemeMode(ThemeMode.system),
             ),
@@ -185,8 +186,8 @@ class SettingPage extends GetView<SettingController> {
             _buildThemeOption(
               context: context,
               icon: Icons.light_mode_rounded,
-              title: 'light_mode'.tr,
-              subtitle: 'light_mode_desc'.tr,
+              title: LocaleKeys.lightMode.tr,
+              subtitle: LocaleKeys.lightModeDesc.tr,
               isSelected: controller.isLightMode,
               onTap: () => controller.setThemeMode(ThemeMode.light),
             ),
@@ -194,8 +195,8 @@ class SettingPage extends GetView<SettingController> {
             _buildThemeOption(
               context: context,
               icon: Icons.dark_mode_rounded,
-              title: 'dark_mode'.tr,
-              subtitle: 'dark_mode_desc'.tr,
+              title: LocaleKeys.darkMode.tr,
+              subtitle: LocaleKeys.darkModeDesc.tr,
               isSelected: controller.isDarkMode,
               onTap: () => controller.setThemeMode(ThemeMode.dark),
             ),
@@ -298,7 +299,7 @@ class SettingPage extends GetView<SettingController> {
             _buildLanguageOption(
               context: context,
               flag: '🇻🇳',
-              title: 'vietnamese'.tr,
+              title: LocaleKeys.vietnamese.tr,
               subtitle: 'Vietnamese',
               isSelected: controller.currentLanguageCode == 'vi',
               onTap: () => controller.setLanguage('vi'),
@@ -307,7 +308,7 @@ class SettingPage extends GetView<SettingController> {
             _buildLanguageOption(
               context: context,
               flag: '🇺🇸',
-              title: 'english'.tr,
+              title: LocaleKeys.english.tr,
               subtitle: 'Tiếng Anh',
               isSelected: controller.currentLanguageCode == 'en',
               onTap: () => controller.setLanguage('en'),
@@ -428,7 +429,7 @@ class SettingPage extends GetView<SettingController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'biometric'.tr,
+                      LocaleKeys.biometric.tr,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -438,8 +439,8 @@ class SettingPage extends GetView<SettingController> {
                     const SizedBox(height: 2),
                     Text(
                       controller.isBiometricEnabled.value
-                          ? 'biometric_enabled_desc'.tr
-                          : 'biometric_disabled_desc'.tr,
+                          ? LocaleKeys.biometricEnabledDesc.tr
+                          : LocaleKeys.biometricDisabledDesc.tr,
                       style: TextStyle(
                         fontSize: 12,
                         color: theme.colorScheme.onSurface.withValues(

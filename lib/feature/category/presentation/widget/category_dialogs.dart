@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 
@@ -11,12 +12,12 @@ void showAddCategoryDialog(CategoryController controller) {
     content: _CategoryNameInput(
       controller: controller.addController,
       onChanged: (value) => controller.addCategoryText.value = value,
-      hintKey: 'category_name',
+      hintKey: LocaleKeys.categoryName,
     ),
-    title: 'add_category'.tr,
+    title: LocaleKeys.addCategory.tr,
     footer: _DialogButton(
       theme: theme,
-      title: 'save'.tr,
+      title: LocaleKeys.save.tr,
       verticalPadding: 4,
       onTap: () {
         Get.back();
@@ -36,12 +37,12 @@ void showEditCategoryDialog(
     content: _CategoryNameInput(
       controller: controller.updateController,
       onChanged: (value) => controller.updateCategoryText.value = value,
-      hintKey: 'category_name',
+      hintKey: LocaleKeys.categoryName,
     ),
-    title: 'update_category'.tr,
+    title: LocaleKeys.updateCategory.tr,
     footer: _DialogButton(
       theme: theme,
-      title: 'save'.tr,
+      title: LocaleKeys.save.tr,
       verticalPadding: 4,
       onTap: () {
         Get.back();
@@ -55,7 +56,7 @@ void showEditCategoryDialog(
 class _CategoryNameInput extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
-  final String hintKey;
+  final LocaleKeys hintKey;
 
   const _CategoryNameInput({
     required this.controller,
@@ -70,7 +71,7 @@ class _CategoryNameInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'category_name'.tr,
+          LocaleKeys.categoryName.tr,
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,

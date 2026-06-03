@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/navigation_bar/custom_app_bar.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/auth/presentation/register/register_controller.dart';
 import '../../../../core/common_widget/base_view/base_view.dart';
 import '../../../../core/common_widget/button/selected_widget.dart';
@@ -54,9 +55,12 @@ class RegisterPage extends GetView<RegisterController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Text('welcome_back'.tr, style: context.textTheme.headlineSmall),
+        Text(
+          LocaleKeys.welcomeBack.tr,
+          style: context.textTheme.headlineSmall,
+        ),
         const SizedBox(height: 8),
-        Text('register_title'.tr, style: context.textTheme.titleSmall),
+        Text(LocaleKeys.registerTitle.tr, style: context.textTheme.titleSmall),
         const SizedBox(height: 24),
         Obx(
           () => InputField(
@@ -66,8 +70,8 @@ class RegisterPage extends GetView<RegisterController> {
             onChanged: (value) {
               controller.userNameText.value = value;
             },
-            hint: 'username'.tr,
-            title: 'username'.tr,
+            hint: LocaleKeys.username.tr,
+            title: LocaleKeys.username.tr,
             errorText: controller.displayedUserNameError,
           ),
         ),
@@ -80,8 +84,8 @@ class RegisterPage extends GetView<RegisterController> {
             onChanged: (value) {
               controller.passwordText.value = value;
             },
-            hint: 'password'.tr,
-            title: 'password'.tr,
+            hint: LocaleKeys.password.tr,
+            title: LocaleKeys.password.tr,
             errorText: controller.displayedPasswordError,
             textInputAction: TextInputAction.done,
             onSubmitted: (value) {
@@ -107,7 +111,7 @@ class RegisterPage extends GetView<RegisterController> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Center(
               child: Text(
-                'register'.tr,
+                LocaleKeys.register.tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -129,7 +133,7 @@ class RegisterPage extends GetView<RegisterController> {
             ),
             const SizedBox(width: 16),
             Text(
-              'or_register_with'.tr,
+              LocaleKeys.orRegisterWith.tr,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
@@ -151,13 +155,13 @@ class RegisterPage extends GetView<RegisterController> {
           children: [
             FeatureButton(
               onTap: () {},
-              title: 'help'.tr,
+              title: LocaleKeys.help.tr,
               icons: Assets.icons.headphone.svg(width: 20),
             ),
             const SizedBox(width: 16),
             FeatureButton(
               onTap: () {},
-              title: 'group'.tr,
+              title: LocaleKeys.group.tr,
               icons: Assets.icons.icon.svg(width: 20),
             ),
           ],
@@ -174,9 +178,9 @@ class RegisterPage extends GetView<RegisterController> {
                 decoration: TextDecoration.underline,
               ),
               children: [
-                TextSpan(text: "need_help".tr),
+                TextSpan(text: LocaleKeys.needHelp.tr),
                 TextSpan(
-                  text: "contact_support".tr,
+                  text: LocaleKeys.contactSupport.tr,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,

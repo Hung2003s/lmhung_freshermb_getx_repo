@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
@@ -60,7 +61,7 @@ class ProductInfoController extends GetxController {
     final price = double.tryParse(priceText);
     final stock = int.tryParse(stockText);
 
-    nameError.value = name.isEmpty ? 'name_required'.tr : null;
+    nameError.value = name.isEmpty ? LocaleKeys.nameRequired.tr : null;
     skuError.value = _validateSku(sku);
     priceError.value = _validatePrice(priceText, price);
     stockError.value = _validateStock(stockText, stock);
@@ -75,7 +76,7 @@ class ProductInfoController extends GetxController {
 
   String? _validateSku(String sku) {
     if (sku.isEmpty) {
-      return 'code_required'.tr;
+      return LocaleKeys.codeRequired.tr;
     }
 
     if (!Get.isRegistered<ProductController>()) {
@@ -89,18 +90,18 @@ class ProductInfoController extends GetxController {
           product.id != initialProduct?.id,
     );
 
-    return isDuplicated ? 'code_exists'.tr : null;
+    return isDuplicated ? LocaleKeys.codeExists.tr : null;
   }
 
   String? _validatePrice(String priceText, double? price) {
     if (priceText.isEmpty) {
-      return 'price_required'.tr;
+      return LocaleKeys.priceRequired.tr;
     }
     if (price == null) {
-      return 'price_invalid'.tr;
+      return LocaleKeys.priceInvalid.tr;
     }
     if (price <= 0) {
-      return 'price_positive'.tr;
+      return LocaleKeys.pricePositive.tr;
     }
     return null;
   }
@@ -110,10 +111,10 @@ class ProductInfoController extends GetxController {
       return null;
     }
     if (stock == null) {
-      return 'stock_invalid'.tr;
+      return LocaleKeys.stockInvalid.tr;
     }
     if (stock < 0) {
-      return 'stock_non_negative'.tr;
+      return LocaleKeys.stockNonNegative.tr;
     }
     return null;
   }
@@ -121,7 +122,7 @@ class ProductInfoController extends GetxController {
   String? _validateCategory() {
     final categoryId = selectedCategoryId.value;
     if (categoryId == null) {
-      return 'category_required'.tr;
+      return LocaleKeys.categoryRequired.tr;
     }
 
     if (!Get.isRegistered<CategoryController>()) {
@@ -132,7 +133,7 @@ class ProductInfoController extends GetxController {
       (category) => category.id == categoryId,
     );
 
-    return isCategoryExists ? null : 'category_invalid'.tr;
+    return isCategoryExists ? null : LocaleKeys.categoryInvalid.tr;
   }
 
   void clearValidationErrors() {
@@ -241,10 +242,13 @@ class ProductInfoController extends GetxController {
       );
       // Pop trước rồi mới hiện snackbar để snackbar không bị nuốt theo route
       Get.back(result: productId);
-      AppToast.showSuccess(title: 'add_success'.tr);
+      AppToast.showSuccess(title: LocaleKeys.addSuccess.tr);
     } catch (e) {
       errorMessage.value = e.toString();
-      AppToast.showError(title: 'add_failed'.tr, message: errorMessage.value);
+      AppToast.showError(
+        title: LocaleKeys.addFailed.tr,
+        message: errorMessage.value,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -263,16 +267,16 @@ class ProductInfoController extends GetxController {
         (data) => data,
       );
       if (!success) {
-        AppToast.showError(title: 'update_failed'.tr, message: '');
+        AppToast.showError(title: LocaleKeys.updateFailed.tr, message: '');
         return;
       }
 
       Get.back(result: true);
-      AppToast.showSuccess(title: 'update_success'.tr);
+      AppToast.showSuccess(title: LocaleKeys.updateSuccess.tr);
     } catch (e) {
       errorMessage.value = e.toString();
       AppToast.showError(
-        title: 'update_failed'.tr,
+        title: LocaleKeys.updateFailed.tr,
         message: errorMessage.value,
       );
     } finally {

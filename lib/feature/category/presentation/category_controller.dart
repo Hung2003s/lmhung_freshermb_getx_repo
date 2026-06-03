@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lmhung_freshermb_getx_repo/core/common_widget/dialog/dialog_x.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/string_utils.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/usecases/get_categories_use_case.dart';
@@ -156,13 +156,16 @@ class CategoryController extends GetxController
       final name = addCategoryText.value.trim();
       final result = await _addCategoryUseCase(AddCategoryParams(name: name));
       result.fold((failure) => throw Exception(failure.message), (id) => id);
-      AppToast.showSuccess(title: 'add_success'.tr);
+      AppToast.showSuccess(title: LocaleKeys.addSuccess.tr);
       addCategoryText.value = '';
       addController.clear();
       fetchFirstPage();
     } catch (e) {
       errorMessage.value = e.toString();
-      AppToast.showError(title: 'add_failed'.tr, message: errorMessage.value);
+      AppToast.showError(
+        title: LocaleKeys.addFailed.tr,
+        message: errorMessage.value,
+      );
     }
   }
 
@@ -187,11 +190,11 @@ class CategoryController extends GetxController
         (data) => data,
       );
       if (success) {
-        AppToast.showSuccess(title: 'update_success'.tr);
+        AppToast.showSuccess(title: LocaleKeys.updateSuccess.tr);
       } else {
         listCategory[index] = originalCategory;
         listCategory.refresh();
-        AppToast.showError(title: 'update_failed'.tr, message: '');
+        AppToast.showError(title: LocaleKeys.updateFailed.tr, message: '');
       }
       updateCategoryText.value = '';
       updateController.clear();
@@ -202,7 +205,7 @@ class CategoryController extends GetxController
       }
       errorMessage.value = e.toString();
       AppToast.showError(
-        title: 'update_failed'.tr,
+        title: LocaleKeys.updateFailed.tr,
         message: errorMessage.value,
       );
     }
@@ -213,7 +216,7 @@ class CategoryController extends GetxController
 
   void showDeleteDialog(CategoryEntity item) {
     showDeleteConfirmDialog(
-      contentKey: 'delete_category_confirm',
+      contentKey: LocaleKeys.deleteCategoryConfirm,
       onConfirm: () => deleteCategory(item.id),
     );
   }

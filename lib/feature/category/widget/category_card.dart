@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
+import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 
 import '../../../core/gen/assets.gen.dart';
@@ -54,7 +55,7 @@ class CategoryCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "edit".tr,
+                  LocaleKeys.edit.tr,
                   style: TextStyle(
                     color: theme.colorScheme.primary,
                     fontSize: 16,
@@ -83,7 +84,7 @@ class CategoryCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "delete".tr,
+                  LocaleKeys.delete.tr,
                   style: TextStyle(
                     color: theme.colorScheme.error,
                     fontSize: 16,
@@ -138,7 +139,7 @@ class CategoryCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          '${numberCount.toString()} ${'products'.tr}',
+                          '${numberCount.toString()} ${LocaleKeys.products.tr}',
                           style: TextStyle(
                             color: theme.colorScheme.onSurface.withValues(
                               alpha: 0.6,
