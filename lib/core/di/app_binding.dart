@@ -7,14 +7,25 @@ import '../storage/secure_storage/token/token_manager.dart';
 import '../storage/secure_storage_service.dart';
 
 /// Nơi đăng ký các service được sử dụng trong suốt quá trình chạy ứng dụng
+///
+/// Chiến lược:
+/// - Eager (permanent): GetStorage — nhẹ, cần từ splash
+/// - Lazy (lazyPut):   DioClient, SecureStorageService, TokenManager — không cần ngay lúc startup
+/// - Lazy (lazyPut):   SettingController — chỉ dùng khi mở settings page
 
 class AppBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<DioClient>(DioClient(), permanent: true);
-    Get.put<SecureStorageService>(SecureStorageService(), permanent: true);
+    // Eager: GetStorage rất nhẹ (< 1ms init) và cần ở splash screen
     Get.put<GetStorage>(GetStorage(), permanent: true);
-    Get.put<TokenManager>(TokenManager(), permanent: true);
-    Get.put<SettingController>(SettingController(), permanent: true);
+
+    // Lazy: Các service chỉ dùng sau splash
+    Get.lazyPut<DioClient>(() => DioClient(), fenix: true);
+    Get.lazyPut<SecureStorageService>(
+      () => SecureStorageService(),
+      fenix: true,
+    );
+    Get.lazyPut<TokenManager>(() => TokenManager(), fenix: true);
+    Get.lazyPut<SettingController>(() => SettingController(), fenix: true);
   }
 }
