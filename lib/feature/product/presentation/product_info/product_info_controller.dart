@@ -18,8 +18,8 @@ class ProductInfoController extends GetxController {
 
   ProductInfoController(this._addProductUseCase, this._updateProductUseCase);
 
-  // Nhận thực thể sản phẩm truyền sang (nếu có) từ arguments của GetX
-  final ProductEntity? initialProduct = Get.arguments as ProductEntity?;
+  // Nhận thực thể sản phẩm truyền sang (nếu có)
+  ProductEntity? initialProduct;
 
   // Quản lý trạng thái hiện tại của trang
   final Rx<ProductPageMode> pageMode = ProductPageMode.create.obs;
@@ -148,10 +148,11 @@ class ProductInfoController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _checkPageModeAndFillData();
+    checkPageModeAndFillData();
   }
 
-  void _checkPageModeAndFillData() {
+  /// Khởi tạo dữ liệu từ [initialProduct]. Gọi sau khi gán [initialProduct].
+  void checkPageModeAndFillData() {
     if (initialProduct != null) {
       // Kiểm tra nếu là product giả được tạo để quét mã vạch (id = 0, name rỗng)
       // thì chuyển sang chế độ tạo mới với code đã được điền sẵn
@@ -183,7 +184,7 @@ class ProductInfoController extends GetxController {
   }
 
   void cancelEdit() {
-    _checkPageModeAndFillData();
+    checkPageModeAndFillData();
     clearValidationErrors();
   }
 

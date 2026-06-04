@@ -11,7 +11,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/domain/usecases/get_p
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/usecases/delete_product_use_case.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/category_bottom_sheet.dart';
 
-import '../../../core/navigation/routes.dart';
+import 'widget/product_info_bottom_sheet.dart';
 
 class ProductController extends GetxController
     with
@@ -168,8 +168,9 @@ class ProductController extends GetxController
     );
   }
 
+  /// Mở bottom sheet thêm/sửa/xem chi tiết sản phẩm
   Future<void> navigateToInfo([ProductEntity? item]) async {
-    final result = await Get.toNamed(Routes.productsInfo, arguments: item);
+    final result = await showProductInfoBottomSheet(initialProduct: item);
     if (result != null) fetchFirstPage();
   }
 

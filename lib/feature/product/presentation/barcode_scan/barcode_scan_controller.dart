@@ -8,7 +8,7 @@ import 'package:lmhung_freshermb_getx_repo/core/utils/app_toast.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';
 
-import '../../../../core/navigation/routes.dart';
+import '../widget/product_info_bottom_sheet.dart';
 
 class BarcodeScanController extends GetxController {
   final BarcodeScannerPlugin _scannerPlugin = BarcodeScannerPlugin();
@@ -68,10 +68,9 @@ class BarcodeScanController extends GetxController {
         );
       }
     } else {
-      // Nếu là mã vạch mới -> chuyển sang màn thêm sản phẩm với mã vạch đã điền sẵn
-      final result = await Get.toNamed(
-        Routes.productsInfo,
-        arguments: ProductEntity(
+      // Nếu là mã vạch mới -> mở bottom sheet thêm sản phẩm với mã vạch đã điền sẵn
+      final result = await showProductInfoBottomSheet(
+        initialProduct: ProductEntity(
           id: 0,
           name: '',
           code: barcode,

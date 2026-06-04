@@ -8,7 +8,7 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/widget/p
 
 import '../../../../core/gen/assets.gen.dart';
 import '../../../../core/gen/colors.gen.dart';
-import '../../../../core/navigation/routes.dart';
+import '../widget/product_info_bottom_sheet.dart';
 
 class BarcodeScanPage extends GetView<BarcodeScanController> {
   const BarcodeScanPage({super.key});
@@ -229,6 +229,6 @@ class BarcodeScanPage extends GetView<BarcodeScanController> {
   }
 
   void _onProductTap(ProductEntity item) {
-    Get.toNamed(Routes.productsInfo, arguments: item);
+    showProductInfoBottomSheet(initialProduct: item);
   }
 }
