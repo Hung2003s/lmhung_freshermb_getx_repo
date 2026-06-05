@@ -34,7 +34,7 @@ class CategoryPage extends GetView<CategoryController> {
     return RefreshIndicator(
       color: ColorName.orange,
       backgroundColor: Theme.of(Get.context!).colorScheme.surface,
-      onRefresh: () => controller.fetchFirstPage(),
+      onRefresh: () => controller.forceRefresh(),
       child: Padding(
         padding: const EdgeInsets.only(left: 16, top: 12, right: 16),
         child: Column(

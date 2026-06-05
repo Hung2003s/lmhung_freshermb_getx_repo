@@ -7,11 +7,16 @@ import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/biometric_auth_service.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/biometric/did_change_authlocal_service.dart';
 
+import 'package:lmhung_freshermb_getx_repo/feature/auth/domain/usecases/logout_use_case.dart';
+
 import '../../../core/navigation/routes.dart';
-import '../../../core/storage/secure_storage/token/token_manager.dart';
 import '../../../core/utils/app_toast.dart';
 
 class SettingController extends GetxController {
+  final LogoutUseCase _logoutUseCase;
+
+  SettingController(this._logoutUseCase);
+
   final GetStorage _storage = Get.find<GetStorage>();
   final BiometricAuthService _biometricAuth = BiometricAuthService();
   final DidChangeAuthLocalService _didChangeAuthLocal =
@@ -210,7 +215,7 @@ class SettingController extends GetxController {
 
   Future<void> logout() async {
     try {
-      await Get.find<TokenManager>().clearToken();
+      await _logoutUseCase();
       Get.offAllNamed(Routes.login);
     } catch (e) {
       AppToast.showError(

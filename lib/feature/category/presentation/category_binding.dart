@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/cache/cache_manager.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/datasources/remote/category_remote_data.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/datasources/remote/category_remote_data_impl.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/data/repositories/category_repository_impl.dart';
@@ -18,10 +19,11 @@ class CategoryBinding extends Bindings {
       () => CategoryRemoteDataSourceImpl(Get.find()),
     );
 
-    // 2. Inject Repository
+    // 2. Inject Repository — CacheManager lấy từ AppBinding (permanent singleton)
     Get.lazyPut<CategoriesRepository>(
       () => CategoryRepositoryImpl(
         remoteDataSource: Get.find<CategoryRemoteDataSource>(),
+        cacheManager: Get.find<CacheManager>(),
       ),
     );
 
