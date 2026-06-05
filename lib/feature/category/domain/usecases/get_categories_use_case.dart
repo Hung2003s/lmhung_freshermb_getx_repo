@@ -12,7 +12,12 @@ class GetCategoriesUseCase {
   Future<Either<Failure, List<CategoryEntity>>> call({
     int page = 1,
     int limit = 20,
+    bool forceRefresh = false,
   }) async {
-    return repository.getCategories(page: page, limit: limit);
+    return repository.getCategories(
+      page: page,
+      limit: limit,
+      forceRefresh: forceRefresh,
+    );
   }
 }

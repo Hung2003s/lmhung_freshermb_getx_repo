@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
     return ThemeMode.system;
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

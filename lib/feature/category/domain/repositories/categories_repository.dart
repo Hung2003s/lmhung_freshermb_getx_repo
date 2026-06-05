@@ -9,6 +9,7 @@ abstract class CategoriesRepository {
   Future<Either<Failure, List<CategoryEntity>>> getCategories({
     int page = 1,
     int limit = 20,
+    bool forceRefresh = false,
   });
   Future<Either<Failure, int>> addCategories(AddCategoryParams params);
   Future<Either<Failure, bool>> updateCategories(

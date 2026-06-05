@@ -1,18 +1,18 @@
+import 'package:lmhung_freshermb_getx_repo/core/cache/cache_manager.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/domain/repositories/categories_repository.dart';
 
 class LogoutUseCase {
   final TokenManager _tokenManager;
-  final CategoriesRepository _categoriesRepository;
+  final CacheManager _cacheManager;
 
   LogoutUseCase({
     required TokenManager tokenManager,
-    required CategoriesRepository categoriesRepository,
+    required CacheManager cacheManager,
   })  : _tokenManager = tokenManager,
-        _categoriesRepository = categoriesRepository;
+        _cacheManager = cacheManager;
 
   Future<void> call() async {
     await _tokenManager.clearToken();
-    _categoriesRepository.clearCache();
+    _cacheManager.invalidateAll();
   }
 }

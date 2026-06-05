@@ -72,8 +72,13 @@ class CategoryController extends GetxController
     super.onClose();
   }
 
+  /// Pull-to-refresh: bỏ qua cache và lấy dữ liệu mới từ server.
+  Future<void> forceRefresh() => _fetchPage(forceRefresh: true);
+
   @override
-  Future<void> fetchFirstPage() async {
+  Future<void> fetchFirstPage() => _fetchPage();
+
+  Future<void> _fetchPage({bool forceRefresh = false}) async {
     try {
       isLoading.value = true;
       page.value = 1;
@@ -81,6 +86,7 @@ class CategoryController extends GetxController
       final result = await _getCategoriesUseCase(
         page: page.value,
         limit: limit.value,
+        forceRefresh: forceRefresh,
       );
       final categories = result.fold(
         (failure) => throw Exception(failure.message),

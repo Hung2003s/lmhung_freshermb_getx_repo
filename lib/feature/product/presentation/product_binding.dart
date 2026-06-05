@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_binding.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/data/datasources/remote/product_remote_data_source.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/data/datasources/remote/product_remote_data_source_impl.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/data/repositories/product_repository_impl.dart';
@@ -13,25 +14,30 @@ import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_
 class ProductBinding extends Bindings {
   @override
   void dependencies() {
-    // 1. Inject DataSource
+    // // Đảm bảo CategoryController luôn có sẵn cho filter bottom sheet và product info form.
+    // // Nếu user navigate thẳng vào ProductPage (bỏ qua CategoryPage), CategoryBinding
+    // // sẽ đăng ký các dependency cần thiết. Nếu đã có từ CategoryPage thì là no-op.
+    // CategoryBinding().dependencies();
+
+    // 1.  DataSource
     Get.lazyPut<ProductRemoteDataSource>(
       () => ProductRemoteDataSourceImpl(Get.find()),
     );
 
-    // 2. Inject Repository
+    // 2.  Repository
     Get.lazyPut<ProductRepository>(
       () => ProductRepositoryImpl(
         remoteDataSource: Get.find<ProductRemoteDataSource>(),
       ),
     );
 
-    // 3. Inject UseCases (each with single responsibility)
+    // 3.  UseCases
     Get.lazyPut(() => GetProductsUseCase(Get.find()));
     Get.lazyPut(() => AddProductUseCase(Get.find()));
     Get.lazyPut(() => UpdateProductUseCase(Get.find()));
     Get.lazyPut(() => DeleteProductUseCase(Get.find()));
 
-    // 4. Inject Controllers cho tầng Presentation
+    // 4.  Controllers
     Get.lazyPut<ProductController>(
       () => ProductController(Get.find(), Get.find()),
     );

@@ -90,7 +90,6 @@ class ProductPage extends GetView<ProductController> {
   Widget _buildProductList() {
     return Stack(
       children: [
-        // ListView — luôn mounted, chỉ rebuild khi listProduct thay đổi
         Obx(
           () => controller.listProduct.isEmpty
               ? const SizedBox.shrink()

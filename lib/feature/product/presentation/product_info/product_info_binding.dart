@@ -11,23 +11,23 @@ import '../../domain/usecases/update_product_use_case.dart';
 class ProductInfoBinding extends Bindings {
   @override
   void dependencies() {
-    // 1. Inject DataSource (Cần truyền instance Dio từ core hệ thống vào)
+    // 1.  DataSource ()
     Get.lazyPut<ProductRemoteDataSource>(
       () => ProductRemoteDataSourceImpl(Get.find()),
     );
 
-    // 2. Inject Repository
+    // 2.  Repository
     Get.lazyPut<ProductRepository>(
       () => ProductRepositoryImpl(
         remoteDataSource: Get.find<ProductRemoteDataSource>(),
       ),
     );
 
-    // 3. Inject UseCases
+    // 3.  UseCases
     Get.lazyPut(() => AddProductUseCase(Get.find()));
     Get.lazyPut(() => UpdateProductUseCase(Get.find()));
 
-    // 4. Inject Controller cho tầng Presentation dùng
+    // 4.  Controller
     Get.lazyPut<ProductInfoController>(
       () => ProductInfoController(Get.find(), Get.find()),
     );
