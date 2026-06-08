@@ -1,4 +1,4 @@
-import '../../localization/locale_keys.dart';
+import '../../enum/locale_keys.dart';
 
 /// Reusable form validation utilities for common input fields.
 /// These validators are designed to be used at the base widget layer.

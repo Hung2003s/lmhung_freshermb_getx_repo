@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../gen/colors.gen.dart';
-import '../../localization/locale_keys.dart';
+import '../../enum/locale_keys.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   final IconData icon;

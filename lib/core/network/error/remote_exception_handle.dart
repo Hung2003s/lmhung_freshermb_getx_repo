@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../data/data_state.dart'; // Trỏ ngược ra thư mục data lấy data_state
+import '../data/data_state.dart';
 
 mixin RemoteExceptionHandler {
   /// Hàm xử lý Exception dùng chung cho các RemoteData
@@ -7,7 +7,7 @@ mixin RemoteExceptionHandler {
     if (e is DioException) {
       if (e.response != null && e.response?.data != null) {
         try {
-          // Bóc tách JSON lỗi từ server dựa trên cấu trúc ResponseError của bạn
+          // Bóc tách JSON lỗi từ server dựa trên cấu trúc ResponseError
           final errorResponse = ResponseError.fromJson(e.response!.data);
           return DataFailed(errorResponse);
         } catch (_) {

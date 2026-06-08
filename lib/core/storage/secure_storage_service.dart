@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorageService {
@@ -18,7 +19,22 @@ class SecureStorageService {
   }
 
   static Future<String?> readData<T>(String key) async {
-    return await _storage.read(key: key);
+    try {
+      return await _storage.read(key: key);
+    } on PlatformException {
+      // Xử lý lỗi giải mã
+      // Xảy ra khi dữ liệu mã hóa cũ không tương thích với phiên bản mới
+      // hoặc keystore đã thay đổi (sau khi reinstall app)
+      try {
+        // Xóa dữ liệu bị lỗi
+        await _storage.delete(key: key);
+      } catch (_) {
+        // Bỏ qua nếu xóa thất bại
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   /// Lưu một Object
@@ -32,14 +48,23 @@ class SecureStorageService {
     String key,
     T Function(Map<String, dynamic>) fromJson,
   ) async {
-    final String? jsonString = await _storage.read(key: key);
-    if (jsonString != null && jsonString.isNotEmpty) {
-      try {
-        final Map<String, dynamic> map = jsonDecode(jsonString);
-        return fromJson(map);
-      } catch (e) {
-        return null;
+    try {
+      final String? jsonString = await _storage.read(key: key);
+      if (jsonString != null && jsonString.isNotEmpty) {
+        try {
+          final Map<String, dynamic> map = jsonDecode(jsonString);
+          return fromJson(map);
+        } catch (e) {
+          return null;
+        }
       }
+    } on PlatformException {
+      // Xử lý lỗi giải mã tương tự readData
+      try {
+        await _storage.delete(key: key);
+      } catch (_) {}
+    } catch (e) {
+      // Bỏ qua các lỗi khác
     }
     return null;
   }

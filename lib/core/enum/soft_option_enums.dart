@@ -1,4 +1,4 @@
-import '../localization/locale_keys.dart';
+import 'locale_keys.dart';
 
 enum SortOption {
   nameAsc, // Tên A -> Z

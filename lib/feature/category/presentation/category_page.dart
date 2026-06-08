@@ -4,10 +4,10 @@ import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/draggabble_
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/custom_search_field.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/state/empty_state_widget.dart';
-import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
+import 'package:lmhung_freshermb_getx_repo/core/enum/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/category_controller.dart';
-import 'package:lmhung_freshermb_getx_repo/feature/category/widget/category_card.dart';
+import 'package:lmhung_freshermb_getx_repo/feature/category/presentation/widget/category_card.dart';
 import '../../../core/common_widget/base_view/base_view.dart';
 import '../../../core/common_widget/navigation_bar/profile_app_bar.dart';
 import '../../../core/gen/assets.gen.dart';

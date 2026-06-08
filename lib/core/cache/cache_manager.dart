@@ -1,3 +1,4 @@
+/// Class cấu hình các hàm lưu trữ, lấy cache
 class _CacheEntry {
   final dynamic data;
   final DateTime cachedAt;
@@ -12,22 +13,18 @@ class _CacheEntry {
   bool get isValid => DateTime.now().difference(cachedAt) < ttl;
 }
 
-/// Cache in-memory đơn giản với TTL, dùng chung cho toàn ứng dụng.
+/// Cache in-memory
 ///
-/// - [set] : lưu data với key và TTL tùy chọn (mặc định 5 phút)
-/// - [get] : lấy data; trả về null nếu hết hạn hoặc chưa có
-/// - [invalidate] : xóa một key cụ thể (dùng sau khi mutation)
+/// - [set]           : lưu data với key và TTL tùy chọn (mặc định 5 phút)
+/// - [get]           : lấy data; trả về null nếu hết hạn hoặc chưa có
+/// - [invalidate]    : xóa một key (dùng sau khi mutation)
 /// - [invalidateAll] : xóa toàn bộ cache (dùng khi logout)
 class CacheManager {
   final Map<String, _CacheEntry> _store = {};
 
   static const defaultTtl = Duration(minutes: 5);
 
-  void set<T>(
-    String key,
-    T data, {
-    Duration ttl = defaultTtl,
-  }) {
+  void set<T>(String key, T data, {Duration ttl = defaultTtl}) {
     _store[key] = _CacheEntry(
       data: data,
       cachedAt: DateTime.now(),
@@ -49,7 +46,7 @@ class CacheManager {
   void invalidateAll() => _store.clear();
 }
 
-/// Các key cache dùng trong ứng dụng — tập trung một chỗ để dễ quản lý.
+/// Các key cache dùng trong ứng dụng
 abstract class CacheKeys {
   static const categoriesFirstPage = 'categories_first_page';
 }

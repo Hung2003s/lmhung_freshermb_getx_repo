@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
     }
     return ThemeMode.system;
   }
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

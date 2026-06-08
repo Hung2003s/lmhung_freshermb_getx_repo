@@ -1,4 +1,3 @@
-// lib/core/constants/app_constants.dart
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConfig {
