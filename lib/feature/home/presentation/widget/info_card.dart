@@ -4,7 +4,7 @@ import 'package:get/get_utils/src/extensions/context_extensions.dart';
 
 import '../../../../core/gen/assets.gen.dart';
 import '../../../../core/gen/colors.gen.dart';
-import '../../../../core/localization/locale_keys.dart';
+import '../../../../core/enum/locale_keys.dart';
 
 class InfoCard extends StatelessWidget {
   final Widget icon;

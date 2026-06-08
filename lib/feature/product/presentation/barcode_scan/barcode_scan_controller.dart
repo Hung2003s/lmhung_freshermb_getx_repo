@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:barcode_scanner_plugin/barcode_scanner_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
+import 'package:lmhung_freshermb_getx_repo/core/enum/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/app_toast.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/domain/entities/product_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/product/presentation/product_controller.dart';

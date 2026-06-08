@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../header_provider.dart';
-
+/// Interceptor hắn header cho request
 class HeaderInterceptor extends Interceptor {
   final HeaderProvider _headerProvider = HeaderProvider();
 

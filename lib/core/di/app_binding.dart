@@ -9,11 +9,6 @@ import '../storage/secure_storage/token/token_manager.dart';
 import '../storage/secure_storage_service.dart';
 
 /// Nơi đăng ký các service dùng trong suốt vòng đời ứng dụng.
-///
-/// Chiến lược:
-/// - permanent : GetStorage, DioClient, SecureStorageService, TokenManager, CacheManager
-///              — cần ngay từ đầu hoặc dùng liên tục, không bao giờ bị dispose
-/// - lazyPut   : LogoutUseCase, SettingController — chỉ khởi tạo khi cần
 class AppBinding extends Bindings {
   @override
   void dependencies() {

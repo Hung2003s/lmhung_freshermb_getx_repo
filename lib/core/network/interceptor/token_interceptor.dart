@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
+import 'package:lmhung_freshermb_getx_repo/core/enum/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/app_toast.dart';
 
 import '../../navigation/routes.dart';
 import '../../storage/secure_storage/token/token_manager.dart';
-
+/// Interceptor xử lý với token,  xử lý trường hợp 401 ở đây
 class TokenInterceptor extends Interceptor {
   bool _isRefreshing = false;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-
+/// Class wrap gradient animation border bọc bên ngoài các widget
 class GradientBorderAnimation extends StatefulWidget {
   final Widget child;
   const GradientBorderAnimation({super.key, required this.child});

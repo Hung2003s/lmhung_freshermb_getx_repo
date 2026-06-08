@@ -35,8 +35,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation,
       centerTitle: centerTitle,
       iconTheme: IconThemeData(color: iconColor),
-
-      // 1. Xử lý nút Leading (Bên trái)
       leading: leading ?? (showBackButton && Navigator.canPop(context)
           ? SelectedWidget(
         child:  Container(
@@ -50,11 +48,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               shape: BoxShape.circle,
             ),
             child: Icon(Icons.arrow_back_ios_new, size: 20, color: context.theme.colorScheme.secondary,)), // Icon back đẹp hơn mặc định
-        onTap: () => Get.back(), // Dùng Get.back() đồng bộ với hệ thống GetX của bạn
+        onTap: () => Get.back(), // Dùng Get.back() đồng bộ với hệ thống GetX
       )
           : null),
-
-      // 2. Xử lý Title (Ưu tiên titleWidget trước, nếu không có mới dùng String title)
+      // Title
       title: titleWidget ?? (title != null
           ? Text(
         title!,
@@ -65,16 +62,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       )
           : null),
-
-      // 3. Xử lý các Actions (Bên phải)
       actions: actions,
-
-      // 4. Xử lý Bottom
       bottom: bottom,
     );
   }
-
-  // BẮT BUỘC PHẢI CÓ KHI IMPLEMENTS PreferredSizeWidget
   // Định nghĩa chiều cao mặc định cho AppBar của bạn (Kích thước chuẩn là kToolbarHeight = 56.0)
   @override
   Size get preferredSize => Size.fromHeight(

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'locale_keys.dart';
+import '../enum/locale_keys.dart';
 
 class En extends Translations {
   @override

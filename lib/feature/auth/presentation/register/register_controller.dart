@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/animation/shake_widget.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/input/form_validator.dart';
-import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
+import 'package:lmhung_freshermb_getx_repo/core/enum/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/storage/secure_storage/token/token_manager.dart';
 
 import '../../../../core/navigation/routes.dart';

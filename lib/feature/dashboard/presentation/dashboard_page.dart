@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/dashboard_controller.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/dashboard/presentation/widget/navigation_bar.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/home/presentation/home_page.dart';
@@ -21,8 +22,8 @@ class DashboardPage extends GetView<DashboardController> {
       const SettingPage(),
     ];
 
-    return Scaffold(
-      body: Stack(
+    return BaseView(
+      buildBody: Stack(
         fit: StackFit.expand,
         children: [
           Obx(

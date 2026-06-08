@@ -71,7 +71,7 @@ class TokenManager extends GetxService {
     await SecureStorageService.removeData(Constants.accessTokenKey);
     await SecureStorageService.removeData(Constants.tokenExpiryKey);
   }
-
+  // Hàm lấy token từ local
   Future<String?> getToken() async {
     return await SecureStorageService.readData(Constants.accessTokenKey);
   }

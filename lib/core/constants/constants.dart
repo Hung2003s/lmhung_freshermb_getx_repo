@@ -1,6 +1,5 @@
 class Constants {
   static const int connectTimeout = 30;
-  static const int limit = 40;
   static const int offset = 0;
 
   static const commonError = 'Có lỗi xảy ra, vui lòng thử lại.';

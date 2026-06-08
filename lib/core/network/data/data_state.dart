@@ -18,7 +18,7 @@ abstract class ResponseError with _$ResponseError {
 // lib/core/network/data/data_state.dart
 abstract class DataState<T> {
   final T? data;
-  final ResponseError? error; // Giữ nguyên ResponseError ở đây
+  final ResponseError? error;
 
   const DataState({this.data, this.error});
 }

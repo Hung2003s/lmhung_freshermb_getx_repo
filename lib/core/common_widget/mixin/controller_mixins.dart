@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../localization/locale_keys.dart';
+import '../../enum/locale_keys.dart';
 import '../dialog/dialog_x.dart';
 import '../../utils/app_toast.dart';
 
 /// [OptimisticDeleteMixin] — Xoá item với optimistic update (rollback nếu API fail)
-mixin OptimisticDeleteMixin<T, ID> on GetxController {
+mixin OptimisticDeleteMixin<T, id> on GetxController {
   RxList<T> get items;
   RxString get errorMessage;
 
   /// Gọi API xoá thật sự, trả về `true` nếu thành công
-  Future<bool> deleteItemById(ID id);
+  Future<bool> deleteItemById(id id);
 
-  /// Lấy ID từ item
-  ID getIdFromItem(T item);
+  /// Lấy [id] từ item
+  id getIdFromItem(T item);
 
   String get successMessage => LocaleKeys.deleteSuccess.tr;
   String get failMessage => LocaleKeys.deleteFailed.tr;
 
   /// Xoá item
-  Future<void> deleteItem(ID id) async {
+  Future<void> deleteItem(id id) async {
     int? idx;
     T? original;
     try {
@@ -31,8 +31,8 @@ mixin OptimisticDeleteMixin<T, ID> on GetxController {
       items.removeAt(idx);
       items.refresh();
 
-      final ok = await deleteItemById(id);
-      if (ok) {
+      final success = await deleteItemById(id);
+      if (success) {
         AppToast.showSuccess(title: successMessage);
       } else {
         if (original != null) _rollback(idx, original);
@@ -93,7 +93,7 @@ mixin PaginationMixin<T> on GetxController {
   Future<void> loadMore();
 }
 
-/// [DialogButtonMixin] — Button + dialog xác nhận xoá với style đồng nhất
+/// [DialogButtonMixin] — Button + dialog xác nhận xoá
 mixin DialogButtonMixin on GetxController {
   Widget dialogButton(
     ThemeData theme, {

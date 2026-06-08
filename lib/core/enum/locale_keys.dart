@@ -203,7 +203,6 @@ enum LocaleKeys {
 extension LocaleKeysExt on LocaleKeys {
   /// Trả về chuỗi đã được dịch theo ngôn ngữ hiện tại
   String get tr => name.tr;
-
   /// Trả về chuỗi đã được dịch với các tham số truyền vào
   /// Ví dụ: LocaleKeys.productsCount.trArgs(['10'])
   String trArgs([List<String> args = const []]) => name.trArgs(args);

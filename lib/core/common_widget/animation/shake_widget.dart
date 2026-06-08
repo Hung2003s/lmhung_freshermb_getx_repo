@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-
+/// Class animation rung wrap vào widget con
 class ShakeWidget extends StatefulWidget {
   final Widget child;
   final Duration duration;
-  final double deltaX; // Độ rộng của cú rung (pixels)
+  final double deltaX; // khoảng cách rung
 
   const ShakeWidget({
     super.key,

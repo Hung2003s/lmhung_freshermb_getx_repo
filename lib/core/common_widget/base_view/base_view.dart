@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class BaseView extends StatelessWidget {
   const BaseView({
     super.key,
@@ -53,13 +54,13 @@ class BaseView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Widget body chính, được bọc trong một Column
-    return Scaffold(
+    return BaseView(
       floatingActionButton: floatingActionButton,
       extendBodyBehindAppBar: extendBodyBehindAppBar,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: buildAppBar,
-      bottomNavigationBar: buildBottomAppBar,
-      body: Stack(
+      buildAppBar: buildAppBar,
+      buildBottomAppBar: buildBottomAppBar,
+      buildBody: Stack(
         children: [
           Positioned(child: _buildBackground(context)),
           SafeArea(

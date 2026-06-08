@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
-import '../../localization/locale_keys.dart';
+import '../../enum/locale_keys.dart';
 
 class BiometricAuthService {
   final LocalAuthentication _localAuth = LocalAuthentication();

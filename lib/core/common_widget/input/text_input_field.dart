@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import '../../gen/assets.gen.dart';
 import '../../gen/colors.gen.dart';
-import '../../text_style/app_text_style.dart';
 
 class TextInputFields extends StatefulWidget {
   const TextInputFields({
@@ -165,7 +165,7 @@ class _TextInputFieldsState extends State<TextInputFields> {
             padding: const EdgeInsets.only(right: 4),
             child: Text(
               widget.errorText!,
-              style: AppTextStyle.title3.copyWith(
+              style: context.textTheme.headlineLarge?.copyWith(
                 fontSize: 12,
                 color: ColorName.error,
               ),

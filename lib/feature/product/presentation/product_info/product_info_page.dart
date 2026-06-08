@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/base_view/base_view.dart';
-import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
+import 'package:lmhung_freshermb_getx_repo/core/enum/locale_keys.dart';
 
 import '../../../../core/gen/colors.gen.dart';
 import '../../../category/presentation/category_controller.dart';

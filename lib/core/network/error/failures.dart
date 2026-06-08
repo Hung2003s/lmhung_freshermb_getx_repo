@@ -3,13 +3,13 @@ part 'failures.freezed.dart';
 
 @freezed
 abstract class Failure with _$Failure {
-  // Lỗi từ phía Server/API (Truyền message bóc từ ErrorResponse vào đây)
+  // Lỗi từ phía Server/API (Truyền message bóc từ ResponseError vào)
   const factory Failure.serverFailure({
     required String message,
     int? statusCode,
   }) = ServerFailure;
 
-  // Lỗi kết nối mạng (Không có ErrorResponse vì không tới được Server)
+  // Lỗi kết nối mạng (Không có ResponseError vì không tới được Server)
   const factory Failure.connectionFailure({
     @Default('Không có kết nối internet') String message,
   }) = ConnectionFailure;

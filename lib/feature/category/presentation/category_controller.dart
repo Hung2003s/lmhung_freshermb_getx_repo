@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/mixin/controller_mixins.dart';
-import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
+import 'package:lmhung_freshermb_getx_repo/core/enum/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/core/utils/string_utils.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/usecases/get_categories_use_case.dart';
@@ -217,7 +217,7 @@ class CategoryController extends GetxController
     }
   }
 
-  /// Gọi OptimisticDeleteMixin.deleteItem, nhưng với tên rõ nghĩa hơn
+  /// Gọi OptimisticDeleteMixin.deleteItem
   Future<void> deleteCategory(int id) => deleteItem(id);
 
   void showDeleteDialog(CategoryEntity item) {

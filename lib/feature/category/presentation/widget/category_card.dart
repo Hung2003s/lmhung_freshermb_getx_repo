@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lmhung_freshermb_getx_repo/core/common_widget/button/selected_widget.dart';
-import 'package:lmhung_freshermb_getx_repo/core/localization/locale_keys.dart';
+import 'package:lmhung_freshermb_getx_repo/core/enum/locale_keys.dart';
 import 'package:lmhung_freshermb_getx_repo/feature/category/domain/entities/categories_entity.dart';
 
-import '../../../core/gen/assets.gen.dart';
-import '../../../core/gen/colors.gen.dart';
+import '../../../../core/gen/assets.gen.dart';
+import '../../../../core/gen/colors.gen.dart';
 
 class CategoryCard extends StatelessWidget {
   final Widget icon;
