@@ -21,12 +21,12 @@ class SecureStorageService {
   static Future<String?> readData<T>(String key) async {
     try {
       return await _storage.read(key: key);
-    } on PlatformException catch (e) {
-      // Xử lý lỗi giải mã (ví dụ: IllegalBlockSizeException, WrongFinalBlockLength)
+    } on PlatformException {
+      // Xử lý lỗi giải mã
       // Xảy ra khi dữ liệu mã hóa cũ không tương thích với phiên bản mới
       // hoặc keystore đã thay đổi (sau khi reinstall app)
       try {
-        // Xóa dữ liệu bị lỗi để tránh lỗi lặp lại
+        // Xóa dữ liệu bị lỗi
         await _storage.delete(key: key);
       } catch (_) {
         // Bỏ qua nếu xóa thất bại
@@ -58,7 +58,7 @@ class SecureStorageService {
           return null;
         }
       }
-    } on PlatformException catch (e) {
+    } on PlatformException {
       // Xử lý lỗi giải mã tương tự readData
       try {
         await _storage.delete(key: key);
